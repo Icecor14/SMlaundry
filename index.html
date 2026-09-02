@@ -1,839 +1,1463 @@
-``html
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Laundry</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Smart Laundry X Pro</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
+:root{
+--primary:#2563eb;
+--primary2:#4f46e5;
+--cyan:#06b6d4;
+--green:#16a34a;
+--yellow:#f59e0b;
+--red:#ef4444;
+--purple:#7c3aed;
+
+--bg:#f4f7fb;
+--card:#fff;
+--text:#172033;
+--muted:#64748b;
+--line:#e2e8f0;
+--dark:#0f172a;
+
+--shadow:0 12px 35px rgba(15,23,42,.07);
+--shadow2:0 25px 70px rgba(15,23,42,.16);
+
+--radius:22px;
+}
+
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:"Segoe UI","Tahoma",sans-serif;
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+html{
+scroll-behavior:smooth;
 }
 
 body{
-    background:#eef5fc;
-    color:#17385f;
+font-family:"Noto Sans Thai","Inter",sans-serif;
+background:
+radial-gradient(circle at 10% 0%,rgba(37,99,235,.08),transparent 28rem),
+radial-gradient(circle at 100% 10%,rgba(124,58,237,.07),transparent 28rem),
+var(--bg);
+color:var(--text);
+min-height:100vh;
+transition:.25s;
+}
+
+body.dark{
+--bg:#07111f;
+--card:#101b2d;
+--text:#f1f5f9;
+--muted:#94a3b8;
+--line:#243247;
+}
+
+button,input,select{
+font-family:inherit;
 }
 
 button{
-    font-family:inherit;
+cursor:pointer;
+}
+
+button:active{
+transform:scale(.97);
 }
 
 .app{
-    width:100%;
-    max-width:520px;
-    min-height:100vh;
-    margin:auto;
-    background:#f5f9fd;
-    position:relative;
-    padding-bottom:90px;
+max-width:1500px;
+margin:auto;
+min-height:100vh;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
+
 .header{
-    background:white;
-    padding:15px 16px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-bottom:1px solid #e8eef5;
-    position:sticky;
-    top:0;
-    z-index:20;
+position:sticky;
+top:0;
+z-index:100;
+height:76px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 30px;
+background:rgba(255,255,255,.9);
+backdrop-filter:blur(22px);
+border-bottom:1px solid var(--line);
 }
 
-.logo-area{
-    display:flex;
-    align-items:center;
-    gap:10px;
+.dark .header{
+background:rgba(8,17,31,.9);
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:12px;
 }
 
 .logo{
-    width:45px;
-    height:45px;
-    background:#e8f3ff;
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-}
-
-.logo-text h1{
-    color:#1456a0;
-    font-size:19px;
-    font-weight:800;
-}
-
-.logo-text p{
-    font-size:10px;
-    color:#777;
-}
-
-.notification-btn{
-    width:42px;
-    height:42px;
-    border:0;
-    background:#f0f6ff;
-    border-radius:50%;
-    font-size:20px;
-    cursor:pointer;
-    position:relative;
-}
-
-.notification-dot{
-    width:9px;
-    height:9px;
-    background:#ef4444;
-    border-radius:50%;
-    position:absolute;
-    top:7px;
-    right:7px;
-}
-
-/* PAGE */
-.page{
-    padding:15px;
-    display:none;
-}
-
-.page.active{
-    display:block;
-}
-
-.page-title{
-    font-size:24px;
-    font-weight:800;
-    color:#173f70;
-    margin-bottom:4px;
-}
-
-.page-subtitle{
-    color:#7b8795;
-    font-size:13px;
-    margin-bottom:18px;
-}
-
-/* SYSTEM */
-.system-status{
-    background:linear-gradient(135deg,#1467c8,#4d9cf2);
-    color:white;
-    border-radius:20px;
-    padding:17px;
-    display:flex;
-    align-items:center;
-    gap:13px;
-    box-shadow:0 8px 20px rgba(20,103,200,.18);
-    margin-bottom:15px;
-}
-
-.system-icon{
-    font-size:28px;
-}
-
-.system-status strong{
-    display:block;
-    font-size:16px;
-}
-
-.system-status span{
-    font-size:11px;
-    opacity:.9;
-}
-
-.system-check{
-    margin-left:auto;
-    font-size:25px;
-}
-
-/* SUMMARY */
-.summary{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:8px;
-    margin-bottom:22px;
-}
-
-.summary-card{
-    background:white;
-    border-radius:15px;
-    padding:11px 5px;
-    text-align:center;
-    border:1px solid #e6edf5;
-}
-
-.summary-icon{
-    font-size:19px;
-}
-
-.summary-number{
-    font-size:20px;
-    font-weight:800;
-    margin-top:3px;
-}
-
-.summary-name{
-    color:#7b8795;
-    font-size:10px;
-}
-
-.green .summary-number{color:#22a565}
-.blue .summary-number{color:#1264c7}
-.yellow .summary-number{color:#d99115}
-.red .summary-number{color:#e04444}
-
-/* SECTION */
-.section-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:12px;
-}
-
-.section-title h2{
-    font-size:17px;
-}
-
-.section-title span{
-    font-size:12px;
-    color:#8a96a3;
-}
-
-/* MACHINES */
-.machine-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-}
-
-.machine{
-    background:white;
-    border-radius:19px;
-    padding:13px;
-    border:1px solid #e5ebf2;
-    cursor:pointer;
-    transition:.2s;
-    min-height:220px;
-    position:relative;
-}
-
-.machine:hover{
-    transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(0,0,0,.07);
-}
-
-.machine:active{
-    transform:scale(.98);
-}
-
-.machine-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.machine-number{
-    font-size:19px;
-    font-weight:800;
-}
-
-.status-dot{
-    width:11px;
-    height:11px;
-    border-radius:50%;
-}
-
-.machine-icon{
-    text-align:center;
-    font-size:60px;
-    margin:20px 0 14px;
-}
-
-.machine-status{
-    font-size:13px;
-    font-weight:800;
-}
-
-.machine-time{
-    font-size:12px;
-    margin-top:5px;
-    color:#555;
-}
-
-.available .status-dot{background:#26aa67}
-.available .machine-status{color:#26aa67}
-.available .machine-icon{color:#26aa67}
-
-.washing .status-dot{background:#1768c8}
-.washing .machine-status{color:#1768c8}
-.washing .machine-icon{color:#1768c8}
-
-.done .status-dot{background:#e5a426}
-.done .machine-status{color:#e5a426}
-.done .machine-icon{color:#e5a426}
-
-.error .status-dot{background:#e44545}
-.error .machine-status{color:#e44545}
-.error .machine-icon{color:#e44545}
-
-.broken .status-dot{background:#555}
-.broken .machine-status{color:#555}
-.broken .machine-icon{color:#555}
-
-/* BUTTON */
-.btn{
-    border:0;
-    border-radius:12px;
-    padding:12px 15px;
-    cursor:pointer;
-    font-weight:700;
-    font-size:13px;
-    transition:.2s;
-}
-
-.btn:hover{
-    filter:brightness(.96);
-    transform:translateY(-1px);
-}
-
-.btn-primary{
-    background:#1768c8;
-    color:white;
-}
-
-.btn-danger{
-    background:#e44646;
-    color:white;
-}
-
-.btn-success{
-    background:#24a968;
-    color:white;
-}
-
-.btn-warning{
-    background:#e5a426;
-    color:white;
-}
-
-.btn-light{
-    background:#edf4fc;
-    color:#1768c8;
-}
-
-.btn-dark{
-    background:#17385f;
-    color:white;
-}
-
-.full{
-    width:100%;
-}
-
-/* HELP */
-.help-card{
-    background:white;
-    border-radius:18px;
-    padding:16px;
-    margin-top:18px;
-}
-
-.help-card h3{
-    margin-bottom:15px;
-}
-
-.step{
-    display:flex;
-    align-items:center;
-    gap:11px;
-    margin-bottom:13px;
-}
-
-.step:last-child{
-    margin-bottom:0;
-}
-
-.step-icon{
-    width:37px;
-    height:37px;
-    border-radius:50%;
-    background:#eaf3ff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#1768c8;
-    font-size:18px;
-}
-
-.step strong{
-    font-size:13px;
-    display:block;
-}
-
-.step span{
-    color:#8a96a3;
-    font-size:11px;
-}
-
-/* QUEUE */
-.queue-card{
-    background:white;
-    border-radius:18px;
-    padding:15px;
-    margin-bottom:11px;
-    display:flex;
-    align-items:center;
-    gap:13px;
-}
-
-.queue-number{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    background:#eaf3ff;
-    color:#1768c8;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:19px;
-    font-weight:800;
-}
-
-.queue-info{
-    flex:1;
-}
-
-.queue-info strong{
-    display:block;
-}
-
-.queue-info span{
-    color:#777;
-    font-size:12px;
-}
-
-.cancel{
-    border:0;
-    background:#ffecec;
-    color:#e04444;
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    cursor:pointer;
-}
-
-/* NOTIFICATION */
-.notification-card{
-    background:white;
-    border-radius:18px;
-    padding:14px;
-    display:flex;
-    gap:12px;
-    margin-bottom:10px;
-    border-left:4px solid #2aaa68;
-}
-
-.notification-card.error-notice{
-    border-left-color:#e04444;
-}
-
-.notice-icon{
-    width:43px;
-    height:43px;
-    border-radius:50%;
-    background:#e9f7ef;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:20px;
-}
-
-.error-notice .notice-icon{
-    background:#ffe8e8;
-}
-
-.notice-content{
-    flex:1;
-}
-
-.notice-content strong{
-    font-size:13px;
-}
-
-.notice-content p{
-    font-size:12px;
-    color:#687482;
-    margin-top:3px;
-}
-
-.notice-time{
-    font-size:10px;
-    color:#9aa5b1;
-    margin-top:5px;
-}
-
-/* HISTORY */
-.history-card{
-    background:white;
-    border-radius:18px;
-    padding:15px;
-    margin-bottom:10px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.history-icon{
-    width:45px;
-    height:45px;
-    border-radius:14px;
-    background:#eaf3ff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#1768c8;
-    font-size:22px;
-}
-
-.history-info{
-    flex:1;
-}
-
-.history-info strong{
-    font-size:13px;
-}
-
-.history-info p{
-    color:#7b8795;
-    font-size:11px;
-    margin-top:3px;
+width:46px;
+height:46px;
+display:grid;
+place-items:center;
+border-radius:15px;
+font-size:22px;
+color:white;
+background:linear-gradient(135deg,var(--primary),var(--primary2));
+box-shadow:0 10px 25px rgba(37,99,235,.25);
+}
+
+.brand h1{
+font-size:17px;
+font-weight:800;
+letter-spacing:.04em;
+}
+
+.brand p{
+font-size:10px;
+color:var(--muted);
+}
+
+.header-right{
+display:flex;
+align-items:center;
+gap:9px;
+}
+
+.live{
+display:flex;
+align-items:center;
+gap:7px;
+padding:8px 13px;
+border-radius:99px;
+font-size:10px;
+font-weight:800;
+color:#15803d;
+background:#ecfdf5;
+}
+
+.live-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:#22c55e;
+box-shadow:0 0 0 5px rgba(34,197,94,.12);
+animation:pulse 1.7s infinite;
+}
+
+@keyframes pulse{
+50%{
+box-shadow:0 0 0 9px rgba(34,197,94,.02);
+}
+}
+
+.icon-btn{
+position:relative;
+width:43px;
+height:43px;
+border:1px solid var(--line);
+border-radius:14px;
+background:var(--card);
+color:var(--text);
+font-size:17px;
 }
 
 .badge{
-    padding:5px 9px;
-    border-radius:9px;
-    font-size:10px;
-    font-weight:700;
+position:absolute;
+top:4px;
+right:4px;
+min-width:17px;
+height:17px;
+display:grid;
+place-items:center;
+border-radius:50%;
+color:#fff;
+background:var(--red);
+font-size:8px;
+font-weight:800;
 }
 
-.badge-success{
-    background:#e8f7ef;
-    color:#21a464;
+/* ================= MAIN ================= */
+
+.main{
+padding:30px;
 }
 
-.badge-error{
-    background:#ffe9e9;
-    color:#e04444;
+.page{
+display:none;
 }
 
-/* PROFILE */
-.profile-box{
-    background:white;
-    border-radius:22px;
-    padding:22px;
-    display:flex;
-    align-items:center;
-    gap:15px;
-    margin-bottom:13px;
+.page.active{
+display:block;
+animation:pageIn .25s ease;
+}
+
+@keyframes pageIn{
+from{
+opacity:0;
+transform:translateY(8px);
+}
+to{
+opacity:1;
+transform:none;
+}
+}
+
+/* ================= HERO ================= */
+
+.hero{
+position:relative;
+overflow:hidden;
+min-height:350px;
+padding:42px;
+border-radius:32px;
+color:#fff;
+background:
+radial-gradient(circle at 80% 10%,rgba(96,165,250,.35),transparent 22rem),
+radial-gradient(circle at 95% 90%,rgba(124,58,237,.3),transparent 22rem),
+linear-gradient(135deg,#0f172a,#1e3a8a 55%,#4338ca);
+box-shadow:0 30px 70px rgba(30,58,138,.22);
+}
+
+.hero:before{
+content:"";
+position:absolute;
+width:520px;
+height:520px;
+right:-220px;
+top:-280px;
+border-radius:50%;
+border:1px solid rgba(255,255,255,.1);
+box-shadow:
+0 0 0 55px rgba(255,255,255,.025),
+0 0 0 110px rgba(255,255,255,.015);
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:690px;
+}
+
+.eyebrow{
+display:inline-flex;
+gap:8px;
+margin-bottom:15px;
+font-size:10px;
+font-weight:800;
+letter-spacing:.15em;
+color:#bfdbfe;
+}
+
+.hero h2{
+font-size:clamp(31px,4vw,53px);
+line-height:1.1;
+margin-bottom:15px;
+}
+
+.hero h2 span{
+color:#93c5fd;
+}
+
+.hero p{
+font-size:13px;
+line-height:1.9;
+color:#dbeafe;
+max-width:650px;
+}
+
+.hero-actions{
+position:absolute;
+left:42px;
+bottom:35px;
+display:flex;
+gap:10px;
+z-index:4;
+}
+
+.hero-btn{
+border:1px solid rgba(255,255,255,.16);
+padding:12px 18px;
+border-radius:14px;
+color:#fff;
+background:rgba(255,255,255,.1);
+backdrop-filter:blur(12px);
+font-weight:700;
+}
+
+.hero-btn.primary{
+color:#0f172a;
+background:#fff;
+}
+
+.performance{
+position:absolute;
+right:35px;
+bottom:35px;
+width:285px;
+padding:18px;
+border:1px solid rgba(255,255,255,.14);
+border-radius:21px;
+background:rgba(15,23,42,.28);
+backdrop-filter:blur(16px);
+}
+
+.performance-head{
+display:flex;
+justify-content:space-between;
+font-size:9px;
+color:#cbd5e1;
+}
+
+.performance strong{
+display:block;
+margin-top:7px;
+font-size:28px;
+}
+
+.performance-bar{
+height:6px;
+margin-top:9px;
+overflow:hidden;
+border-radius:99px;
+background:rgba(255,255,255,.15);
+}
+
+.performance-bar i{
+display:block;
+height:100%;
+border-radius:99px;
+background:#60a5fa;
+transition:.5s;
+}
+
+/* ================= STATS ================= */
+
+.stats{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:14px;
+margin:22px 0;
+}
+
+.stat{
+padding:19px;
+border:1px solid var(--line);
+border-radius:20px;
+background:var(--card);
+box-shadow:var(--shadow);
+transition:.2s;
+}
+
+.stat:hover{
+transform:translateY(-4px);
+}
+
+.stat-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.stat small{
+color:var(--muted);
+font-size:10px;
+}
+
+.stat strong{
+display:block;
+margin-top:7px;
+font-size:27px;
+}
+
+.stat-icon{
+width:39px;
+height:39px;
+display:grid;
+place-items:center;
+border-radius:13px;
+font-size:17px;
+}
+
+.green .stat-icon{
+color:var(--green);
+background:#ecfdf5;
+}
+
+.blue .stat-icon{
+color:var(--primary);
+background:#eff6ff;
+}
+
+.orange .stat-icon{
+color:var(--yellow);
+background:#fffbeb;
+}
+
+.red .stat-icon{
+color:var(--red);
+background:#fef2f2;
+}
+
+.cyan .stat-icon{
+color:var(--cyan);
+background:#ecfeff;
+}
+
+/* ================= SECTION ================= */
+
+.section-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin:28px 0 15px;
+}
+
+.section-head h3{
+font-size:19px;
+}
+
+.section-head p{
+font-size:10px;
+color:var(--muted);
+margin-top:3px;
+}
+
+/* ================= SMART ================= */
+
+.smart{
+display:grid;
+grid-template-columns:1fr auto;
+align-items:center;
+gap:18px;
+padding:21px;
+margin-bottom:24px;
+border:1px solid #bfdbfe;
+border-radius:23px;
+background:linear-gradient(135deg,#eff6ff,#eef2ff);
+}
+
+.dark .smart{
+background:linear-gradient(135deg,#101e38,#18234b);
+border-color:#263f72;
+}
+
+.smart-left{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.smart-icon{
+width:61px;
+height:61px;
+display:grid;
+place-items:center;
+border-radius:19px;
+background:var(--card);
+font-size:28px;
+box-shadow:0 10px 25px rgba(37,99,235,.1);
+}
+
+.smart h4{
+font-size:14px;
+}
+
+.smart p{
+margin-top:4px;
+font-size:10px;
+color:var(--muted);
+}
+
+.match{
+display:inline-block;
+margin-top:7px;
+font-size:9px;
+font-weight:800;
+color:var(--primary);
+}
+
+/* ================= TOOLBAR ================= */
+
+.toolbar{
+display:flex;
+flex-wrap:wrap;
+gap:9px;
+margin-bottom:15px;
+}
+
+.search{
+flex:1;
+min-width:230px;
+height:46px;
+padding:0 16px;
+border:1px solid var(--line);
+border-radius:14px;
+outline:none;
+background:var(--card);
+color:var(--text);
+}
+
+.search:focus{
+border-color:#93c5fd;
+box-shadow:0 0 0 4px rgba(37,99,235,.08);
+}
+
+.select{
+height:46px;
+padding:0 14px;
+border:1px solid var(--line);
+border-radius:14px;
+background:var(--card);
+color:var(--text);
+}
+
+.btn{
+border:0;
+padding:11px 16px;
+border-radius:13px;
+font-weight:700;
+transition:.2s;
+}
+
+.btn:hover{
+transform:translateY(-1px);
+}
+
+.primary{
+color:#fff;
+background:linear-gradient(135deg,var(--primary),var(--primary2));
+}
+
+.light{
+color:var(--primary);
+background:#eff6ff;
+}
+
+.success{
+color:var(--green);
+background:#ecfdf5;
+}
+
+.danger{
+color:var(--red);
+background:#fef2f2;
+}
+
+.warning{
+color:#b45309;
+background:#fffbeb;
+}
+
+/* ================= MACHINE GRID ================= */
+
+.machine-grid{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:18px;
+}
+
+.machine{
+position:relative;
+overflow:hidden;
+padding:20px;
+border:1px solid var(--line);
+border-radius:25px;
+background:var(--card);
+box-shadow:var(--shadow);
+transition:.25s;
+}
+
+.machine:hover{
+transform:translateY(-5px);
+box-shadow:0 25px 55px rgba(15,23,42,.12);
+}
+
+.machine:before{
+content:"";
+position:absolute;
+left:0;
+right:0;
+top:0;
+height:4px;
+background:var(--green);
+}
+
+.machine.washing:before{
+background:var(--primary);
+}
+
+.machine.done:before{
+background:var(--yellow);
+}
+
+.machine.overdue:before{
+background:var(--red);
+}
+
+.machine.error:before{
+background:var(--red);
+}
+
+.machine.maintenance:before{
+background:#94a3b8;
+}
+
+.machine-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.machine-name{
+font-size:17px;
+font-weight:800;
+}
+
+.status{
+padding:6px 10px;
+border-radius:99px;
+font-size:9px;
+font-weight:800;
+}
+
+.available .status{
+color:var(--green);
+background:#ecfdf5;
+}
+
+.washing .status{
+color:var(--primary);
+background:#eff6ff;
+}
+
+.done .status{
+color:#b45309;
+background:#fffbeb;
+}
+
+.overdue .status{
+color:var(--red);
+background:#fef2f2;
+}
+
+.error .status{
+color:var(--red);
+background:#fef2f2;
+}
+
+.maintenance .status{
+color:#64748b;
+background:#f1f5f9;
+}
+
+/* =========================================================
+   WASHING MACHINE VISUAL — ปรับใหม่
+   ไม่มีตะกร้า ไม่มี Emoji ตรงกลาง
+========================================================= */
+
+.machine-visual{
+position:relative;
+width:172px;
+height:195px;
+margin:21px auto 18px;
+padding-top:15px;
+border-radius:28px;
+border:1px solid #b8c4d4;
+background:
+linear-gradient(145deg,#ffffff,#d8e2ed);
+box-shadow:
+inset 0 3px 8px rgba(255,255,255,.95),
+0 15px 30px rgba(15,23,42,.14);
+}
+
+.dark .machine-visual{
+background:linear-gradient(145deg,#26364d,#111c2e);
+border-color:#3b4d65;
+}
+
+.machine-top{
+width:128px;
+height:34px;
+margin:auto;
+border-radius:9px;
+background:linear-gradient(180deg,#334155,#111827);
+box-shadow:inset 0 2px 4px rgba(255,255,255,.15);
+}
+
+.machine-screen{
+height:19px;
+margin:7px 8px 0;
+padding:2px 5px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+border-radius:5px;
+background:#07111f;
+color:#67e8f9;
+font-size:7px;
+font-weight:800;
+}
+
+.machine-buttons{
+display:flex;
+gap:4px;
+margin:4px 8px;
+}
+
+.machine-buttons i{
+display:block;
+width:8px;
+height:4px;
+border-radius:2px;
+background:#94a3b8;
+}
+
+/* ประตูถังซักใหม่ */
+
+.machine-door{
+position:relative;
+width:108px;
+height:108px;
+margin:10px auto;
+display:grid;
+place-items:center;
+border:8px solid #cbd5e1;
+border-radius:50%;
+
+background:
+radial-gradient(
+circle at 50% 50%,
+#020617 0 47%,
+#111827 48% 57%,
+#475569 58% 67%,
+#e2e8f0 68% 100%
+);
+
+box-shadow:
+inset 0 0 0 3px #f8fafc,
+inset 0 0 18px rgba(0,0,0,.65),
+0 9px 18px rgba(15,23,42,.27);
+
+overflow:hidden;
+}
+
+/* กระจกด้านใน */
+
+.machine-door:before{
+content:"";
+position:absolute;
+width:73px;
+height:73px;
+border-radius:50%;
+
+background:
+radial-gradient(
+circle at 35% 25%,
+rgba(255,255,255,.48) 0 5%,
+transparent 6%
+),
+radial-gradient(
+ellipse at 45% 70%,
+rgba(59,130,246,.5) 0 12%,
+transparent 13%
+),
+radial-gradient(
+circle,
+#1e3a5f 0 35%,
+#0f172a 36% 68%,
+#020617 69% 100%
+);
+
+box-shadow:
+inset 0 0 14px rgba(96,165,250,.28);
+
+transition:.4s;
+}
+
+/* เงาผ้าด้านใน ไม่ใช้ emoji */
+
+.machine-door:after{
+content:"";
+position:absolute;
+width:36px;
+height:20px;
+left:34px;
+top:45px;
+border-radius:50% 55% 45% 50%;
+
+background:
+linear-gradient(
+135deg,
+#60a5fa,
+#2563eb 45%,
+#1e40af
+);
+
+filter:blur(1px);
+opacity:.8;
+
+transform:rotate(-18deg);
+}
+
+/* กำลังซัก */
+
+.washing .machine-door{
+animation:spin 2.2s linear infinite;
+}
+
+.washing .machine-door:before{
+animation:water 1.4s ease-in-out infinite;
+}
+
+.washing .machine-door:after{
+animation:clothMove 1.2s ease-in-out infinite;
+}
+
+@keyframes spin{
+to{
+transform:rotate(360deg);
+}
+}
+
+@keyframes water{
+50%{
+transform:scale(1.08);
+opacity:.65;
+}
+}
+
+@keyframes clothMove{
+0%,100%{
+transform:translateX(-5px) rotate(-18deg);
+}
+
+50%{
+transform:translateX(8px) rotate(15deg);
+}
+}
+
+/* ถังเสร็จแล้ว */
+
+.done .machine-door:before{
+background:
+radial-gradient(
+circle at 35% 25%,
+rgba(255,255,255,.4) 0 5%,
+transparent 6%
+),
+radial-gradient(
+circle,
+#78350f 0 35%,
+#451a03 36% 65%,
+#1c1917 66% 100%
+);
+}
+
+.done .machine-door:after{
+background:
+linear-gradient(
+135deg,
+#fbbf24,
+#f59e0b
+);
+}
+
+/* เครื่อง Error */
+
+.overdue .machine-door:before,
+.error .machine-door:before{
+background:
+radial-gradient(
+circle at 50% 50%,
+#450a0a 0 45%,
+#7f1d1d 46% 68%,
+#1f2937 69% 100%
+);
+}
+
+.overdue .machine-door:after,
+.error .machine-door:after{
+width:8px;
+height:55px;
+left:50%;
+top:25px;
+transform:translateX(-50%) rotate(45deg);
+border-radius:99px;
+background:#ef4444;
+box-shadow:0 0 12px rgba(239,68,68,.55);
+}
+
+.door-lock{
+position:absolute;
+right:-5px;
+top:50%;
+transform:translateY(-50%);
+width:13px;
+height:26px;
+border-radius:3px;
+background:#64748b;
+z-index:5;
+}
+
+.machine-info{
+display:flex;
+justify-content:space-between;
+gap:10px;
+}
+
+.machine-info h4{
+font-size:13px;
+}
+
+.machine-info p{
+margin-top:4px;
+color:var(--muted);
+font-size:10px;
+}
+
+.health{
+min-width:80px;
+text-align:right;
+}
+
+.health span{
+font-size:9px;
+color:var(--muted);
+}
+
+.health b{
+display:block;
+font-size:12px;
+margin-top:2px;
+}
+
+.health-bar{
+width:75px;
+height:5px;
+margin:4px 0 0 auto;
+overflow:hidden;
+border-radius:99px;
+background:#e2e8f0;
+}
+
+.health-bar i{
+display:block;
+height:100%;
+border-radius:99px;
+background:var(--green);
+}
+
+.error .health-bar i,
+.overdue .health-bar i{
+background:var(--red);
+}
+
+.machine-progress{
+margin-top:14px;
+}
+
+.progress-top{
+display:flex;
+justify-content:space-between;
+font-size:9px;
+color:var(--muted);
+}
+
+.progress{
+height:7px;
+margin-top:6px;
+overflow:hidden;
+border-radius:99px;
+background:#e2e8f0;
+}
+
+.progress i{
+display:block;
+height:100%;
+border-radius:99px;
+background:linear-gradient(90deg,var(--primary),var(--primary2));
+transition:width .8s linear;
+}
+
+.machine-actions{
+display:flex;
+gap:7px;
+margin-top:15px;
+}
+
+.machine-actions button{
+width:100%;
+}
+
+.lock-message{
+margin-top:10px;
+padding:10px;
+border-radius:12px;
+font-size:9px;
+font-weight:700;
+line-height:1.6;
+}
+
+.lock-message.yellow{
+color:#92400e;
+background:#fffbeb;
+}
+
+.lock-message.red{
+color:#991b1b;
+background:#fef2f2;
+}
+
+/* ================= PANEL ================= */
+
+.panel{
+padding:20px;
+border:1px solid var(--line);
+border-radius:23px;
+background:var(--card);
+box-shadow:var(--shadow);
+}
+
+.two{
+display:grid;
+grid-template-columns:1.4fr .8fr;
+gap:17px;
+}
+
+.row{
+display:flex;
+align-items:center;
+gap:13px;
+padding:15px 0;
+border-bottom:1px solid var(--line);
+}
+
+.row:last-child{
+border-bottom:0;
+}
+
+.circle{
+width:42px;
+height:42px;
+flex:none;
+display:grid;
+place-items:center;
+border-radius:14px;
+color:var(--primary);
+background:#eff6ff;
+font-weight:800;
+}
+
+.grow{
+flex:1;
+}
+
+.grow strong{
+font-size:13px;
+}
+
+.grow p{
+margin-top:3px;
+font-size:10px;
+color:var(--muted);
+}
+
+/* ================= ANALYTICS ================= */
+
+.analytics-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+}
+
+.analytics{
+padding:21px;
+border:1px solid var(--line);
+border-radius:20px;
+background:var(--card);
+box-shadow:var(--shadow);
+}
+
+.analytics small{
+color:var(--muted);
+font-size:10px;
+}
+
+.analytics strong{
+display:block;
+margin-top:5px;
+font-size:28px;
+}
+
+.chart{
+height:200px;
+display:flex;
+align-items:end;
+justify-content:space-around;
+padding:20px 10px 10px;
+}
+
+.bar{
+position:relative;
+width:35px;
+border-radius:8px 8px 3px 3px;
+background:linear-gradient(180deg,var(--primary),var(--primary2));
+transition:.3s;
+}
+
+.bar:hover{
+transform:scaleY(1.04);
+}
+
+.bar span{
+position:absolute;
+bottom:-24px;
+left:50%;
+transform:translateX(-50%);
+font-size:9px;
+color:var(--muted);
+}
+
+/* ================= PROFILE ================= */
+
+.profile{
+display:flex;
+align-items:center;
+gap:18px;
 }
 
 .avatar{
-    width:67px;
-    height:67px;
-    border-radius:50%;
-    background:#eaf3ff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:35px;
-    color:#1768c8;
+width:78px;
+height:78px;
+display:grid;
+place-items:center;
+border-radius:25px;
+font-size:33px;
+color:#fff;
+background:linear-gradient(135deg,var(--primary),var(--primary2));
 }
 
-.profile-box h2{
-    font-size:18px;
+.profile h2{
+font-size:19px;
 }
 
-.profile-box p{
-    color:#777;
-    font-size:12px;
+.profile p{
+margin:4px 0 12px;
+font-size:11px;
+color:var(--muted);
 }
 
-.setting{
-    background:white;
-    padding:15px;
-    border-radius:16px;
-    margin-bottom:9px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    cursor:pointer;
-    transition:.2s;
+/* ================= NAV ================= */
+
+.nav{
+position:sticky;
+bottom:0;
+z-index:90;
+display:grid;
+grid-template-columns:repeat(6,1fr);
+min-height:76px;
+border-top:1px solid var(--line);
+background:rgba(255,255,255,.94);
+backdrop-filter:blur(20px);
 }
 
-.setting:hover{
-    background:#f8fbff;
-    transform:translateX(2px);
+.dark .nav{
+background:rgba(8,17,31,.94);
 }
 
-.setting-icon{
-    width:40px;
-    height:40px;
-    background:#eaf3ff;
-    color:#1768c8;
-    border-radius:12px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.nav button{
+border:0;
+background:transparent;
+color:#94a3b8;
+font-size:10px;
+font-weight:600;
 }
 
-.setting-text{
-    flex:1;
+.nav button span{
+display:block;
+margin-bottom:4px;
+font-size:20px;
 }
 
-.setting-text strong{
-    font-size:13px;
+.nav button.active{
+color:var(--primary);
+font-weight:800;
 }
 
-.setting-text p{
-    color:#888;
-    font-size:11px;
-}
+/* ================= MODAL ================= */
 
-/* NAV */
-.bottom-nav{
-    position:fixed;
-    bottom:0;
-    left:50%;
-    transform:translateX(-50%);
-    width:100%;
-    max-width:520px;
-    height:75px;
-    background:white;
-    border-top:1px solid #e5ebf2;
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    z-index:50;
-}
-
-.nav-btn{
-    border:0;
-    background:white;
-    color:#9aa5b1;
-    cursor:pointer;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    font-size:11px;
-}
-
-.nav-btn .nav-icon{
-    font-size:22px;
-}
-
-.nav-btn.active{
-    color:#1768c8;
-    font-weight:800;
-}
-
-/* MODAL */
 .modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    display:none;
-    align-items:flex-end;
-    z-index:100;
+position:fixed;
+inset:0;
+z-index:300;
+display:none;
+align-items:center;
+justify-content:center;
+padding:20px;
+background:rgba(15,23,42,.58);
+backdrop-filter:blur(7px);
 }
 
 .modal.show{
-    display:flex;
+display:flex;
 }
 
 .modal-box{
-    width:100%;
-    max-width:520px;
-    margin:auto;
-    background:white;
-    border-radius:28px 28px 0 0;
-    padding:22px;
-    max-height:90vh;
-    overflow:auto;
-    animation:slideUp .25s ease;
+width:min(570px,100%);
+max-height:90vh;
+overflow:auto;
+padding:25px;
+border-radius:27px;
+background:var(--card);
+box-shadow:var(--shadow2);
+animation:modalIn .2s ease;
 }
 
-@keyframes slideUp{
-    from{
-        transform:translateY(100%);
-    }
-    to{
-        transform:translateY(0);
-    }
+@keyframes modalIn{
+from{
+opacity:0;
+transform:scale(.96) translateY(10px);
+}
+to{
+opacity:1;
+transform:none;
+}
 }
 
 .modal-head{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    margin-bottom:18px;
-}
-
-.modal-machine-icon{
-    width:58px;
-    height:58px;
-    border-radius:17px;
-    background:#eaf3ff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:31px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:18px;
 }
 
 .modal-head h2{
-    font-size:20px;
+font-size:19px;
 }
 
-.modal-head p{
-    font-size:13px;
-    color:#1768c8;
-    font-weight:700;
+.close{
+width:35px;
+height:35px;
+border:0;
+border-radius:50%;
+background:#f1f5f9;
 }
 
-.info-box{
-    background:#f4f8fc;
-    border-radius:15px;
-    padding:15px;
-    margin-bottom:14px;
+.info-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
 }
 
-.info-title{
-    color:#8995a3;
-    font-size:11px;
+.info{
+padding:14px;
+border-radius:15px;
+background:#f8fafc;
 }
 
-.info-value{
-    font-size:17px;
-    font-weight:800;
-    margin-top:3px;
+.dark .info{
+background:#172337;
 }
 
-.modal-actions{
-    display:flex;
-    flex-direction:column;
-    gap:9px;
+.info small{
+display:block;
+font-size:9px;
+color:var(--muted);
 }
 
-.close-modal{
-    position:absolute;
-    right:20px;
-    top:15px;
-    width:35px;
-    height:35px;
-    border:0;
-    background:#edf2f7;
-    border-radius:50%;
-    cursor:pointer;
+.info b{
+display:block;
+margin-top:4px;
+font-size:13px;
 }
 
-/* TOAST */
+.warning-box{
+padding:15px;
+border-radius:16px;
+background:#fffbeb;
+border:1px solid #fde68a;
+color:#92400e;
+font-size:11px;
+line-height:1.8;
+}
+
+.danger-box{
+padding:15px;
+border-radius:16px;
+background:#fef2f2;
+border:1px solid #fecaca;
+color:#991b1b;
+font-size:11px;
+line-height:1.8;
+}
+
+/* ================= TOAST ================= */
+
 .toast{
-    position:fixed;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%) translateY(-100px);
-    width:calc(100% - 30px);
-    max-width:480px;
-    background:#17385f;
-    color:white;
-    border-radius:15px;
-    padding:14px;
-    z-index:200;
-    opacity:0;
-    transition:.35s;
-    box-shadow:0 8px 25px rgba(0,0,0,.2);
+position:fixed;
+top:24px;
+left:50%;
+z-index:500;
+width:min(390px,calc(100% - 30px));
+padding:15px 17px;
+border-radius:17px;
+color:#fff;
+background:#0f172a;
+box-shadow:0 20px 60px rgba(15,23,42,.25);
+transform:translate(-50%,-130px);
+opacity:0;
+transition:.3s;
 }
 
 .toast.show{
-    transform:translateX(-50%) translateY(0);
-    opacity:1;
+transform:translate(-50%,0);
+opacity:1;
 }
 
 .toast strong{
-    display:block;
-    font-size:14px;
+display:block;
+font-size:13px;
 }
 
 .toast span{
-    font-size:11px;
-    opacity:.9;
+display:block;
+margin-top:3px;
+font-size:10px;
+color:#cbd5e1;
 }
 
-/* EMPTY */
+/* ================= EMPTY ================= */
+
 .empty{
-    background:white;
-    padding:35px 20px;
-    border-radius:20px;
-    text-align:center;
+grid-column:1/-1;
+padding:60px 20px;
+text-align:center;
+color:var(--muted);
 }
 
 .empty-icon{
-    font-size:55px;
-    margin-bottom:10px;
+font-size:43px;
+margin-bottom:8px;
 }
 
-.empty p{
-    color:#888;
-    font-size:12px;
-    margin-top:6px;
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1100px){
+
+.stats{
+grid-template-columns:repeat(3,1fr);
 }
 
-/* SWITCH */
-.switch{
-    width:48px;
-    height:27px;
-    background:#d7dee7;
-    border-radius:20px;
-    position:relative;
-    cursor:pointer;
-    transition:.2s;
+.machine-grid{
+grid-template-columns:repeat(2,1fr);
 }
 
-.switch.on{
-    background:#1768c8;
+.performance{
+display:none;
 }
 
-.switch span{
-    width:21px;
-    height:21px;
-    background:white;
-    border-radius:50%;
-    position:absolute;
-    top:3px;
-    left:3px;
-    transition:.2s;
+.analytics-grid{
+grid-template-columns:repeat(2,1fr);
 }
 
-.switch.on span{
-    left:24px;
 }
 
-/* RESPONSIVE */
-@media(max-width:380px){
+@media(max-width:700px){
 
-    .summary{
-        grid-template-columns:repeat(2,1fr);
-    }
+.header{
+height:68px;
+padding:0 15px;
+}
 
-    .machine-grid{
-        grid-template-columns:1fr;
-    }
+.brand p,
+.live{
+display:none;
+}
+
+.main{
+padding:15px;
+}
+
+.hero{
+min-height:370px;
+padding:25px;
+}
+
+.hero h2{
+font-size:32px;
+}
+
+.hero-actions{
+left:25px;
+right:25px;
+bottom:25px;
+flex-direction:column;
+}
+
+.hero-btn{
+width:100%;
+}
+
+.stats{
+grid-template-columns:repeat(2,1fr);
+}
+
+.machine-grid{
+grid-template-columns:1fr;
+}
+
+.smart{
+grid-template-columns:1fr;
+}
+
+.two{
+grid-template-columns:1fr;
+}
+
+.analytics-grid{
+grid-template-columns:1fr 1fr;
+}
+
+.nav{
+min-height:68px;
+}
+
+.nav button{
+font-size:8px;
+}
+
+.nav button span{
+font-size:18px;
+}
 
 }
+
+@media(max-width:420px){
+
+.analytics-grid{
+grid-template-columns:1fr;
+}
+
+.info-grid{
+grid-template-columns:1fr;
+}
+
+}
+
 </style>
 </head>
 
@@ -843,2232 +1467,3041 @@ button{
 
 <header class="header">
 
-    <div class="logo-area">
+<div class="brand">
 
-        <div class="logo">🧺</div>
+<div class="logo">◉</div>
 
-        <div class="logo-text">
-            <h1>SMART LAUNDRY</h1>
-            <p>ระบบจัดการและเฝ้าระวังเครื่องซักผ้าส่วนกลาง</p>
-        </div>
+<div>
+<h1>SMART LAUNDRY X</h1>
+<p>Intelligent Laundry Management</p>
+</div>
 
-    </div>
+</div>
 
-    <button class="notification-btn"
-            onclick="showPage('notifications')">
+<div class="header-right">
 
-        🔔
+<div class="live" id="liveStatus">
+<span class="live-dot"></span>
+LIVE SYSTEM
+</div>
 
-        <span class="notification-dot"
-              id="notificationDot"></span>
+<button class="icon-btn"
+onclick="toggleDark()"
+title="Dark Mode">
+🌙
+</button>
 
-    </button>
+<button class="icon-btn"
+onclick="showPage('notifications')">
+
+🔔
+<span class="badge" id="notifyCount">0</span>
+
+</button>
+
+</div>
 
 </header>
 
+<main class="main">
 
 <!-- HOME -->
+
 <section id="home" class="page active">
 
-    <div class="system-status">
+<div class="hero">
 
-        <div class="system-icon">📡</div>
+<div class="hero-content">
 
-        <div>
-            <strong id="systemStatusTitle">
-                ระบบทำงานปกติ
-            </strong>
+<div class="eyebrow">
+● INTELLIGENT LAUNDRY PLATFORM
+</div>
 
-            <span>
-                ติดตามสถานะเครื่องแบบ Real-time
-            </span>
-        </div>
+<h2>
+ซักผ้าแบบใหม่<br>
+<span>ง่าย • ฉลาด • รู้สถานะทันที</span>
+</h2>
 
-        <div class="system-check"
-             id="systemCheck">
-            ✓
-        </div>
+<p>
+Smart Laundry X Pro
+ช่วยค้นหาเครื่องว่าง จองคิว ติดตามเวลาซัก
+ตรวจจับความผิดปกติ และบังคับการเคลียร์ผ้าก่อนเปิดให้ผู้ใช้รายถัดไป
+</p>
 
-    </div>
+</div>
 
+<div class="hero-actions">
 
-    <div class="summary">
+<button class="hero-btn primary"
+onclick="scrollMachines()">
+🔎 ค้นหาเครื่องว่าง
+</button>
 
-        <div class="summary-card green">
-            <div class="summary-icon">✓</div>
-            <div class="summary-number"
-                 id="availableCount">0</div>
-            <div class="summary-name">ว่าง</div>
-        </div>
+<button class="hero-btn"
+onclick="showPage('queue')">
+📅 คิวของฉัน
+</button>
 
-        <div class="summary-card blue">
-            <div class="summary-icon">🧺</div>
-            <div class="summary-number"
-                 id="washingCount">0</div>
-            <div class="summary-name">กำลังซัก</div>
-        </div>
+</div>
 
-        <div class="summary-card yellow">
-            <div class="summary-icon">◷</div>
-            <div class="summary-number"
-                 id="doneCount">0</div>
-            <div class="summary-name">รอรับผ้า</div>
-        </div>
+<div class="performance">
 
-        <div class="summary-card red">
-            <div class="summary-icon">⚠</div>
-            <div class="summary-number"
-                 id="errorCount">0</div>
-            <div class="summary-name">Error</div>
-        </div>
+<div class="performance-head">
+<span>SYSTEM PERFORMANCE</span>
+<span>LIVE</span>
+</div>
 
-    </div>
+<strong id="heroHealth">0%</strong>
 
+<div class="performance-bar">
+<i id="heroHealthBar"></i>
+</div>
 
-    <div class="section-title">
-        <h2>สถานะเครื่องซักผ้า</h2>
-        <span>ห้องซักผ้า ชั้น 1</span>
-    </div>
+</div>
 
+</div>
 
-    <div class="machine-grid"
-         id="machineGrid"></div>
+<div class="stats">
 
+<div class="stat green">
+<div class="stat-top">
+<small>เครื่องว่าง</small>
+<div class="stat-icon">✓</div>
+</div>
+<strong id="availableCount">0</strong>
+</div>
 
-    <div class="help-card">
+<div class="stat blue">
+<div class="stat-top">
+<small>กำลังซัก</small>
+<div class="stat-icon">↻</div>
+</div>
+<strong id="washingCount">0</strong>
+</div>
 
-        <h3>วิธีใช้งาน Smart Laundry</h3>
+<div class="stat orange">
+<div class="stat-top">
+<small>รอรับผ้า</small>
+<div class="stat-icon">🧺</div>
+</div>
+<strong id="doneCount">0</strong>
+</div>
 
-        <div class="step">
-            <div class="step-icon">🔍</div>
-            <div>
-                <strong>ดูสถานะ</strong>
-                <span>กดเครื่องเพื่อดูรายละเอียด</span>
-            </div>
-        </div>
+<div class="stat red">
+<div class="stat-top">
+<small>ขัดข้อง</small>
+<div class="stat-icon">⚠</div>
+</div>
+<strong id="errorCount">0</strong>
+</div>
 
-        <div class="step">
-            <div class="step-icon">📅</div>
-            <div>
-                <strong>จองคิว</strong>
-                <span>จองเมื่อเครื่องกำลังถูกใช้งาน</span>
-            </div>
-        </div>
+<div class="stat cyan">
+<div class="stat-top">
+<small>สุขภาพระบบ</small>
+<div class="stat-icon">⚡</div>
+</div>
+<strong id="systemHealth">0%</strong>
+</div>
 
-        <div class="step">
-            <div class="step-icon">▶</div>
-            <div>
-                <strong>เริ่มซัก</strong>
-                <span>เริ่มรอบซักและติดตามเวลา</span>
-            </div>
-        </div>
+</div>
 
-        <div class="step">
-            <div class="step-icon">🔔</div>
-            <div>
-                <strong>รับแจ้งเตือน</strong>
-                <span>แจ้งเตือนเมื่อซักเสร็จหรือเกิด Error</span>
-            </div>
-        </div>
+<div class="section-head">
 
-    </div>
+<div>
+<h3>✨ Smart Recommendation</h3>
+<p>ระบบวิเคราะห์สถานะเครื่องเพื่อแนะนำเครื่องที่เหมาะสม</p>
+</div>
+
+</div>
+
+<div class="smart" id="recommendBox"></div>
+
+<div id="machineSection">
+
+<div class="section-head">
+
+<div>
+<h3>เครื่องซักผ้าทั้งหมด</h3>
+<p>ติดตามสถานะ เวลา และสุขภาพเครื่องแบบ Real-time</p>
+</div>
+
+<span class="status"
+style="color:#2563eb;background:#eff6ff">
+● LIVE
+</span>
+
+</div>
+
+<div class="toolbar">
+
+<input
+id="search"
+class="search"
+placeholder="🔎 ค้นหา เครื่อง 01..."
+oninput="renderMachines()">
+
+<select
+id="filter"
+class="select"
+onchange="renderMachines()">
+
+<option value="all">ทุกสถานะ</option>
+<option value="available">พร้อมใช้งาน</option>
+<option value="washing">กำลังซัก</option>
+<option value="done">รอรับผ้า</option>
+<option value="overdue">ค้างรับผ้า</option>
+<option value="error">ขัดข้อง</option>
+<option value="maintenance">ปิดปรับปรุง</option>
+
+</select>
+
+<button class="btn light"
+onclick="openQueue()">
+＋ จองคิว
+</button>
+
+</div>
+
+<div id="machineGrid" class="machine-grid"></div>
+
+</div>
 
 </section>
-
 
 <!-- QUEUE -->
+
 <section id="queue" class="page">
 
-    <div class="page-title">คิวของฉัน</div>
+<div class="section-head">
 
-    <div class="page-subtitle">
-        ดูลำดับคิวและเวลาคาดว่าจะถึงคิว
-    </div>
+<div>
+<h3>📅 คิวการใช้งาน</h3>
+<p>ระบบคำนวณลำดับและเวลารอโดยอัตโนมัติ</p>
+</div>
 
-    <div id="queueList"></div>
+<button class="btn primary"
+onclick="openQueue()">
+＋ เพิ่มคิว
+</button>
 
-    <div class="help-card">
+</div>
 
-        <h3>กติกาการจอง</h3>
-
-        <div class="step">
-            <div class="step-icon">🔔</div>
-            <div>
-                <strong>เมื่อถึงคิว</strong>
-                <span>ระบบจะแจ้งเตือนทันที</span>
-            </div>
-        </div>
-
-        <div class="step">
-            <div class="step-icon">⏱</div>
-            <div>
-                <strong>หมดเวลาจอง</strong>
-                <span>ระบบยกเลิกคิวอัตโนมัติ</span>
-            </div>
-        </div>
-
-    </div>
+<div class="panel">
+<div id="queueList"></div>
+</div>
 
 </section>
 
+<!-- NOTIFICATION -->
 
-<!-- NOTIFICATIONS -->
 <section id="notifications" class="page">
 
-    <div class="page-title">การแจ้งเตือน</div>
+<div class="section-head">
 
-    <div class="page-subtitle">
-        ติดตามสถานะและเหตุการณ์สำคัญ
-    </div>
+<div>
+<h3>🔔 Smart Notification</h3>
+<p>แจ้งเตือนเหตุการณ์สำคัญของระบบ</p>
+</div>
 
-    <button class="btn btn-light full"
-            onclick="markNotificationsRead()"
-            style="margin-bottom:15px">
+<button class="btn light"
+onclick="readAll()">
+✓ อ่านทั้งหมด
+</button>
 
-        ✓ ทำเครื่องหมายว่าอ่านแล้ว
+</div>
 
-    </button>
-
-    <div id="notificationList"></div>
+<div class="panel">
+<div id="noticeList"></div>
+</div>
 
 </section>
-
 
 <!-- HISTORY -->
+
 <section id="history" class="page">
 
-    <div class="page-title">ประวัติการใช้งาน</div>
+<div class="section-head">
 
-    <div class="page-subtitle">
-        ดูประวัติการซัก เวลา และสถานะการใช้งาน
-    </div>
+<div>
+<h3>◷ ประวัติการใช้งาน</h3>
+<p>บันทึกกิจกรรมและรอบการซักย้อนหลัง</p>
+</div>
 
-    <button class="btn btn-light full"
-            onclick="clearHistory()"
-            style="margin-bottom:15px">
+<button class="btn light"
+onclick="exportData()">
+⇩ Export
+</button>
 
-        🗑 ล้างประวัติ Demo
+</div>
 
-    </button>
-
-    <div id="historyList"></div>
+<div class="panel">
+<div id="historyList"></div>
+</div>
 
 </section>
 
+<!-- ANALYTICS -->
+
+<section id="analytics" class="page">
+
+<div class="section-head">
+
+<div>
+<h3>📊 Smart Analytics</h3>
+<p>วิเคราะห์ประสิทธิภาพและพฤติกรรมการใช้งาน</p>
+</div>
+
+</div>
+
+<div class="analytics-grid">
+
+<div class="analytics">
+<small>รอบซักทั้งหมด</small>
+<strong id="totalCycles">0</strong>
+</div>
+
+<div class="analytics">
+<small>รอบสำเร็จ</small>
+<strong id="successCycles">0</strong>
+</div>
+
+<div class="analytics">
+<small>เหตุขัดข้อง</small>
+<strong id="errorCycles">0</strong>
+</div>
+
+<div class="analytics">
+<small>อัตราสำเร็จ</small>
+<strong id="successRate">0%</strong>
+</div>
+
+</div>
+
+<div class="two" style="margin-top:17px">
+
+<div class="panel">
+
+<b>การใช้งานในแต่ละวัน</b>
+
+<div class="chart">
+
+<div class="bar" style="height:45%">
+<span>จ.</span>
+</div>
+
+<div class="bar" style="height:65%">
+<span>อ.</span>
+</div>
+
+<div class="bar" style="height:80%">
+<span>พ.</span>
+</div>
+
+<div class="bar" style="height:55%">
+<span>พฤ.</span>
+</div>
+
+<div class="bar" style="height:90%">
+<span>ศ.</span>
+</div>
+
+<div class="bar" style="height:70%">
+<span>ส.</span>
+</div>
+
+<div class="bar" style="height:50%">
+<span>อา.</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<b>🧠 Smart Insight</b>
+
+<div style="
+margin-top:14px;
+color:#64748b;
+font-size:12px;
+line-height:2;
+">
+
+<p>🔥 ช่วงเวลาที่มีการใช้งานสูง</p>
+
+<strong style="color:#1e293b">
+18:00 – 21:00 น.
+</strong>
+
+<p style="margin-top:8px">
+⚙ เครื่องที่ควรติดตาม
+</p>
+
+<strong id="problemMachine"
+style="color:#ef4444">
+-
+</strong>
+
+<p style="margin-top:8px">
+⚡ System Health
+</p>
+
+<strong id="insightHealth"
+style="color:#16a34a">
+-
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
 
 <!-- PROFILE -->
+
 <section id="profile" class="page">
 
-    <div class="page-title">โปรไฟล์</div>
+<div class="section-head">
 
-    <div class="page-subtitle">
-        จัดการข้อมูลและการตั้งค่าระบบ
-    </div>
+<div>
+<h3>👤 โปรไฟล์</h3>
+<p>บัญชีและการตั้งค่าระบบ</p>
+</div>
 
-    <div class="profile-box">
+</div>
 
-        <div class="avatar">👤</div>
+<div class="panel profile">
 
-        <div>
-            <h2 id="profileName">
-                ผู้ใช้งานทั่วไป
-            </h2>
+<div class="avatar">👤</div>
 
-            <p>
-                นักศึกษาหอพัก / ผู้พักอาศัย
-            </p>
-        </div>
+<div>
 
-    </div>
+<h2 id="userName">
+ผู้ใช้งานทั่วไป
+</h2>
 
+<p id="userRole">
+Resident / Student
+</p>
 
-    <div class="setting"
-         onclick="toggleNotifications()">
+<button class="btn light"
+onclick="toggleRole()">
+🔐 สลับโหมด User / Admin
+</button>
 
-        <div class="setting-icon">🔔</div>
+</div>
 
-        <div class="setting-text">
-            <strong>การแจ้งเตือน</strong>
-            <p id="notificationSetting">
-                เปิดใช้งาน
-            </p>
-        </div>
+</div>
 
-        <div class="switch on"
-             id="notificationSwitch">
+<div class="panel" style="margin-top:15px">
 
-            <span></span>
+<b>⚙ การตั้งค่า</b>
 
-        </div>
+<div style="
+margin-top:15px;
+padding:14px 0;
+border-bottom:1px solid var(--line);
+font-size:12px;
+">
 
-    </div>
+เวลานำผ้าออกหลังซักเสร็จ
 
+<strong id="removeTime"
+style="float:right">
+10 นาที
+</strong>
 
-    <div class="setting"
-         onclick="changeLaundryTime()">
+</div>
 
-        <div class="setting-icon">⏱</div>
+<button class="btn light"
+style="margin-top:12px"
+onclick="openSetting">
 
-        <div class="setting-text">
+⚙ เปลี่ยนการตั้งค่า
 
-            <strong>
-                เวลานำผ้าออก
-            </strong>
+</button>
 
-            <p id="laundryTimeText">
-                10 นาที
-            </p>
-
-        </div>
-
-        <span>›</span>
-
-    </div>
-
-
-    <div class="setting"
-         onclick="showHelp()">
-
-        <div class="setting-icon">❓</div>
-
-        <div class="setting-text">
-
-            <strong>ช่วยเหลือ</strong>
-
-            <p>
-                วิธีใช้งาน Smart Laundry
-            </p>
-
-        </div>
-
-        <span>›</span>
-
-    </div>
-
-
-    <div class="setting"
-         onclick="showAbout()">
-
-        <div class="setting-icon">ℹ️</div>
-
-        <div class="setting-text">
-
-            <strong>
-                เกี่ยวกับระบบ
-            </strong>
-
-            <p>
-                Smart Laundry Demo v1.0
-            </p>
-
-        </div>
-
-        <span>›</span>
-
-    </div>
-
-
-    <button class="btn btn-danger full"
-            onclick="resetDemo()"
-            style="margin-top:15px">
-
-        🔄 รีเซ็ตระบบ Demo
-
-    </button>
+</div>
 
 </section>
 
+</main>
 
 <!-- NAV -->
-<nav class="bottom-nav">
 
-    <button class="nav-btn active"
-            onclick="showPage('home',this)">
+<nav class="nav">
 
-        <div class="nav-icon">⌂</div>
-        หน้าหลัก
+<button class="active"
+onclick="showPage('home',this)">
+<span>⌂</span>
+หน้าหลัก
+</button>
 
-    </button>
+<button onclick="showPage('queue',this)">
+<span>📅</span>
+คิว
+</button>
 
-    <button class="nav-btn"
-            onclick="showPage('queue',this)">
+<button onclick="showPage('notifications',this)">
+<span>🔔</span>
+แจ้งเตือน
+</button>
 
-        <div class="nav-icon">📅</div>
-        คิวของฉัน
+<button onclick="showPage('history',this)">
+<span>◷</span>
+ประวัติ
+</button>
 
-    </button>
+<button onclick="showPage('analytics',this)">
+<span>📊</span>
+วิเคราะห์
+</button>
 
-    <button class="nav-btn"
-            onclick="showPage('notifications',this)">
-
-        <div class="nav-icon">🔔</div>
-        แจ้งเตือน
-
-    </button>
-
-    <button class="nav-btn"
-            onclick="showPage('history',this)">
-
-        <div class="nav-icon">◷</div>
-        ประวัติ
-
-    </button>
-
-    <button class="nav-btn"
-            onclick="showPage('profile',this)">
-
-        <div class="nav-icon">👤</div>
-        โปรไฟล์
-
-    </button>
+<button onclick="showPage('profile',this)">
+<span>👤</span>
+โปรไฟล์
+</button>
 
 </nav>
 
 </div>
 
-
 <!-- MACHINE MODAL -->
-<div class="modal"
-     id="machineModal">
 
-    <div class="modal-box">
+<div id="machineModal" class="modal">
 
-        <button class="close-modal"
-                onclick="closeModal()">
-            ✕
-        </button>
+<div class="modal-box">
 
-        <div class="modal-head">
+<div class="modal-head">
 
-            <div class="modal-machine-icon">
-                🧺
-            </div>
+<div>
+<h2 id="modalTitle">เครื่องซักผ้า</h2>
 
-            <div>
+<span id="modalStatus"
+style="color:#64748b;font-size:10px">
+</span>
+</div>
 
-                <h2 id="modalTitle">
-                    เครื่อง 01
-                </h2>
-
-                <p id="modalStatus">
-                    ว่าง
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="info-box">
-
-            <div class="info-title">
-                สถานะปัจจุบัน
-            </div>
-
-            <div class="info-value"
-                 id="modalInfo">
-                เครื่องพร้อมใช้งาน
-            </div>
-
-        </div>
-
-
-        <div class="modal-actions"
-             id="modalActions">
-        </div>
-
-    </div>
+<button class="close"
+onclick="closeModal()">
+✕
+</button>
 
 </div>
 
+<div id="modalContent"></div>
 
-<!-- GENERAL MODAL -->
-<div class="modal"
-     id="generalModal">
+<div id="modalActions"
+style="
+display:grid;
+gap:8px;
+margin-top:15px">
+</div>
 
-    <div class="modal-box">
+</div>
+</div>
 
-        <button class="close-modal"
-                onclick="closeGeneralModal()">
-            ✕
-        </button>
+<!-- QUEUE MODAL -->
 
-        <div class="modal-head">
+<div id="queueModal" class="modal">
 
-            <div class="modal-machine-icon">
-                ℹ️
-            </div>
+<div class="modal-box">
 
-            <div>
-                <h2 id="generalTitle">
-                    รายละเอียด
-                </h2>
-                <p>
-                    Smart Laundry
-                </p>
-            </div>
+<div class="modal-head">
 
-        </div>
+<h2>📅 จองคิวเครื่อง</h2>
 
-        <div class="info-box">
-
-            <div id="generalContent"
-                 style="font-size:13px;line-height:1.8">
-            </div>
-
-        </div>
-
-        <button class="btn btn-primary full"
-                onclick="closeGeneralModal()">
-
-            ปิด
-
-        </button>
-
-    </div>
+<button class="close"
+onclick="closeQueue()">
+✕
+</button>
 
 </div>
 
+<label style="
+display:block;
+margin-bottom:7px;
+font-size:11px;
+font-weight:700">
+เลือกเครื่อง
+</label>
+
+<select id="queueMachine"
+class="select"
+style="width:100%">
+</select>
+
+<div class="info" style="margin-top:12px">
+
+<small>
+ระบบจะคำนวณ ETA จากเวลาที่เครื่องกำลังทำงาน
+และลำดับคิวปัจจุบัน
+</small>
+
+</div>
+
+<button class="btn primary"
+style="width:100%;margin-top:12px"
+onclick="addQueue()">
+✓ ยืนยันการจอง
+</button>
+
+</div>
+</div>
+
+<!-- SETTING MODAL -->
+
+<div id="settingModal" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2>⚙ ตั้งค่าระบบ</h2>
+
+<button class="close"
+onclick="closeSetting()">
+✕
+</button>
+
+</div>
+
+<label style="
+display:block;
+font-size:11px;
+font-weight:700;
+margin-bottom:7px">
+เวลานำผ้าออกหลังซักเสร็จ
+</label>
+
+<input
+id="removeInput"
+type="number"
+min="1"
+max="60"
+class="search"
+style="width:100%"
+placeholder="นาที">
+
+<button class="btn primary"
+style="width:100%;margin-top:12px"
+onclick="saveSetting()">
+✓ บันทึก
+</button>
+
+</div>
+</div>
+
+<!-- REMOVE CONFIRM MODAL -->
+
+<div id="removeModal" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2>🧺 ยืนยันการนำผ้าออก</h2>
+
+<button class="close"
+onclick="closeRemoveModal()">
+✕
+</button>
+
+</div>
+
+<div class="warning-box">
+
+<strong>⚠ ขั้นตอนบังคับ</strong>
+
+<br>
+
+ก่อนเปิดให้เครื่องใช้งานอีกครั้ง
+คุณต้องตรวจสอบและนำผ้าออกจากเครื่องให้เรียบร้อย
+
+<br><br>
+
+ระบบจะไม่อนุญาตให้เริ่มรอบใหม่
+จนกว่าจะยืนยันขั้นตอนนี้
+
+</div>
+
+<div style="
+margin-top:15px;
+padding:14px;
+border-radius:15px;
+background:#f8fafc;
+font-size:11px;
+line-height:1.8">
+
+☑ เปิดประตูเครื่องแล้ว<br>
+☑ ตรวจสอบผ้าภายในถังแล้ว<br>
+☑ นำผ้าออกทั้งหมดแล้ว<br>
+☑ ตรวจสอบว่าไม่มีสิ่งของตกค้าง
+
+</div>
+
+<label style="
+display:flex;
+gap:10px;
+align-items:flex-start;
+margin-top:15px;
+font-size:11px;
+font-weight:700">
+
+<input
+type="checkbox"
+id="removeConfirm"
+style="margin-top:4px">
+
+ฉันยืนยันว่าได้นำผ้าออกจากเครื่องเรียบร้อยแล้ว
+
+</label>
+
+<button
+class="btn success"
+style="
+width:100%;
+margin-top:15px"
+onclick="confirmRemove()">
+
+✓ ยืนยันนำผ้าออกแล้ว ปลดล็อกเครื่อง
+
+</button>
+
+</div>
+</div>
 
 <!-- TOAST -->
-<div class="toast"
-     id="toast">
 
-    <strong id="toastTitle">
-        แจ้งเตือน
-    </strong>
+<div id="toast" class="toast">
 
-    <span id="toastMessage">
-        ระบบทำงานเรียบร้อย
-    </span>
+<strong id="toastTitle">
+แจ้งเตือน
+</strong>
+
+<span id="toastMessage"></span>
 
 </div>
-
 
 <script>
 
 /* =========================================================
-   DEFAULT DATA
+SMART LAUNDRY X PRO
 ========================================================= */
 
-const defaultMachines = [
+const defaultMachines=[
 
-    {
-        id:1,
-        status:"available",
-        seconds:0
-    },
+{
+id:1,
+status:"available",
+seconds:0,
+health:96,
+cycles:42,
+lastError:0,
+doneAt:null
+},
 
-    {
-        id:2,
-        status:"available",
-        seconds:0
-    },
+{
+id:2,
+status:"available",
+seconds:0,
+health:91,
+cycles:37,
+lastError:0,
+doneAt:null
+},
 
-    {
-        id:3,
-        status:"washing",
-        seconds:18 * 60
-    },
+{
+id:3,
+status:"washing",
+seconds:18*60+35,
+health:88,
+cycles:55,
+lastError:0,
+doneAt:null
+},
 
-    {
-        id:4,
-        status:"washing",
-        seconds:12 * 60
-    },
+{
+id:4,
+status:"washing",
+seconds:12*60+20,
+health:94,
+cycles:31,
+lastError:0,
+doneAt:null
+},
 
-    {
-        id:5,
-        status:"done",
-        seconds:0
-    },
+{
+id:5,
+status:"done",
+seconds:0,
+health:82,
+cycles:63,
+lastError:0,
+doneAt:Date.now()
+},
 
-    {
-        id:6,
-        status:"error",
-        seconds:0
-    }
+{
+id:6,
+status:"error",
+seconds:0,
+health:61,
+cycles:71,
+lastError:1,
+doneAt:null
+},
 
-];
+{
+id:7,
+status:"maintenance",
+seconds:0,
+health:73,
+cycles:84,
+lastError:0,
+doneAt:null
+},
 
+{
+id:8,
+status:"available",
+seconds:0,
+health:98,
+cycles:29,
+lastError:0,
+doneAt:null
+},
 
-const defaultNotifications = [
-
-    {
-        title:"เครื่อง 03 กำลังซัก",
-        message:"เหลือเวลาอีก 18 นาที",
-        type:"normal",
-        time:"10:12 น.",
-        read:false
-    },
-
-    {
-        title:"เครื่อง 05 ซักเสร็จแล้ว",
-        message:"กรุณานำผ้าออกภายใน 10 นาที",
-        type:"normal",
-        time:"10:32 น.",
-        read:false
-    },
-
-    {
-        title:"เครื่อง 06 พบข้อผิดพลาด",
-        message:"เครื่องหยุดทำงาน กรุณาตรวจสอบ",
-        type:"error",
-        time:"10:42 น.",
-        read:false
-    }
-
-];
-
-
-const defaultHistory = [
-
-    {
-        date:"26 ส.ค. 69",
-        machine:"เครื่อง 03",
-        time:"30 นาที",
-        status:"สำเร็จ"
-    },
-
-    {
-        date:"24 ส.ค. 69",
-        machine:"เครื่อง 02",
-        time:"28 นาที",
-        status:"สำเร็จ"
-    },
-
-    {
-        date:"23 ส.ค. 69",
-        machine:"เครื่อง 01",
-        time:"31 นาที",
-        status:"สำเร็จ"
-    },
-
-    {
-        date:"21 ส.ค. 69",
-        machine:"เครื่อง 03",
-        time:"30 นาที",
-        status:"Error"
-    }
+{
+id:9,
+status:"available",
+seconds:0,
+health:90,
+cycles:48,
+lastError:0,
+doneAt:null
+}
 
 ];
 
+let machines=
+JSON.parse(localStorage.getItem("sl_machines"))
+||defaultMachines;
 
-let machines =
-    JSON.parse(JSON.stringify(defaultMachines));
+let queue=
+JSON.parse(localStorage.getItem("sl_queue"))
+||[];
 
-let notifications =
-    JSON.parse(JSON.stringify(defaultNotifications));
+let notifications=
+JSON.parse(localStorage.getItem("sl_notifications"))
+||[
 
-let history =
-    JSON.parse(JSON.stringify(defaultHistory));
+{
+title:"ระบบพร้อมใช้งาน",
+message:"Smart Laundry X Pro เริ่มทำงานแล้ว",
+type:"normal",
+read:false,
+time:Date.now()
+},
 
-let myQueue = [];
+{
+title:"เครื่อง 03 กำลังซัก",
+message:"ระบบกำลังติดตามเวลาซักแบบ Real-time",
+type:"normal",
+read:false,
+time:Date.now()
+},
 
-let notificationsEnabled = true;
+{
+title:"เครื่อง 06 พบความผิดปกติ",
+message:"ระบบระงับการใช้งานเครื่องอัตโนมัติ",
+type:"error",
+read:false,
+time:Date.now()
+}
 
-let laundryRemoveMinutes = 10;
+];
 
-let toastTimer;
+let history=
+JSON.parse(localStorage.getItem("sl_history"))
+||[
 
+{
+machine:"เครื่อง 03",
+date:"2 ก.ย. 69",
+time:"30 นาที",
+status:"สำเร็จ"
+},
 
-/* =========================================================
-   HELPERS
-========================================================= */
+{
+machine:"เครื่อง 02",
+date:"1 ก.ย. 69",
+time:"28 นาที",
+status:"สำเร็จ"
+},
 
-function machineName(id){
+{
+machine:"เครื่อง 06",
+date:"31 ส.ค. 69",
+time:"หยุดก่อนครบกำหนด",
+status:"Error"
+}
 
-    return "เครื่อง " +
-        String(id).padStart(2,"0");
+];
+
+let totalCycles=
+Number(localStorage.getItem("sl_totalCycles"))
+||126;
+
+let notifyEnabled=
+localStorage.getItem("sl_notify")!=="false";
+
+let removeMinutes=
+Number(localStorage.getItem("sl_remove"))
+||10;
+
+let darkMode=
+localStorage.getItem("sl_dark")==="true";
+
+let adminMode=
+localStorage.getItem("sl_admin")==="true";
+
+let selectedRemoveId=null;
+let toastTimer=null;
+
+if(darkMode){
+document.body.classList.add("dark");
+}
+
+/* STORAGE */
+
+function saveData(){
+
+localStorage.setItem("sl_machines",JSON.stringify(machines));
+localStorage.setItem("sl_queue",JSON.stringify(queue));
+localStorage.setItem("sl_notifications",JSON.stringify(notifications));
+localStorage.setItem("sl_history",JSON.stringify(history));
+localStorage.setItem("sl_totalCycles",totalCycles);
+localStorage.setItem("sl_notify",notifyEnabled);
+localStorage.setItem("sl_remove",removeMinutes);
+localStorage.setItem("sl_dark",darkMode);
+localStorage.setItem("sl_admin",adminMode);
 
 }
 
+/* HELPERS */
+
+function machineName(id){
+return "เครื่อง "+String(id).padStart(2,"0");
+}
 
 function statusText(status){
 
-    if(status === "available")
-        return "ว่าง";
+return{
 
-    if(status === "washing")
-        return "กำลังซัก";
+available:"พร้อมใช้งาน",
+washing:"กำลังซัก",
+done:"รอรับผ้า",
+overdue:"ค้างรับผ้า",
+error:"ขัดข้อง",
+maintenance:"ปิดปรับปรุง"
 
-    if(status === "done")
-        return "ซักเสร็จ รอเจ้าของ";
-
-    if(status === "error")
-        return "Error";
-
-    if(status === "broken")
-        return "เสีย";
-
-    return "-";
+}[status]||status;
 
 }
-
 
 function formatTime(seconds){
 
-    if(seconds <= 0)
-        return "00:00";
+seconds=Math.max(0,seconds);
 
-    const minutes =
-        Math.floor(seconds / 60);
+const min=Math.floor(seconds/60);
+const sec=seconds%60;
 
-    const secs =
-        seconds % 60;
-
-    return String(minutes).padStart(2,"0")
-        + ":" +
-        String(secs).padStart(2,"0");
+return String(min).padStart(2,"0")
++":"
++String(sec).padStart(2,"0");
 
 }
 
+function today(){
 
-/* =========================================================
-   RENDER MACHINES
-========================================================= */
+return new Date().toLocaleDateString(
+"th-TH",
+{
+day:"numeric",
+month:"short",
+year:"numeric"
+}
+);
+
+}
+
+function escapeHTML(value){
+
+return String(value)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+
+}
+
+/* TOAST */
+
+function toast(title,message){
+
+clearTimeout(toastTimer);
+
+document.getElementById("toastTitle").textContent=title;
+document.getElementById("toastMessage").textContent=message;
+
+document.getElementById("toast").classList.add("show");
+
+toastTimer=setTimeout(()=>{
+
+document.getElementById("toast").classList.remove("show");
+
+},3200);
+
+}
+
+/* NOTIFICATION */
+
+function browserNotify(title,message){
+
+if(
+notifyEnabled &&
+"Notification" in window &&
+Notification.permission==="granted"
+){
+
+try{
+
+new Notification(
+title,
+{
+body:message
+}
+);
+
+}catch(e){}
+
+}
+
+}
+
+function requestNotification(){
+
+if(
+"Notification" in window &&
+Notification.permission==="default"
+){
+
+Notification.requestPermission();
+
+}
+
+}
+
+/* PAGE */
+
+function showPage(page,button){
+
+document.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
+const target=document.getElementById(page);
+
+if(!target)return;
+
+target.classList.add("active");
+
+document.querySelectorAll(".nav button")
+.forEach(b=>b.classList.remove("active"));
+
+if(button){
+
+button.classList.add("active");
+
+}else{
+
+const index={
+home:0,
+queue:1,
+notifications:2,
+history:3,
+analytics:4,
+profile:5
+}[page];
+
+document.querySelectorAll(".nav button")[index]
+?.classList.add("active");
+
+}
+
+if(page==="queue")renderQueue();
+if(page==="notifications")renderNotifications();
+if(page==="history")renderHistory();
+if(page==="analytics")renderAnalytics();
+
+}
+
+/* MACHINES */
 
 function renderMachines(){
 
-    const grid =
-        document.getElementById("machineGrid");
+const search=document.getElementById("search");
+const filter=document.getElementById("filter");
 
-    grid.innerHTML = "";
+if(!search||!filter)return;
 
-    machines.forEach(machine => {
+const keyword=search.value.toLowerCase();
+const selected=filter.value;
 
-        let extra = "";
+const list=machines.filter(machine=>{
 
-        if(machine.status === "washing"){
+const nameMatch=
+machineName(machine.id)
+.toLowerCase()
+.includes(keyword);
 
-            extra = `
-                <div class="machine-time">
-                    ⏱ ${formatTime(machine.seconds)}
-                </div>
-            `;
+const statusMatch=
+selected==="all"||
+machine.status===selected;
 
-        }
+return nameMatch&&statusMatch;
 
-        if(machine.status === "error"){
+});
 
-            extra = `
-                <div class="machine-time">
-                    ⚠ ตรวจพบข้อผิดพลาด
-                </div>
-            `;
+document.getElementById("machineGrid").innerHTML=
+list.length
+?
+list.map(createMachineCard).join("")
+:
+`
+<div class="empty">
+<div class="empty-icon">🔎</div>
+<strong>ไม่พบเครื่อง</strong>
+<p>ลองเปลี่ยนคำค้นหาหรือสถานะ</p>
+</div>
+`;
 
-        }
-
-        if(machine.status === "done"){
-
-            extra = `
-                <div class="machine-time">
-                    กรุณานำผ้าออกภายใน ${laundryRemoveMinutes} นาที
-                </div>
-            `;
-
-        }
-
-        if(machine.status === "available"){
-
-            extra = `
-                <div class="machine-time">
-                    พร้อมใช้งาน
-                </div>
-            `;
-
-        }
-
-
-        grid.innerHTML += `
-
-            <div
-                class="machine ${machine.status}"
-                onclick="openMachine(${machine.id})"
-            >
-
-                <div class="machine-top">
-
-                    <div class="machine-number">
-                        ${String(machine.id).padStart(2,"0")}
-                    </div>
-
-                    <div class="status-dot"></div>
-
-                </div>
-
-                <div class="machine-icon">
-                    🧺
-                </div>
-
-                <div class="machine-status">
-                    ${statusText(machine.status)}
-                </div>
-
-                ${extra}
-
-            </div>
-
-        `;
-
-    });
-
-    updateSummary();
-    updateSystemStatus();
+updateStats();
+updateRecommendation();
 
 }
 
+/* MACHINE CARD */
 
-/* =========================================================
-   SUMMARY
-========================================================= */
+function createMachineCard(machine){
 
-function updateSummary(){
+const overdue=
+machine.status==="done" &&
+machine.doneAt &&
+Date.now()-machine.doneAt>
+removeMinutes*60*1000;
 
-    document.getElementById("availableCount")
-        .innerText =
-        machines.filter(
-            m => m.status === "available"
-        ).length;
+if(overdue){
+machine.status="overdue";
+}
 
+let progress=0;
 
-    document.getElementById("washingCount")
-        .innerText =
-        machines.filter(
-            m => m.status === "washing"
-        ).length;
+if(machine.status==="washing"){
 
-
-    document.getElementById("doneCount")
-        .innerText =
-        machines.filter(
-            m => m.status === "done"
-        ).length;
-
-
-    document.getElementById("errorCount")
-        .innerText =
-        machines.filter(
-            m => m.status === "error"
-        ).length;
+progress=
+Math.max(
+0,
+Math.min(
+100,
+((30*60-machine.seconds)/(30*60))*100
+)
+);
 
 }
 
+let detail="พร้อมเริ่มรอบใหม่";
 
-/* =========================================================
-   SYSTEM STATUS
-========================================================= */
+if(machine.status==="washing"){
+detail="เหลือเวลา "+formatTime(machine.seconds);
+}
 
-function updateSystemStatus(){
+if(machine.status==="done"){
+detail="ต้องนำผ้าออกภายใน "+removeMinutes+" นาที";
+}
 
-    const error =
-        machines.some(
-            m => m.status === "error"
-        );
+if(machine.status==="overdue"){
+detail="เกินเวลารับผ้า • เครื่องถูกล็อก";
+}
 
-    const title =
-        document.getElementById(
-            "systemStatusTitle"
-        );
+if(machine.status==="error"){
+detail="ระบบระงับการใช้งาน";
+}
 
-    const check =
-        document.getElementById(
-            "systemCheck"
-        );
+if(machine.status==="maintenance"){
+detail="อยู่ระหว่างบำรุงรักษา";
+}
 
-    if(error){
+let action="";
 
-        title.innerText =
-            "พบเครื่องขัดข้อง";
+if(machine.status==="available"){
 
-        check.innerText = "⚠";
-
-    }else{
-
-        title.innerText =
-            "ระบบทำงานปกติ";
-
-        check.innerText = "✓";
-
-    }
+action=`
+<button
+class="btn primary"
+onclick="
+event.stopPropagation();
+startWash(${machine.id})
+">
+▶ เริ่มใช้งาน
+</button>
+`;
 
 }
 
+if(machine.status==="washing"){
 
-/* =========================================================
-   OPEN MACHINE
-========================================================= */
+action=`
+<button
+class="btn light"
+onclick="
+event.stopPropagation();
+reserveMachine(${machine.id})
+">
+📅 จองคิว
+</button>
+`;
+
+}
+
+if(
+machine.status==="done"||
+machine.status==="overdue"
+){
+
+action=`
+<button
+class="btn ${
+machine.status==="overdue"
+?"danger"
+:"success"
+}"
+onclick="
+event.stopPropagation();
+openRemoveConfirm(${machine.id})
+">
+🧺 นำผ้าออก
+</button>
+`;
+
+}
+
+if(
+machine.status==="error"||
+machine.status==="maintenance"
+){
+
+action=`
+<button
+class="btn light"
+onclick="
+event.stopPropagation();
+openMachine(${machine.id})
+">
+ดูรายละเอียด
+</button>
+`;
+
+}
+
+let lockMessage="";
+
+if(machine.status==="done"){
+
+lockMessage=`
+<div class="lock-message yellow">
+🔒 เครื่องถูกล็อกชั่วคราว
+ต้องนำผ้าออกก่อนเริ่มรอบใหม่
+</div>
+`;
+
+}
+
+if(machine.status==="overdue"){
+
+lockMessage=`
+<div class="lock-message red">
+🚨 เกินเวลารับผ้า
+เครื่องถูกล็อกและหยุดการให้บริการ
+</div>
+`;
+
+}
+
+return`
+
+<article
+class="machine ${machine.status}"
+onclick="openMachine(${machine.id})">
+
+<div class="machine-head">
+
+<div class="machine-name">
+${machineName(machine.id)}
+</div>
+
+<div class="status">
+${statusText(machine.status)}
+</div>
+
+</div>
+
+<div class="machine-visual">
+
+<div class="machine-top">
+
+<div class="machine-screen">
+
+<span>
+
+${
+machine.status==="washing"
+?
+formatTime(machine.seconds)
+:
+machine.status==="error"
+?
+"ERROR"
+:
+machine.status==="done"
+?
+"LOCK"
+:
+machine.status==="overdue"
+?
+"LOCK"
+:
+"READY"
+}
+
+</span>
+
+<span>
+${
+machine.status==="washing"
+?"WASH"
+:
+machine.status==="done"||
+machine.status==="overdue"
+?"LOCK"
+:"AUTO"
+}
+</span>
+
+</div>
+
+<div class="machine-buttons">
+
+<i></i>
+<i></i>
+<i></i>
+<i></i>
+
+</div>
+
+</div>
+
+<!-- ถังซัก ไม่มีตะกร้าตรงกลาง -->
+
+<div class="machine-door">
+
+<div class="door-lock"></div>
+
+</div>
+
+</div>
+
+<div class="machine-info">
+
+<div>
+
+<h4>
+Intelligent Washer
+</h4>
+
+<p>
+${detail}
+</p>
+
+</div>
+
+<div class="health">
+
+<span>HEALTH</span>
+
+<b>
+${machine.health}%
+</b>
+
+<div class="health-bar">
+
+<i style="width:${machine.health}%"></i>
+
+</div>
+
+</div>
+
+</div>
+
+${
+machine.status==="washing"
+?
+`
+<div class="machine-progress">
+
+<div class="progress-top">
+
+<span>รอบซัก 30 นาที</span>
+
+<strong>
+${formatTime(machine.seconds)}
+</strong>
+
+</div>
+
+<div class="progress">
+
+<i style="width:${progress}%"></i>
+
+</div>
+
+</div>
+`
+:""
+}
+
+${lockMessage}
+
+<div class="machine-actions">
+
+${action}
+
+</div>
+
+</article>
+
+`;
+
+}
+
+/* STATS */
+
+function updateStats(){
+
+const available=
+machines.filter(m=>m.status==="available").length;
+
+const washing=
+machines.filter(m=>m.status==="washing").length;
+
+const done=
+machines.filter(
+m=>m.status==="done"||
+m.status==="overdue"
+).length;
+
+const error=
+machines.filter(m=>m.status==="error").length;
+
+document.getElementById("availableCount").textContent=available;
+document.getElementById("washingCount").textContent=washing;
+document.getElementById("doneCount").textContent=done;
+document.getElementById("errorCount").textContent=error;
+
+const active=
+machines.filter(
+m=>m.status!=="maintenance"
+);
+
+const health=
+active.length
+?
+Math.round(
+active.reduce(
+(sum,m)=>sum+m.health,
+0
+)/active.length
+)
+:0;
+
+document.getElementById("systemHealth").textContent=health+"%";
+document.getElementById("heroHealth").textContent=health+"%";
+document.getElementById("heroHealthBar").style.width=health+"%";
+
+document.getElementById("insightHealth")
+.textContent=
+health>=90
+?"ดีมาก"
+:
+health>=75
+?"ดี"
+:
+"ควรตรวจสอบ";
+
+const unread=
+notifications.filter(n=>!n.read).length;
+
+const badge=
+document.getElementById("notifyCount");
+
+badge.textContent=unread;
+badge.style.display=unread?"grid":"none";
+
+const live=
+document.getElementById("liveStatus");
+
+if(error){
+
+live.innerHTML=`
+<span
+class="live-dot"
+style="background:#ef4444">
+</span>
+${error} เครื่องต้องตรวจสอบ
+`;
+
+}else{
+
+live.innerHTML=`
+<span class="live-dot"></span>
+LIVE SYSTEM
+`;
+
+}
+
+}
+
+/* SMART RECOMMEND */
+
+function updateRecommendation(){
+
+const box=
+document.getElementById("recommendBox");
+
+const available=
+machines
+.filter(m=>m.status==="available")
+.sort((a,b)=>b.health-a.health);
+
+if(!available.length){
+
+box.innerHTML=`
+
+<div class="smart-left">
+
+<div class="smart-icon">😔</div>
+
+<div>
+
+<h4>ตอนนี้ยังไม่มีเครื่องว่าง</h4>
+
+<p>
+แนะนำให้จองคิวล่วงหน้า
+ระบบจะแจ้งเตือนเมื่อถึงคิว
+</p>
+
+</div>
+
+</div>
+
+<button
+class="btn primary"
+onclick="openQueue()">
+📅 จองคิว
+</button>
+
+`;
+
+return;
+
+}
+
+const best=available[0];
+
+const score=
+Math.min(
+99,
+Math.round(best.health*.7+30)
+);
+
+box.innerHTML=`
+
+<div class="smart-left">
+
+<div class="smart-icon">✨</div>
+
+<div>
+
+<h4>
+ระบบแนะนำ ${machineName(best.id)}
+</h4>
+
+<p>
+พร้อมใช้งานทันที • สุขภาพ ${best.health}% • ไม่มีคิวรอ
+</p>
+
+<span class="match">
+MATCH SCORE ${score}%
+</span>
+
+</div>
+
+</div>
+
+<button
+class="btn primary"
+onclick="startWash(${best.id})">
+▶ เริ่มทันที
+</button>
+
+`;
+
+}
+
+/* MACHINE DETAIL */
 
 function openMachine(id){
 
-    const machine =
-        machines.find(
-            m => m.id === id
-        );
+const machine=
+machines.find(m=>m.id===id);
 
-    if(!machine)
-        return;
+if(!machine)return;
 
+document.getElementById("modalTitle")
+.textContent=machineName(id);
 
-    document.getElementById("modalTitle")
-        .innerText =
-        machineName(id);
+document.getElementById("modalStatus")
+.textContent=statusText(machine.status);
 
+let extra="";
 
-    document.getElementById("modalStatus")
-        .innerText =
-        statusText(machine.status);
+if(
+machine.status==="done"||
+machine.status==="overdue"
+){
 
+extra=`
 
-    let info = "";
+<div class="${
+machine.status==="overdue"
+?"danger-box"
+:"warning-box"
+}" style="margin-top:12px">
 
+<strong>
+${
+machine.status==="overdue"
+?"🚨 เครื่องถูกล็อกเนื่องจากเกินเวลารับผ้า"
+:"🔒 เครื่องถูกล็อกเพื่อป้องกันการใช้งานซ้ำ"
+}
+</strong>
 
-    if(machine.status === "available"){
+<br><br>
 
-        info =
-            "เครื่องพร้อมใช้งาน";
+ต้องนำผ้าออกและยืนยันผ่านระบบ
+ก่อนเครื่องจะกลับมาใช้งานได้
 
-    }
+</div>
 
-
-    if(machine.status === "washing"){
-
-        info =
-            "เหลือเวลา " +
-            formatTime(machine.seconds);
-
-    }
-
-
-    if(machine.status === "done"){
-
-        info =
-            "ซักเสร็จแล้ว กรุณานำผ้าออก";
-
-    }
-
-
-    if(machine.status === "error"){
-
-        info =
-            "เครื่องหยุดทำงานผิดปกติ";
-
-    }
-
-
-    if(machine.status === "broken"){
-
-        info =
-            "เครื่องเสีย ไม่สามารถใช้งานได้";
-
-    }
-
-
-    document.getElementById("modalInfo")
-        .innerText = info;
-
-
-    let buttons = "";
-
-
-    if(machine.status === "available"){
-
-        buttons += `
-
-            <button
-                class="btn btn-primary full"
-                onclick="startWash(${id})"
-            >
-                ▶ เริ่มซัก 30 นาที
-            </button>
-
-        `;
-
-    }
-
-
-    if(machine.status === "washing"){
-
-        buttons += `
-
-            <button
-                class="btn btn-light full"
-                onclick="reserveMachine(${id})"
-            >
-                📅 จองคิวเครื่องนี้
-            </button>
-
-            <button
-                class="btn btn-danger full"
-                onclick="simulateError(${id})"
-            >
-                ⚠ จำลองเครื่อง Error
-            </button>
-
-            <button
-                class="btn btn-warning full"
-                onclick="finishWashDemo(${id})"
-            >
-                ⏩ จำลองซักเสร็จทันที
-            </button>
-
-        `;
-
-    }
-
-
-    if(machine.status === "done"){
-
-        buttons += `
-
-            <button
-                class="btn btn-success full"
-                onclick="removeLaundry(${id})"
-            >
-                ✓ นำผ้าออกแล้ว
-            </button>
-
-        `;
-
-    }
-
-
-    if(machine.status === "error"){
-
-        buttons += `
-
-            <button
-                class="btn btn-success full"
-                onclick="repairMachine(${id})"
-            >
-                🔧 จำลองแก้ไขเครื่อง
-            </button>
-
-        `;
-
-    }
-
-
-    document.getElementById("modalActions")
-        .innerHTML = buttons;
-
-
-    document.getElementById("machineModal")
-        .classList.add("show");
+`;
 
 }
 
+document.getElementById("modalContent")
+.innerHTML=`
 
-/* =========================================================
-   CLOSE MACHINE
-========================================================= */
+<div class="info-grid">
 
-function closeModal(){
+<div class="info">
+<small>สถานะ</small>
+<b>${statusText(machine.status)}</b>
+</div>
 
-    document
-        .getElementById("machineModal")
-        .classList.remove("show");
+<div class="info">
+<small>Machine Health</small>
+<b>${machine.health}%</b>
+</div>
+
+<div class="info">
+<small>จำนวนรอบสะสม</small>
+<b>${machine.cycles} รอบ</b>
+</div>
+
+<div class="info">
+<small>เวลาที่เหลือ</small>
+<b>
+${
+machine.status==="washing"
+?
+formatTime(machine.seconds)
+:
+"—"
+}
+</b>
+</div>
+
+</div>
+
+<div class="info" style="margin-top:10px">
+
+<small>Smart Diagnosis</small>
+
+<b>
+
+${
+machine.status==="error"
+?
+"⚠ พบความผิดปกติ เครื่องถูกระงับอัตโนมัติ"
+:
+machine.status==="overdue"
+?
+"🚨 ผู้ใช้ยังไม่เคลียร์ผ้า เครื่องถูกล็อก"
+:
+machine.status==="done"
+?
+"🔒 รอผู้ใช้ยืนยันการนำผ้าออก"
+:
+machine.health<75
+?
+"⚠ สุขภาพเครื่องต่ำกว่าค่าที่แนะนำ"
+:
+"✓ เครื่องทำงานอยู่ในเกณฑ์ปกติ"
+}
+
+</b>
+
+</div>
+
+${extra}
+
+`;
+
+let actions="";
+
+if(machine.status==="available"){
+
+actions=`
+
+<button
+class="btn primary"
+onclick="startWash(${id})">
+▶ เริ่มรอบซัก 30 นาที
+</button>
+
+`;
 
 }
 
+if(machine.status==="washing"){
 
-/* =========================================================
-   START WASH
-========================================================= */
+actions=`
+
+<button
+class="btn light"
+onclick="reserveMachine(${id})">
+📅 จองคิวเครื่องนี้
+</button>
+
+${
+adminMode
+?
+`
+<button
+class="btn danger"
+onclick="simulateError(${id})">
+⚠ จำลอง Sensor Error
+</button>
+`
+:""
+}
+
+`;
+
+}
+
+if(
+machine.status==="done"||
+machine.status==="overdue"
+){
+
+actions=`
+
+<button
+class="btn success"
+onclick="openRemoveConfirm(${id})">
+🧺 ยืนยันนำผ้าออก
+</button>
+
+`;
+
+}
+
+if(
+machine.status==="error"||
+machine.status==="maintenance"
+){
+
+actions=`
+
+${
+adminMode
+?
+`
+<button
+class="btn success"
+onclick="repairMachine(${id})">
+🔧 ตรวจสอบและคืนสถานะ
+</button>
+`
+:
+`
+<div class="info">
+
+<small>สถานะระบบ</small>
+
+<b>
+รอผู้ดูแลเข้าตรวจสอบ
+</b>
+
+</div>
+`
+}
+
+`;
+
+}
+
+document.getElementById("modalActions")
+.innerHTML=actions;
+
+document.getElementById("machineModal")
+.classList.add("show");
+
+}
+
+/* START WASH */
 
 function startWash(id){
 
-    const machine =
-        machines.find(
-            m => m.id === id
-        );
+const machine=
+machines.find(m=>m.id===id);
 
-    if(!machine)
-        return;
+if(!machine)return;
 
+if(
+machine.status==="done"||
+machine.status==="overdue"
+){
 
-    machine.status = "washing";
+toast(
+"🔒 เครื่องถูกล็อก",
+"ต้องนำผ้าออกจากเครื่องก่อนจึงจะเริ่มรอบใหม่"
+);
 
-    machine.seconds = 30 * 60;
-
-
-    history.unshift({
-
-        date:new Date().toLocaleDateString(
-            "th-TH",
-            {
-                day:"numeric",
-                month:"short",
-                year:"numeric"
-            }
-        ),
-
-        machine:machineName(id),
-
-        time:"30 นาที",
-
-        status:"กำลังซัก"
-
-    });
-
-
-    closeModal();
-
-
-    addNotification(
-        "เริ่มซัก " + machineName(id),
-        "ระบบกำลังติดตามสถานะแบบ Real-time",
-        "normal"
-    );
-
-
-    showToast(
-        "เริ่มซักเรียบร้อย",
-        machineName(id) +
-        " กำลังซัก 30 นาที"
-    );
-
-
-    renderMachines();
-    renderHistory();
+return;
 
 }
 
+if(machine.status!=="available"){
 
-/* =========================================================
-   ERROR
-========================================================= */
+toast(
+"ไม่สามารถใช้งานได้",
+"เครื่องนี้ไม่พร้อมใช้งาน"
+);
+
+return;
+
+}
+
+machine.status="washing";
+machine.seconds=30*60;
+machine.doneAt=null;
+machine.cycles++;
+
+totalCycles++;
+
+history.unshift({
+
+machine:machineName(id),
+date:today(),
+time:"30 นาที",
+status:"กำลังซัก"
+
+});
+
+history=history.slice(0,40);
+
+addNotification(
+"▶ เริ่มรอบซักแล้ว",
+machineName(id)+" เริ่มทำงาน 30 นาที",
+"normal"
+);
+
+saveData();
+
+closeModal();
+renderAll();
+
+toast(
+"เริ่มซักเรียบร้อย",
+machineName(id)+" กำลังทำงาน"
+);
+
+}
+
+/* REMOVE */
+
+function openRemoveConfirm(id){
+
+const machine=
+machines.find(m=>m.id===id);
+
+if(!machine)return;
+
+if(
+machine.status!=="done" &&
+machine.status!=="overdue"
+){
+
+toast(
+"ยังไม่สามารถเคลียร์ได้",
+"เครื่องยังไม่อยู่ในสถานะรอรับผ้า"
+);
+
+return;
+
+}
+
+selectedRemoveId=id;
+
+document.getElementById("removeConfirm")
+.checked=false;
+
+document.getElementById("removeModal")
+.classList.add("show");
+
+}
+
+function closeRemoveModal(){
+
+document.getElementById("removeModal")
+.classList.remove("show");
+
+selectedRemoveId=null;
+
+}
+
+function confirmRemove(){
+
+if(!selectedRemoveId)return;
+
+const checked=
+document.getElementById("removeConfirm")
+.checked;
+
+if(!checked){
+
+toast(
+"ยังไม่ได้ยืนยัน",
+"กรุณายืนยันว่าได้นำผ้าออกจากเครื่องแล้ว"
+);
+
+return;
+
+}
+
+const id=selectedRemoveId;
+
+const machine=
+machines.find(m=>m.id===id);
+
+if(!machine)return;
+
+machine.status="available";
+machine.seconds=0;
+machine.doneAt=null;
+machine.overdueNotified=false;
+
+addNotification(
+"🧺 เครื่องถูกเคลียร์แล้ว",
+machineName(id)+" ผ่านการยืนยันนำผ้าออกและพร้อมใช้งาน",
+"normal"
+);
+
+processQueue();
+
+saveData();
+
+closeRemoveModal();
+closeModal();
+renderAll();
+
+toast(
+"✓ ปลดล็อกเครื่องสำเร็จ",
+machineName(id)+" พร้อมให้บริการ"
+);
+
+}
+
+/* ERROR */
 
 function simulateError(id){
 
-    const machine =
-        machines.find(
-            m => m.id === id
-        );
+if(!adminMode){
 
-    if(!machine)
-        return;
+toast(
+"ไม่มีสิทธิ์",
+"ฟังก์ชันนี้สำหรับ Admin"
+);
 
-
-    machine.status = "error";
-    machine.seconds = 0;
-
-
-    closeModal();
-
-
-    addNotification(
-        machineName(id) +
-        " หยุดทำงาน",
-
-        "พบข้อผิดพลาด กรุณาตรวจสอบเครื่อง",
-
-        "error"
-    );
-
-
-    history.unshift({
-
-        date:new Date().toLocaleDateString(
-            "th-TH",
-            {
-                day:"numeric",
-                month:"short",
-                year:"numeric"
-            }
-        ),
-
-        machine:machineName(id),
-
-        time:"หยุดก่อนครบกำหนด",
-
-        status:"Error"
-
-    });
-
-
-    showToast(
-        "⚠ เครื่อง Error",
-        "ระบบตรวจพบข้อผิดพลาดและแจ้งเตือนแล้ว"
-    );
-
-
-    renderMachines();
-    renderHistory();
+return;
 
 }
 
+const machine=
+machines.find(m=>m.id===id);
 
-/* =========================================================
-   REPAIR
-========================================================= */
+if(!machine)return;
+
+machine.status="error";
+machine.seconds=0;
+machine.doneAt=null;
+
+machine.lastError=
+(machine.lastError||0)+1;
+
+machine.health=
+Math.max(40,machine.health-10);
+
+addNotification(
+"🚨 Auto Error Detection",
+machineName(id)+" ตรวจพบความผิดปกติและถูกระงับอัตโนมัติ",
+"error"
+);
+
+history.unshift({
+
+machine:machineName(id),
+date:today(),
+time:"หยุดก่อนครบกำหนด",
+status:"Error"
+
+});
+
+history=history.slice(0,40);
+
+browserNotify(
+"🚨 Smart Laundry Error",
+machineName(id)+" พบความผิดปกติ"
+);
+
+saveData();
+
+closeModal();
+renderAll();
+
+toast(
+"ตรวจพบ Error",
+machineName(id)+" ถูกระงับอัตโนมัติ"
+);
+
+}
+
+/* REPAIR */
 
 function repairMachine(id){
 
-    const machine =
-        machines.find(
-            m => m.id === id
-        );
+if(!adminMode){
 
-    if(!machine)
-        return;
+toast(
+"ไม่มีสิทธิ์",
+"ฟังก์ชันนี้สำหรับ Admin"
+);
 
-
-    machine.status = "available";
-    machine.seconds = 0;
-
-
-    closeModal();
-
-
-    addNotification(
-        machineName(id) +
-        " กลับมาใช้งานได้",
-
-        "เครื่องพร้อมให้ผู้ใช้ใช้งาน",
-
-        "normal"
-    );
-
-
-    showToast(
-        "แก้ไขเรียบร้อย",
-        machineName(id) +
-        " พร้อมใช้งานแล้ว"
-    );
-
-
-    renderMachines();
+return;
 
 }
 
+const machine=
+machines.find(m=>m.id===id);
 
-/* =========================================================
-   REMOVE LAUNDRY
-========================================================= */
+if(!machine)return;
 
-function removeLaundry(id){
+machine.status="available";
 
-    const machine =
-        machines.find(
-            m => m.id === id
-        );
+machine.health=
+Math.min(100,machine.health+8);
 
-    if(!machine)
-        return;
+addNotification(
+"✓ เครื่องกลับมาใช้งานได้",
+machineName(id)+" ผ่านการตรวจสอบและพร้อมใช้งาน",
+"normal"
+);
 
+saveData();
 
-    machine.status = "available";
-    machine.seconds = 0;
+closeModal();
+renderAll();
 
-
-    closeModal();
-
-
-    addNotification(
-        "นำผ้าออกแล้ว",
-
-        machineName(id) +
-        " พร้อมให้ผู้ใช้คนถัดไป",
-
-        "normal"
-    );
-
-
-    showToast(
-        "เครื่องพร้อมใช้งาน",
-        machineName(id) +
-        " กลับมาเป็นเครื่องว่าง"
-    );
-
-
-    renderMachines();
+toast(
+"ระบบอัปเดต",
+machineName(id)+" พร้อมให้บริการ"
+);
 
 }
 
-
-/* =========================================================
-   FINISH DEMO
-========================================================= */
-
-function finishWashDemo(id){
-
-    const machine =
-        machines.find(
-            m => m.id === id
-        );
-
-    if(!machine)
-        return;
-
-
-    machine.seconds = 0;
-    machine.status = "done";
-
-
-    closeModal();
-
-
-    addNotification(
-        machineName(id) +
-        " ซักเสร็จแล้ว",
-
-        "กรุณานำผ้าออกภายใน " +
-        laundryRemoveMinutes +
-        " นาที",
-
-        "normal"
-    );
-
-
-    showToast(
-        "✓ ซักเสร็จแล้ว",
-        machineName(id) +
-        " กรุณานำผ้าออก"
-    );
-
-
-    renderMachines();
-
-}
-
-
-/* =========================================================
-   RESERVE
-========================================================= */
+/* QUEUE */
 
 function reserveMachine(id){
 
-    if(myQueue.includes(id)){
+const machine=
+machines.find(m=>m.id===id);
 
-        showToast(
-            "มีคิวอยู่แล้ว",
-            "คุณจองเครื่องนี้ไว้แล้ว"
-        );
+if(!machine)return;
 
-        closeModal();
+if(
+machine.status==="done"||
+machine.status==="overdue"
+){
 
-        return;
+toast(
+"เครื่องถูกล็อก",
+"ต้องนำผ้าออกก่อนจึงจะเปิดคิวรอบใหม่ได้"
+);
 
-    }
-
-
-    myQueue.push(id);
-
-
-    closeModal();
-
-
-    addNotification(
-        "จองคิวสำเร็จ",
-
-        machineName(id) +
-        " อยู่ในคิวของคุณ",
-
-        "normal"
-    );
-
-
-    showToast(
-        "📅 จองคิวสำเร็จ",
-        "ดูคิวได้ที่เมนู คิวของฉัน"
-    );
-
-
-    renderQueue();
+return;
 
 }
 
+if(queue.includes(id)){
 
-/* =========================================================
-   QUEUE
-========================================================= */
+toast(
+"มีคิวอยู่แล้ว",
+"คุณมีคิวสำหรับ "+machineName(id)
+);
+
+return;
+
+}
+
+queue.push(id);
+
+addNotification(
+"🎫 จองคิวสำเร็จ",
+machineName(id)+" ถูกเพิ่มเข้าสู่คิวของคุณ",
+"normal"
+);
+
+saveData();
+
+closeModal();
+renderAll();
+
+toast(
+"จองคิวสำเร็จ",
+"ระบบเพิ่มคิวให้คุณแล้ว"
+);
+
+}
+
+function openQueue(){
+
+const select=
+document.getElementById("queueMachine");
+
+const options=
+machines.filter(
+m=>
+m.status==="available"||
+m.status==="washing"
+);
+
+if(!options.length){
+
+toast(
+"ไม่มีเครื่อง",
+"ขณะนี้ไม่มีเครื่องสำหรับจองคิว"
+);
+
+return;
+
+}
+
+select.innerHTML=
+options.map(
+m=>`
+
+<option value="${m.id}">
+${machineName(m.id)}
+—
+${statusText(m.status)}
+</option>
+
+`
+).join("");
+
+document.getElementById("queueModal")
+.classList.add("show");
+
+}
+
+function closeQueue(){
+
+document.getElementById("queueModal")
+.classList.remove("show");
+
+}
+
+function addQueue(){
+
+const id=
+Number(
+document.getElementById("queueMachine").value
+);
+
+if(!id)return;
+
+reserveMachine(id);
+
+closeQueue();
+
+}
 
 function renderQueue(){
 
-    const list =
-        document.getElementById(
-            "queueList"
-        );
+const list=
+document.getElementById("queueList");
 
+if(!list)return;
 
-    if(myQueue.length === 0){
+if(!queue.length){
 
-        list.innerHTML = `
+list.innerHTML=`
 
-            <div class="empty">
+<div class="empty">
 
-                <div class="empty-icon">
-                    📅
-                </div>
+<div class="empty-icon">🎫</div>
 
-                <h3>
-                    ยังไม่มีคิวของคุณ
-                </h3>
+<strong>ยังไม่มีคิว</strong>
 
-                <p>
-                    เลือกเครื่องที่กำลังซัก
-                    เพื่อจองคิว
-                </p>
+<p>
+เลือกเครื่องและกดจองคิวเพื่อเริ่มใช้งาน
+</p>
 
-                <button
-                    class="btn btn-primary"
-                    onclick="showPage('home')"
-                    style="margin-top:15px"
-                >
-                    ไปหน้าหลัก
-                </button>
+</div>
 
-            </div>
+`;
 
-        `;
-
-        return;
-
-    }
-
-
-    list.innerHTML = "";
-
-
-    myQueue.forEach(
-        (id,index)=>{
-
-            const machine =
-                machines.find(
-                    m => m.id === id
-                );
-
-
-            let estimated = 30;
-
-
-            if(machine &&
-               machine.status === "washing"){
-
-                estimated =
-                    Math.ceil(
-                        machine.seconds / 60
-                    );
-
-            }
-
-
-            list.innerHTML += `
-
-                <div class="queue-card">
-
-                    <div class="queue-number">
-                        ${index+1}
-                    </div>
-
-                    <div class="queue-info">
-
-                        <strong>
-                            ${machineName(id)}
-                        </strong>
-
-                        <span>
-                            คิวที่ ${index+1}
-                            • ประมาณ ${estimated} นาที
-                        </span>
-
-                    </div>
-
-                    <button
-                        class="cancel"
-                        onclick="cancelQueue(${id})"
-                    >
-                        ✕
-                    </button>
-
-                </div>
-
-            `;
-
-        }
-    );
+return;
 
 }
 
+list.innerHTML=
+queue.map(
+(id,index)=>{
 
-/* =========================================================
-   CANCEL QUEUE
-========================================================= */
+const machine=
+machines.find(m=>m.id===id);
+
+let eta=index*30;
+
+if(machine?.status==="washing"){
+
+eta=
+Math.ceil(machine.seconds/60)
++
+index*30;
+
+}
+
+return`
+
+<div class="row">
+
+<div class="circle">
+${index+1}
+</div>
+
+<div class="grow">
+
+<strong>
+${machineName(id)}
+</strong>
+
+<p>
+ลำดับที่ ${index+1}
+•
+คาดว่าจะเริ่มใน ${eta} นาที
+</p>
+
+</div>
+
+<span
+class="status"
+style="
+color:#2563eb;
+background:#eff6ff">
+${statusText(machine?.status||"unknown")}
+</span>
+
+<button
+class="btn danger"
+onclick="cancelQueue(${id})">
+ยกเลิก
+</button>
+
+</div>
+
+`;
+
+}
+).join("");
+
+}
 
 function cancelQueue(id){
 
-    myQueue =
-        myQueue.filter(
-            machineId => machineId !== id
-        );
+queue=
+queue.filter(x=>x!==id);
 
+saveData();
 
-    renderQueue();
+renderQueue();
+updateStats();
 
-
-    showToast(
-        "ยกเลิกคิวแล้ว",
-        "ระบบนำคิวออกเรียบร้อย"
-    );
+toast(
+"ยกเลิกคิวแล้ว",
+"ระบบปรับลำดับคิวเรียบร้อย"
+);
 
 }
 
+/* AUTO QUEUE */
 
-/* =========================================================
-   NOTIFICATION
-========================================================= */
+function processQueue(){
 
-function addNotification(
-    title,
-    message,
-    type
+if(!queue.length)return;
+
+for(let i=0;i<queue.length;i++){
+
+const id=queue[i];
+
+const machine=
+machines.find(m=>m.id===id);
+
+if(
+machine &&
+machine.status==="available"
 ){
 
-    notifications.unshift({
+machine.status="washing";
+machine.seconds=30*60;
+machine.doneAt=null;
+machine.cycles++;
 
-        title:title,
+totalCycles++;
 
-        message:message,
+queue.splice(i,1);
 
-        type:type,
+addNotification(
+"🎫 ถึงคิวของคุณแล้ว",
+machineName(id)+" เริ่มรอบซักให้อัตโนมัติ",
+"normal"
+);
 
-        time:new Date().toLocaleTimeString(
-            "th-TH",
-            {
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        ) + " น.",
+browserNotify(
+"🎫 ถึงคิวของคุณ",
+machineName(id)+" กำลังเริ่มซัก"
+);
 
-        read:false
-
-    });
-
-
-    renderNotifications();
+break;
 
 }
 
+}
+
+}
+
+/* NOTIFICATIONS */
+
+function addNotification(
+title,
+message,
+type
+){
+
+if(!notifyEnabled)return;
+
+notifications.unshift({
+
+title,
+message,
+type,
+read:false,
+time:Date.now()
+
+});
+
+notifications=
+notifications.slice(0,40);
+
+saveData();
+
+}
 
 function renderNotifications(){
 
-    const list =
-        document.getElementById(
-            "notificationList"
-        );
+const list=
+document.getElementById("noticeList");
 
+if(!list)return;
 
-    list.innerHTML = "";
+if(!notifications.length){
 
+list.innerHTML=`
 
-    if(notifications.length === 0){
+<div class="empty">
 
-        list.innerHTML = `
+<div class="empty-icon">🔔</div>
 
-            <div class="empty">
+ไม่มีการแจ้งเตือน
 
-                <div class="empty-icon">
-                    🔔
-                </div>
+</div>
 
-                <h3>
-                    ไม่มีการแจ้งเตือน
-                </h3>
+`;
 
-                <p>
-                    ขณะนี้ไม่มีเหตุการณ์ใหม่
-                </p>
-
-            </div>
-
-        `;
-
-        updateNotificationDot();
-
-        return;
-
-    }
-
-
-    notifications.forEach(n=>{
-
-        const isError =
-            n.type === "error";
-
-
-        list.innerHTML += `
-
-            <div
-                class="notification-card
-                ${isError ? "error-notice":""}"
-                style="${n.read ? "opacity:.65":""}"
-            >
-
-                <div class="notice-icon">
-
-                    ${isError ? "⚠" : "🔔"}
-
-                </div>
-
-                <div class="notice-content">
-
-                    <strong>
-                        ${n.title}
-                    </strong>
-
-                    <p>
-                        ${n.message}
-                    </p>
-
-                    <div class="notice-time">
-                        ${n.time}
-                        ${n.read ? " • อ่านแล้ว":""}
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-
-    updateNotificationDot();
+return;
 
 }
 
+list.innerHTML=
+notifications.map(
+(n,index)=>`
 
-function markNotificationsRead(){
+<div
+class="row"
+onclick="readNotification(${index})"
+style="
+cursor:pointer;
+opacity:${n.read?.6:1}">
 
-    notifications.forEach(
-        n => n.read = true
-    );
+<div
+class="circle"
+style="
+${
+n.type==="error"
+?
+"color:#ef4444;background:#fef2f2;"
+:""
+}">
 
+${n.type==="error"?"⚠":"🔔"}
 
-    renderNotifications();
+</div>
 
+<div class="grow">
 
-    showToast(
-        "อ่านแล้ว",
-        "ทำเครื่องหมายการแจ้งเตือนทั้งหมดแล้ว"
-    );
+<strong>
+${escapeHTML(n.title)}
+</strong>
+
+<p>
+${escapeHTML(n.message)}
+</p>
+
+<small style="
+color:#94a3b8;
+font-size:9px">
+
+${n.read?"อ่านแล้ว":"ยังไม่ได้อ่าน"}
+
+</small>
+
+</div>
+
+</div>
+
+`
+).join("");
+
+updateStats();
 
 }
 
+function readNotification(index){
 
-function updateNotificationDot(){
+if(notifications[index]){
+notifications[index].read=true;
+}
 
-    const unread =
-        notifications.some(
-            n => !n.read
-        );
-
-
-    document.getElementById(
-        "notificationDot"
-    ).style.display =
-        unread ? "block" : "none";
+saveData();
+renderNotifications();
 
 }
 
+function readAll(){
 
-/* =========================================================
-   HISTORY
-========================================================= */
+notifications.forEach(n=>n.read=true);
+
+saveData();
+renderNotifications();
+
+toast(
+"ดำเนินการแล้ว",
+"อ่านการแจ้งเตือนทั้งหมด"
+);
+
+}
+
+/* HISTORY */
 
 function renderHistory(){
 
-    const list =
-        document.getElementById(
-            "historyList"
-        );
+const list=
+document.getElementById("historyList");
 
+if(!list)return;
 
-    list.innerHTML = "";
+if(!history.length){
 
+list.innerHTML=`
 
-    if(history.length === 0){
+<div class="empty">
 
-        list.innerHTML = `
+<div class="empty-icon">◷</div>
 
-            <div class="empty">
+ไม่มีประวัติ
 
-                <div class="empty-icon">
-                    ◷
-                </div>
+</div>
 
-                <h3>
-                    ยังไม่มีประวัติ
-                </h3>
+`;
 
-                <p>
-                    เมื่อมีการใช้งานเครื่อง
-                    ประวัติจะแสดงที่นี่
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    history.forEach(h=>{
-
-        const error =
-            h.status === "Error";
-
-
-        list.innerHTML += `
-
-            <div class="history-card">
-
-                <div class="history-icon">
-                    🧺
-                </div>
-
-                <div class="history-info">
-
-                    <strong>
-                        ${h.machine}
-                    </strong>
-
-                    <p>
-                        ${h.date}
-                        •
-                        ${h.time}
-                    </p>
-
-                </div>
-
-                <div class="badge
-                    ${error
-                    ? "badge-error"
-                    : "badge-success"}">
-
-                    ${h.status}
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
+return;
 
 }
 
+list.innerHTML=
+history
+.slice(0,40)
+.map(
+h=>`
 
-function clearHistory(){
+<div class="row">
 
-    if(!confirm(
-        "ต้องการล้างประวัติ Demo ทั้งหมดหรือไม่?"
-    )){
-        return;
-    }
+<div class="circle">
+🧺
+</div>
 
+<div class="grow">
 
-    history = [];
+<strong>
+${escapeHTML(h.machine)}
+</strong>
 
+<p>
+${escapeHTML(h.date)}
+•
+${escapeHTML(h.time)}
+</p>
 
-    renderHistory();
+</div>
 
+<span
+class="status"
+style="
+${
+h.status==="Error"
+?
+"color:#ef4444;background:#fef2f2;"
+:
+h.status==="กำลังซัก"
+?
+"color:#2563eb;background:#eff6ff;"
+:
+"color:#16a34a;background:#ecfdf5;"
+}">
 
-    showToast(
-        "ล้างประวัติแล้ว",
-        "ประวัติการใช้งานถูกล้างเรียบร้อย"
-    );
+${escapeHTML(h.status)}
+
+</span>
+
+</div>
+
+`
+)
+.join("");
 
 }
 
+/* ANALYTICS */
 
-/* =========================================================
-   PAGE NAVIGATION
-========================================================= */
+function renderAnalytics(){
 
-function showPage(
-    page,
-    button
+const success=
+history.filter(
+h=>h.status==="สำเร็จ"
+).length;
+
+const errors=
+history.filter(
+h=>h.status==="Error"
+).length;
+
+document.getElementById("totalCycles")
+.textContent=totalCycles;
+
+document.getElementById("successCycles")
+.textContent=success;
+
+document.getElementById("errorCycles")
+.textContent=errors;
+
+const rate=
+history.length
+?
+Math.round(success/history.length*100)
+:0;
+
+document.getElementById("successRate")
+.textContent=rate+"%";
+
+const problem=
+[...machines]
+.sort(
+(a,b)=>
+(b.lastError||0)-
+(a.lastError||0)
+)[0];
+
+document.getElementById("problemMachine")
+.textContent=
+problem
+?
+machineName(problem.id)
+:"-";
+
+}
+
+/* SETTINGS */
+
+function openSetting(){
+
+document.getElementById("removeInput")
+.value=removeMinutes;
+
+document.getElementById("settingModal")
+.classList.add("show");
+
+}
+
+function closeSetting(){
+
+document.getElementById("settingModal")
+.classList.remove("show");
+
+}
+
+function saveSetting(){
+
+const value=
+Number(
+document.getElementById("removeInput").value
+);
+
+if(
+!Number.isInteger(value)||
+value<1||
+value>60
 ){
 
-    document
-        .querySelectorAll(".page")
-        .forEach(
-            p => p.classList.remove("active")
-        );
+toast(
+"ข้อมูลไม่ถูกต้อง",
+"กรุณาระบุ 1–60 นาที"
+);
 
-
-    document
-        .getElementById(page)
-        .classList.add("active");
-
-
-    document
-        .querySelectorAll(".nav-btn")
-        .forEach(
-            btn => btn.classList.remove("active")
-        );
-
-
-    if(button){
-
-        button.classList.add("active");
-
-    }else{
-
-        const buttons =
-            document.querySelectorAll(
-                ".nav-btn"
-            );
-
-
-        if(page === "home")
-            buttons[0].classList.add("active");
-
-        if(page === "queue")
-            buttons[1].classList.add("active");
-
-        if(page === "notifications")
-            buttons[2].classList.add("active");
-
-        if(page === "history")
-            buttons[3].classList.add("active");
-
-        if(page === "profile")
-            buttons[4].classList.add("active");
-
-    }
-
-
-    if(page === "queue")
-        renderQueue();
-
-
-    if(page === "notifications")
-        renderNotifications();
-
-
-    if(page === "history")
-        renderHistory();
+return;
 
 }
 
+removeMinutes=value;
 
-/* =========================================================
-   PROFILE SETTINGS
-========================================================= */
+document.getElementById("removeTime")
+.textContent=value+" นาที";
 
-function toggleNotifications(){
+saveData();
+closeSetting();
+renderMachines();
 
-    notificationsEnabled =
-        !notificationsEnabled;
-
-
-    const switchElement =
-        document.getElementById(
-            "notificationSwitch"
-        );
-
-
-    const text =
-        document.getElementById(
-            "notificationSetting"
-        );
-
-
-    if(notificationsEnabled){
-
-        switchElement.classList.add("on");
-
-        text.innerText =
-            "เปิดใช้งาน";
-
-        showToast(
-            "เปิดการแจ้งเตือน",
-            "ระบบจะแจ้งเตือนเหตุการณ์สำคัญ"
-        );
-
-    }else{
-
-        switchElement.classList.remove("on");
-
-        text.innerText =
-            "ปิดใช้งาน";
-
-        showToast(
-            "ปิดการแจ้งเตือน",
-            "ระบบจะไม่แสดงแจ้งเตือนใหม่"
-        );
-
-    }
+toast(
+"บันทึกการตั้งค่า",
+"ตั้งเวลา "+value+" นาที"
+);
 
 }
 
+/* DARK */
 
-function changeLaundryTime(){
+function toggleDark(){
 
-    const value =
-        prompt(
-            "กำหนดเวลานำผ้าออก (นาที)",
-            laundryRemoveMinutes
-        );
+darkMode=!darkMode;
 
+document.body.classList.toggle(
+"dark",
+darkMode
+);
 
-    if(value === null)
-        return;
+saveData();
 
-
-    const number =
-        parseInt(value);
-
-
-    if(
-        isNaN(number) ||
-        number < 1 ||
-        number > 60
-    ){
-
-        showToast(
-            "ข้อมูลไม่ถูกต้อง",
-            "กรุณาระบุค่าระหว่าง 1-60 นาที"
-        );
-
-        return;
-
-    }
-
-
-    laundryRemoveMinutes =
-        number;
-
-
-    document.getElementById(
-        "laundryTimeText"
-    ).innerText =
-        number + " นาที";
-
-
-    renderMachines();
-
-
-    showToast(
-        "บันทึกการตั้งค่า",
-        "เวลานำผ้าถูกตั้งเป็น " +
-        number +
-        " นาที"
-    );
+toast(
+darkMode
+?"Dark Mode"
+:"Light Mode",
+"เปลี่ยนธีมเรียบร้อย"
+);
 
 }
 
+/* ROLE */
 
-function showHelp(){
+function toggleRole(){
 
-    showGeneralModal(
-        "ช่วยเหลือ",
-        `
-        <b>วิธีใช้งานระบบ</b><br>
-        1. เลือกเครื่องที่ต้องการ<br>
-        2. ถ้าเครื่องว่าง ให้กด “เริ่มซัก”<br>
-        3. ถ้าเครื่องกำลังซัก ให้กด “จองคิว”<br>
-        4. เมื่อซักเสร็จ ระบบจะแจ้งเตือน<br>
-        5. หากเกิด Error ผู้ดูแลสามารถตรวจสอบและแก้ไขเครื่องได้
-        `
-    );
+adminMode=!adminMode;
 
-}
+document.getElementById("userName")
+.textContent=
+adminMode
+?
+"ผู้ดูแลระบบ"
+:
+"ผู้ใช้งานทั่วไป";
 
+document.getElementById("userRole")
+.textContent=
+adminMode
+?
+"Administrator"
+:
+"Resident / Student";
 
-function showAbout(){
+saveData();
+renderAll();
 
-    showGeneralModal(
-        "เกี่ยวกับระบบ",
-        `
-        <b>SMART LAUNDRY</b><br>
-        ระบบจัดการและเฝ้าระวังเครื่องซักผ้าส่วนกลาง<br><br>
-
-        Version: 1.0 Demo<br>
-        ระบบตัวอย่างสำหรับนำเสนอแนวคิด Smart Laundry<br><br>
-
-        ฟังก์ชันหลัก:<br>
-        • ตรวจสอบสถานะเครื่อง<br>
-        • เริ่มซักและนับเวลา<br>
-        • จองคิว<br>
-        • แจ้งเตือน Error<br>
-        • ประวัติการใช้งาน
-        `
-    );
-
-}
-
-
-/* =========================================================
-   GENERAL MODAL
-========================================================= */
-
-function showGeneralModal(
-    title,
-    content
-){
-
-    document.getElementById(
-        "generalTitle"
-    ).innerText = title;
-
-
-    document.getElementById(
-        "generalContent"
-    ).innerHTML = content;
-
-
-    document.getElementById(
-        "generalModal"
-    ).classList.add("show");
+toast(
+adminMode
+?
+"เข้าสู่โหมด Admin"
+:
+"กลับสู่โหมด User",
+adminMode
+?
+"คุณสามารถตรวจสอบ Error และคืนสถานะเครื่องได้"
+:
+"สิทธิ์ผู้ใช้งานทั่วไปถูกเปิดใช้งาน"
+);
 
 }
 
+/* EXPORT */
 
-function closeGeneralModal(){
+function exportData(){
 
-    document.getElementById(
-        "generalModal"
-    ).classList.remove("show");
+const data={
+
+system:"Smart Laundry X Pro",
+
+exportedAt:new Date().toISOString(),
+
+machines,
+queue,
+notifications,
+history,
+totalCycles
+
+};
+
+const blob=
+new Blob(
+[
+JSON.stringify(data,null,2)
+],
+{
+type:"application/json"
+}
+);
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement("a");
+
+a.href=url;
+a.download="smart-laundry-report.json";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+toast(
+"Export สำเร็จ",
+"สร้างรายงานข้อมูลระบบแล้ว"
+);
 
 }
 
-
-/* =========================================================
-   RESET DEMO
-========================================================= */
-
-function resetDemo(){
-
-    if(!confirm(
-        "ต้องการรีเซ็ตระบบ Demo กลับเป็นค่าเริ่มต้นหรือไม่?"
-    )){
-        return;
-    }
-
-
-    machines =
-        JSON.parse(
-            JSON.stringify(defaultMachines)
-        );
-
-
-    notifications =
-        JSON.parse(
-            JSON.stringify(defaultNotifications)
-        );
-
-
-    history =
-        JSON.parse(
-            JSON.stringify(defaultHistory)
-        );
-
-
-    myQueue = [];
-
-
-    notificationsEnabled = true;
-
-    laundryRemoveMinutes = 10;
-
-
-    document.getElementById(
-        "notificationSetting"
-    ).innerText = "เปิดใช้งาน";
-
-
-    document.getElementById(
-        "notificationSwitch"
-    ).classList.add("on");
-
-
-    document.getElementById(
-        "laundryTimeText"
-    ).innerText = "10 นาที";
-
-
-    renderMachines();
-
-    renderQueue();
-
-    renderNotifications();
-
-    renderHistory();
-
-
-    showToast(
-        "รีเซ็ตระบบแล้ว",
-        "ข้อมูล Demo กลับเป็นค่าเริ่มต้น"
-    );
-
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(
-    title,
-    message
-){
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    document.getElementById(
-        "toastTitle"
-    ).innerText = title;
-
-
-    document.getElementById(
-        "toastMessage"
-    ).innerText = message;
-
-
-    toast.classList.add("show");
-
-
-    clearTimeout(toastTimer);
-
-
-    toastTimer =
-        setTimeout(
-            ()=>{
-                toast.classList.remove("show");
-            },
-            3500
-        );
-
-}
-
-
-/* =========================================================
-   REAL-TIME TIMER
-========================================================= */
+/* REAL TIME */
 
 setInterval(()=>{
 
-    let changed = false;
+let changed=false;
 
+machines.forEach(machine=>{
 
-    machines.forEach(
-        machine => {
+if(
+machine.status==="washing" &&
+machine.seconds>0
+){
 
-            if(
-                machine.status === "washing" &&
-                machine.seconds > 0
-            ){
+machine.seconds--;
+changed=true;
 
-                machine.seconds--;
+if(machine.seconds===300){
 
-                changed = true;
+addNotification(
+"⏳ ใกล้ซักเสร็จ",
+machineName(machine.id)+" จะซักเสร็จในประมาณ 5 นาที",
+"normal"
+);
 
+browserNotify(
+"⏳ Smart Laundry",
+machineName(machine.id)+" จะซักเสร็จใน 5 นาที"
+);
 
-                if(machine.seconds === 0){
+}
 
-                    machine.status = "done";
+if(machine.seconds===0){
 
+machine.status="done";
 
-                    addNotification(
+machine.doneAt=Date.now();
+machine.overdueNotified=false;
 
-                        machineName(machine.id) +
-                        " ซักเสร็จแล้ว",
+addNotification(
+"🧺 ซักเสร็จแล้ว",
+machineName(machine.id)+
+" ซักเสร็จแล้ว กรุณานำผ้าออกภายใน "+
+removeMinutes+" นาที",
+"normal"
+);
 
-                        "กรุณานำผ้าออกภายใน " +
-                        laundryRemoveMinutes +
-                        " นาที",
+browserNotify(
+"🧺 ซักเสร็จแล้ว",
+machineName(machine.id)+" ซักเสร็จแล้ว"
+);
 
-                        "normal"
+history.unshift({
 
-                    );
+machine:machineName(machine.id),
 
+date:today(),
 
-                    showToast(
+time:"30 นาที",
 
-                        "✓ ซักเสร็จแล้ว",
+status:"สำเร็จ"
 
-                        machineName(machine.id) +
-                        " กรุณานำผ้าออก"
+});
 
-                    );
+history=
+history.slice(0,40);
 
-                }
+}
 
-            }
+}
 
-        }
-    );
+});
 
+machines.forEach(machine=>{
 
-    if(changed){
+if(
+machine.status==="done" &&
+machine.doneAt &&
+Date.now()-machine.doneAt>
+removeMinutes*60*1000
+){
 
-        renderMachines();
+machine.status="overdue";
 
-        renderQueue();
+changed=true;
 
-    }
+if(
+!machine.overdueNotified
+){
+
+machine.overdueNotified=true;
+
+addNotification(
+"🚨 เกินเวลานำผ้าออก",
+machineName(machine.id)+
+" ยังไม่ได้รับผ้า เครื่องถูกล็อก",
+"error"
+);
+
+browserNotify(
+"🚨 เครื่องถูกล็อก",
+machineName(machine.id)+" เกินเวลารับผ้า"
+);
+
+}
+
+}
+
+});
+
+machines.forEach(machine=>{
+
+if(
+machine.status==="washing" &&
+machine.health<65 &&
+Math.random()<0.002
+){
+
+simulateError(machine.id);
+
+}
+
+});
+
+processQueue();
+
+if(changed){
+
+saveData();
+renderAll();
+
+}else{
+
+updateStats();
+renderMachines();
+
+}
 
 },1000);
 
+/* SCROLL */
 
-/* =========================================================
-   MODAL CLICK OUTSIDE
-========================================================= */
-
-document
-    .getElementById("machineModal")
-    .addEventListener(
-        "click",
-        function(e){
-
-            if(e.target === this){
-
-                closeModal();
-
-            }
-
-        }
-    );
-
+function scrollMachines(){
 
 document
-    .getElementById("generalModal")
-    .addEventListener(
-        "click",
-        function(e){
+.getElementById("machineSection")
+.scrollIntoView({
+behavior:"smooth"
+});
 
-            if(e.target === this){
+}
 
-                closeGeneralModal();
+/* MODALS */
 
-            }
+function closeModal(){
 
-        }
-    );
+document
+.getElementById("machineModal")
+.classList.remove("show");
 
+}
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+window.addEventListener(
+"click",
+event=>{
+
+if(
+event.target===
+document.getElementById("machineModal")
+){
+
+closeModal();
+
+}
+
+if(
+event.target===
+document.getElementById("queueModal")
+){
+
+closeQueue();
+
+}
+
+if(
+event.target===
+document.getElementById("settingModal")
+){
+
+closeSetting();
+
+}
+
+if(
+event.target===
+document.getElementById("removeModal")
+){
+
+closeRemoveModal();
+
+}
+
+});
+
+/* RENDER ALL */
+
+function renderAll(){
+
+document.getElementById("removeTime")
+.textContent=
+removeMinutes+" นาที";
+
+document.getElementById("userName")
+.textContent=
+adminMode
+?
+"ผู้ดูแลระบบ"
+:
+"ผู้ใช้งานทั่วไป";
+
+document.getElementById("userRole")
+.textContent=
+adminMode
+?
+"Administrator"
+:
+"Resident / Student";
 
 renderMachines();
-
 renderQueue();
-
 renderNotifications();
-
 renderHistory();
+renderAnalytics();
+updateStats();
+
+}
+
+/* START */
+
+requestNotification();
+renderAll();
 
 </script>
 
