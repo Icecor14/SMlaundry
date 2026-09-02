@@ -1,0 +1,3077 @@
+```html
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Laundry</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Segoe UI","Tahoma",sans-serif;
+}
+
+body{
+    background:#eef5fc;
+    color:#17385f;
+}
+
+button{
+    font-family:inherit;
+}
+
+.app{
+    width:100%;
+    max-width:520px;
+    min-height:100vh;
+    margin:auto;
+    background:#f5f9fd;
+    position:relative;
+    padding-bottom:90px;
+}
+
+/* HEADER */
+.header{
+    background:white;
+    padding:15px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #e8eef5;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    background:#e8f3ff;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.logo-text h1{
+    color:#1456a0;
+    font-size:19px;
+    font-weight:800;
+}
+
+.logo-text p{
+    font-size:10px;
+    color:#777;
+}
+
+.notification-btn{
+    width:42px;
+    height:42px;
+    border:0;
+    background:#f0f6ff;
+    border-radius:50%;
+    font-size:20px;
+    cursor:pointer;
+    position:relative;
+}
+
+.notification-dot{
+    width:9px;
+    height:9px;
+    background:#ef4444;
+    border-radius:50%;
+    position:absolute;
+    top:7px;
+    right:7px;
+}
+
+/* PAGE */
+.page{
+    padding:15px;
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-title{
+    font-size:24px;
+    font-weight:800;
+    color:#173f70;
+    margin-bottom:4px;
+}
+
+.page-subtitle{
+    color:#7b8795;
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+/* SYSTEM */
+.system-status{
+    background:linear-gradient(135deg,#1467c8,#4d9cf2);
+    color:white;
+    border-radius:20px;
+    padding:17px;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    box-shadow:0 8px 20px rgba(20,103,200,.18);
+    margin-bottom:15px;
+}
+
+.system-icon{
+    font-size:28px;
+}
+
+.system-status strong{
+    display:block;
+    font-size:16px;
+}
+
+.system-status span{
+    font-size:11px;
+    opacity:.9;
+}
+
+.system-check{
+    margin-left:auto;
+    font-size:25px;
+}
+
+/* SUMMARY */
+.summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+    margin-bottom:22px;
+}
+
+.summary-card{
+    background:white;
+    border-radius:15px;
+    padding:11px 5px;
+    text-align:center;
+    border:1px solid #e6edf5;
+}
+
+.summary-icon{
+    font-size:19px;
+}
+
+.summary-number{
+    font-size:20px;
+    font-weight:800;
+    margin-top:3px;
+}
+
+.summary-name{
+    color:#7b8795;
+    font-size:10px;
+}
+
+.green .summary-number{color:#22a565}
+.blue .summary-number{color:#1264c7}
+.yellow .summary-number{color:#d99115}
+.red .summary-number{color:#e04444}
+
+/* SECTION */
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.section-title h2{
+    font-size:17px;
+}
+
+.section-title span{
+    font-size:12px;
+    color:#8a96a3;
+}
+
+/* MACHINES */
+.machine-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.machine{
+    background:white;
+    border-radius:19px;
+    padding:13px;
+    border:1px solid #e5ebf2;
+    cursor:pointer;
+    transition:.2s;
+    min-height:220px;
+    position:relative;
+}
+
+.machine:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,.07);
+}
+
+.machine:active{
+    transform:scale(.98);
+}
+
+.machine-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.machine-number{
+    font-size:19px;
+    font-weight:800;
+}
+
+.status-dot{
+    width:11px;
+    height:11px;
+    border-radius:50%;
+}
+
+.machine-icon{
+    text-align:center;
+    font-size:60px;
+    margin:20px 0 14px;
+}
+
+.machine-status{
+    font-size:13px;
+    font-weight:800;
+}
+
+.machine-time{
+    font-size:12px;
+    margin-top:5px;
+    color:#555;
+}
+
+.available .status-dot{background:#26aa67}
+.available .machine-status{color:#26aa67}
+.available .machine-icon{color:#26aa67}
+
+.washing .status-dot{background:#1768c8}
+.washing .machine-status{color:#1768c8}
+.washing .machine-icon{color:#1768c8}
+
+.done .status-dot{background:#e5a426}
+.done .machine-status{color:#e5a426}
+.done .machine-icon{color:#e5a426}
+
+.error .status-dot{background:#e44545}
+.error .machine-status{color:#e44545}
+.error .machine-icon{color:#e44545}
+
+.broken .status-dot{background:#555}
+.broken .machine-status{color:#555}
+.broken .machine-icon{color:#555}
+
+/* BUTTON */
+.btn{
+    border:0;
+    border-radius:12px;
+    padding:12px 15px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:13px;
+    transition:.2s;
+}
+
+.btn:hover{
+    filter:brightness(.96);
+    transform:translateY(-1px);
+}
+
+.btn-primary{
+    background:#1768c8;
+    color:white;
+}
+
+.btn-danger{
+    background:#e44646;
+    color:white;
+}
+
+.btn-success{
+    background:#24a968;
+    color:white;
+}
+
+.btn-warning{
+    background:#e5a426;
+    color:white;
+}
+
+.btn-light{
+    background:#edf4fc;
+    color:#1768c8;
+}
+
+.btn-dark{
+    background:#17385f;
+    color:white;
+}
+
+.full{
+    width:100%;
+}
+
+/* HELP */
+.help-card{
+    background:white;
+    border-radius:18px;
+    padding:16px;
+    margin-top:18px;
+}
+
+.help-card h3{
+    margin-bottom:15px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    margin-bottom:13px;
+}
+
+.step:last-child{
+    margin-bottom:0;
+}
+
+.step-icon{
+    width:37px;
+    height:37px;
+    border-radius:50%;
+    background:#eaf3ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#1768c8;
+    font-size:18px;
+}
+
+.step strong{
+    font-size:13px;
+    display:block;
+}
+
+.step span{
+    color:#8a96a3;
+    font-size:11px;
+}
+
+/* QUEUE */
+.queue-card{
+    background:white;
+    border-radius:18px;
+    padding:15px;
+    margin-bottom:11px;
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.queue-number{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#eaf3ff;
+    color:#1768c8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+    font-weight:800;
+}
+
+.queue-info{
+    flex:1;
+}
+
+.queue-info strong{
+    display:block;
+}
+
+.queue-info span{
+    color:#777;
+    font-size:12px;
+}
+
+.cancel{
+    border:0;
+    background:#ffecec;
+    color:#e04444;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+/* NOTIFICATION */
+.notification-card{
+    background:white;
+    border-radius:18px;
+    padding:14px;
+    display:flex;
+    gap:12px;
+    margin-bottom:10px;
+    border-left:4px solid #2aaa68;
+}
+
+.notification-card.error-notice{
+    border-left-color:#e04444;
+}
+
+.notice-icon{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    background:#e9f7ef;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+}
+
+.error-notice .notice-icon{
+    background:#ffe8e8;
+}
+
+.notice-content{
+    flex:1;
+}
+
+.notice-content strong{
+    font-size:13px;
+}
+
+.notice-content p{
+    font-size:12px;
+    color:#687482;
+    margin-top:3px;
+}
+
+.notice-time{
+    font-size:10px;
+    color:#9aa5b1;
+    margin-top:5px;
+}
+
+/* HISTORY */
+.history-card{
+    background:white;
+    border-radius:18px;
+    padding:15px;
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.history-icon{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    background:#eaf3ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#1768c8;
+    font-size:22px;
+}
+
+.history-info{
+    flex:1;
+}
+
+.history-info strong{
+    font-size:13px;
+}
+
+.history-info p{
+    color:#7b8795;
+    font-size:11px;
+    margin-top:3px;
+}
+
+.badge{
+    padding:5px 9px;
+    border-radius:9px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.badge-success{
+    background:#e8f7ef;
+    color:#21a464;
+}
+
+.badge-error{
+    background:#ffe9e9;
+    color:#e04444;
+}
+
+/* PROFILE */
+.profile-box{
+    background:white;
+    border-radius:22px;
+    padding:22px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:13px;
+}
+
+.avatar{
+    width:67px;
+    height:67px;
+    border-radius:50%;
+    background:#eaf3ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:35px;
+    color:#1768c8;
+}
+
+.profile-box h2{
+    font-size:18px;
+}
+
+.profile-box p{
+    color:#777;
+    font-size:12px;
+}
+
+.setting{
+    background:white;
+    padding:15px;
+    border-radius:16px;
+    margin-bottom:9px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.setting:hover{
+    background:#f8fbff;
+    transform:translateX(2px);
+}
+
+.setting-icon{
+    width:40px;
+    height:40px;
+    background:#eaf3ff;
+    color:#1768c8;
+    border-radius:12px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.setting-text{
+    flex:1;
+}
+
+.setting-text strong{
+    font-size:13px;
+}
+
+.setting-text p{
+    color:#888;
+    font-size:11px;
+}
+
+/* NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:520px;
+    height:75px;
+    background:white;
+    border-top:1px solid #e5ebf2;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    z-index:50;
+}
+
+.nav-btn{
+    border:0;
+    background:white;
+    color:#9aa5b1;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    font-size:11px;
+}
+
+.nav-btn .nav-icon{
+    font-size:22px;
+}
+
+.nav-btn.active{
+    color:#1768c8;
+    font-weight:800;
+}
+
+/* MODAL */
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    align-items:flex-end;
+    z-index:100;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:520px;
+    margin:auto;
+    background:white;
+    border-radius:28px 28px 0 0;
+    padding:22px;
+    max-height:90vh;
+    overflow:auto;
+    animation:slideUp .25s ease;
+}
+
+@keyframes slideUp{
+    from{
+        transform:translateY(100%);
+    }
+    to{
+        transform:translateY(0);
+    }
+}
+
+.modal-head{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    margin-bottom:18px;
+}
+
+.modal-machine-icon{
+    width:58px;
+    height:58px;
+    border-radius:17px;
+    background:#eaf3ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:31px;
+}
+
+.modal-head h2{
+    font-size:20px;
+}
+
+.modal-head p{
+    font-size:13px;
+    color:#1768c8;
+    font-weight:700;
+}
+
+.info-box{
+    background:#f4f8fc;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:14px;
+}
+
+.info-title{
+    color:#8995a3;
+    font-size:11px;
+}
+
+.info-value{
+    font-size:17px;
+    font-weight:800;
+    margin-top:3px;
+}
+
+.modal-actions{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.close-modal{
+    position:absolute;
+    right:20px;
+    top:15px;
+    width:35px;
+    height:35px;
+    border:0;
+    background:#edf2f7;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+/* TOAST */
+.toast{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%) translateY(-100px);
+    width:calc(100% - 30px);
+    max-width:480px;
+    background:#17385f;
+    color:white;
+    border-radius:15px;
+    padding:14px;
+    z-index:200;
+    opacity:0;
+    transition:.35s;
+    box-shadow:0 8px 25px rgba(0,0,0,.2);
+}
+
+.toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+}
+
+.toast strong{
+    display:block;
+    font-size:14px;
+}
+
+.toast span{
+    font-size:11px;
+    opacity:.9;
+}
+
+/* EMPTY */
+.empty{
+    background:white;
+    padding:35px 20px;
+    border-radius:20px;
+    text-align:center;
+}
+
+.empty-icon{
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+.empty p{
+    color:#888;
+    font-size:12px;
+    margin-top:6px;
+}
+
+/* SWITCH */
+.switch{
+    width:48px;
+    height:27px;
+    background:#d7dee7;
+    border-radius:20px;
+    position:relative;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.switch.on{
+    background:#1768c8;
+}
+
+.switch span{
+    width:21px;
+    height:21px;
+    background:white;
+    border-radius:50%;
+    position:absolute;
+    top:3px;
+    left:3px;
+    transition:.2s;
+}
+
+.switch.on span{
+    left:24px;
+}
+
+/* RESPONSIVE */
+@media(max-width:380px){
+
+    .summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .machine-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+
+    <div class="logo-area">
+
+        <div class="logo">🧺</div>
+
+        <div class="logo-text">
+            <h1>SMART LAUNDRY</h1>
+            <p>ระบบจัดการและเฝ้าระวังเครื่องซักผ้าส่วนกลาง</p>
+        </div>
+
+    </div>
+
+    <button class="notification-btn"
+            onclick="showPage('notifications')">
+
+        🔔
+
+        <span class="notification-dot"
+              id="notificationDot"></span>
+
+    </button>
+
+</header>
+
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+    <div class="system-status">
+
+        <div class="system-icon">📡</div>
+
+        <div>
+            <strong id="systemStatusTitle">
+                ระบบทำงานปกติ
+            </strong>
+
+            <span>
+                ติดตามสถานะเครื่องแบบ Real-time
+            </span>
+        </div>
+
+        <div class="system-check"
+             id="systemCheck">
+            ✓
+        </div>
+
+    </div>
+
+
+    <div class="summary">
+
+        <div class="summary-card green">
+            <div class="summary-icon">✓</div>
+            <div class="summary-number"
+                 id="availableCount">0</div>
+            <div class="summary-name">ว่าง</div>
+        </div>
+
+        <div class="summary-card blue">
+            <div class="summary-icon">🧺</div>
+            <div class="summary-number"
+                 id="washingCount">0</div>
+            <div class="summary-name">กำลังซัก</div>
+        </div>
+
+        <div class="summary-card yellow">
+            <div class="summary-icon">◷</div>
+            <div class="summary-number"
+                 id="doneCount">0</div>
+            <div class="summary-name">รอรับผ้า</div>
+        </div>
+
+        <div class="summary-card red">
+            <div class="summary-icon">⚠</div>
+            <div class="summary-number"
+                 id="errorCount">0</div>
+            <div class="summary-name">Error</div>
+        </div>
+
+    </div>
+
+
+    <div class="section-title">
+        <h2>สถานะเครื่องซักผ้า</h2>
+        <span>ห้องซักผ้า ชั้น 1</span>
+    </div>
+
+
+    <div class="machine-grid"
+         id="machineGrid"></div>
+
+
+    <div class="help-card">
+
+        <h3>วิธีใช้งาน Smart Laundry</h3>
+
+        <div class="step">
+            <div class="step-icon">🔍</div>
+            <div>
+                <strong>ดูสถานะ</strong>
+                <span>กดเครื่องเพื่อดูรายละเอียด</span>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">📅</div>
+            <div>
+                <strong>จองคิว</strong>
+                <span>จองเมื่อเครื่องกำลังถูกใช้งาน</span>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">▶</div>
+            <div>
+                <strong>เริ่มซัก</strong>
+                <span>เริ่มรอบซักและติดตามเวลา</span>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">🔔</div>
+            <div>
+                <strong>รับแจ้งเตือน</strong>
+                <span>แจ้งเตือนเมื่อซักเสร็จหรือเกิด Error</span>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- QUEUE -->
+<section id="queue" class="page">
+
+    <div class="page-title">คิวของฉัน</div>
+
+    <div class="page-subtitle">
+        ดูลำดับคิวและเวลาคาดว่าจะถึงคิว
+    </div>
+
+    <div id="queueList"></div>
+
+    <div class="help-card">
+
+        <h3>กติกาการจอง</h3>
+
+        <div class="step">
+            <div class="step-icon">🔔</div>
+            <div>
+                <strong>เมื่อถึงคิว</strong>
+                <span>ระบบจะแจ้งเตือนทันที</span>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">⏱</div>
+            <div>
+                <strong>หมดเวลาจอง</strong>
+                <span>ระบบยกเลิกคิวอัตโนมัติ</span>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- NOTIFICATIONS -->
+<section id="notifications" class="page">
+
+    <div class="page-title">การแจ้งเตือน</div>
+
+    <div class="page-subtitle">
+        ติดตามสถานะและเหตุการณ์สำคัญ
+    </div>
+
+    <button class="btn btn-light full"
+            onclick="markNotificationsRead()"
+            style="margin-bottom:15px">
+
+        ✓ ทำเครื่องหมายว่าอ่านแล้ว
+
+    </button>
+
+    <div id="notificationList"></div>
+
+</section>
+
+
+<!-- HISTORY -->
+<section id="history" class="page">
+
+    <div class="page-title">ประวัติการใช้งาน</div>
+
+    <div class="page-subtitle">
+        ดูประวัติการซัก เวลา และสถานะการใช้งาน
+    </div>
+
+    <button class="btn btn-light full"
+            onclick="clearHistory()"
+            style="margin-bottom:15px">
+
+        🗑 ล้างประวัติ Demo
+
+    </button>
+
+    <div id="historyList"></div>
+
+</section>
+
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+
+    <div class="page-title">โปรไฟล์</div>
+
+    <div class="page-subtitle">
+        จัดการข้อมูลและการตั้งค่าระบบ
+    </div>
+
+    <div class="profile-box">
+
+        <div class="avatar">👤</div>
+
+        <div>
+            <h2 id="profileName">
+                ผู้ใช้งานทั่วไป
+            </h2>
+
+            <p>
+                นักศึกษาหอพัก / ผู้พักอาศัย
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="setting"
+         onclick="toggleNotifications()">
+
+        <div class="setting-icon">🔔</div>
+
+        <div class="setting-text">
+            <strong>การแจ้งเตือน</strong>
+            <p id="notificationSetting">
+                เปิดใช้งาน
+            </p>
+        </div>
+
+        <div class="switch on"
+             id="notificationSwitch">
+
+            <span></span>
+
+        </div>
+
+    </div>
+
+
+    <div class="setting"
+         onclick="changeLaundryTime()">
+
+        <div class="setting-icon">⏱</div>
+
+        <div class="setting-text">
+
+            <strong>
+                เวลานำผ้าออก
+            </strong>
+
+            <p id="laundryTimeText">
+                10 นาที
+            </p>
+
+        </div>
+
+        <span>›</span>
+
+    </div>
+
+
+    <div class="setting"
+         onclick="showHelp()">
+
+        <div class="setting-icon">❓</div>
+
+        <div class="setting-text">
+
+            <strong>ช่วยเหลือ</strong>
+
+            <p>
+                วิธีใช้งาน Smart Laundry
+            </p>
+
+        </div>
+
+        <span>›</span>
+
+    </div>
+
+
+    <div class="setting"
+         onclick="showAbout()">
+
+        <div class="setting-icon">ℹ️</div>
+
+        <div class="setting-text">
+
+            <strong>
+                เกี่ยวกับระบบ
+            </strong>
+
+            <p>
+                Smart Laundry Demo v1.0
+            </p>
+
+        </div>
+
+        <span>›</span>
+
+    </div>
+
+
+    <button class="btn btn-danger full"
+            onclick="resetDemo()"
+            style="margin-top:15px">
+
+        🔄 รีเซ็ตระบบ Demo
+
+    </button>
+
+</section>
+
+
+<!-- NAV -->
+<nav class="bottom-nav">
+
+    <button class="nav-btn active"
+            onclick="showPage('home',this)">
+
+        <div class="nav-icon">⌂</div>
+        หน้าหลัก
+
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('queue',this)">
+
+        <div class="nav-icon">📅</div>
+        คิวของฉัน
+
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('notifications',this)">
+
+        <div class="nav-icon">🔔</div>
+        แจ้งเตือน
+
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('history',this)">
+
+        <div class="nav-icon">◷</div>
+        ประวัติ
+
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('profile',this)">
+
+        <div class="nav-icon">👤</div>
+        โปรไฟล์
+
+    </button>
+
+</nav>
+
+</div>
+
+
+<!-- MACHINE MODAL -->
+<div class="modal"
+     id="machineModal">
+
+    <div class="modal-box">
+
+        <button class="close-modal"
+                onclick="closeModal()">
+            ✕
+        </button>
+
+        <div class="modal-head">
+
+            <div class="modal-machine-icon">
+                🧺
+            </div>
+
+            <div>
+
+                <h2 id="modalTitle">
+                    เครื่อง 01
+                </h2>
+
+                <p id="modalStatus">
+                    ว่าง
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-title">
+                สถานะปัจจุบัน
+            </div>
+
+            <div class="info-value"
+                 id="modalInfo">
+                เครื่องพร้อมใช้งาน
+            </div>
+
+        </div>
+
+
+        <div class="modal-actions"
+             id="modalActions">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- GENERAL MODAL -->
+<div class="modal"
+     id="generalModal">
+
+    <div class="modal-box">
+
+        <button class="close-modal"
+                onclick="closeGeneralModal()">
+            ✕
+        </button>
+
+        <div class="modal-head">
+
+            <div class="modal-machine-icon">
+                ℹ️
+            </div>
+
+            <div>
+                <h2 id="generalTitle">
+                    รายละเอียด
+                </h2>
+                <p>
+                    Smart Laundry
+                </p>
+            </div>
+
+        </div>
+
+        <div class="info-box">
+
+            <div id="generalContent"
+                 style="font-size:13px;line-height:1.8">
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary full"
+                onclick="closeGeneralModal()">
+
+            ปิด
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+<div class="toast"
+     id="toast">
+
+    <strong id="toastTitle">
+        แจ้งเตือน
+    </strong>
+
+    <span id="toastMessage">
+        ระบบทำงานเรียบร้อย
+    </span>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   DEFAULT DATA
+========================================================= */
+
+const defaultMachines = [
+
+    {
+        id:1,
+        status:"available",
+        seconds:0
+    },
+
+    {
+        id:2,
+        status:"available",
+        seconds:0
+    },
+
+    {
+        id:3,
+        status:"washing",
+        seconds:18 * 60
+    },
+
+    {
+        id:4,
+        status:"washing",
+        seconds:12 * 60
+    },
+
+    {
+        id:5,
+        status:"done",
+        seconds:0
+    },
+
+    {
+        id:6,
+        status:"error",
+        seconds:0
+    }
+
+];
+
+
+const defaultNotifications = [
+
+    {
+        title:"เครื่อง 03 กำลังซัก",
+        message:"เหลือเวลาอีก 18 นาที",
+        type:"normal",
+        time:"10:12 น.",
+        read:false
+    },
+
+    {
+        title:"เครื่อง 05 ซักเสร็จแล้ว",
+        message:"กรุณานำผ้าออกภายใน 10 นาที",
+        type:"normal",
+        time:"10:32 น.",
+        read:false
+    },
+
+    {
+        title:"เครื่อง 06 พบข้อผิดพลาด",
+        message:"เครื่องหยุดทำงาน กรุณาตรวจสอบ",
+        type:"error",
+        time:"10:42 น.",
+        read:false
+    }
+
+];
+
+
+const defaultHistory = [
+
+    {
+        date:"26 ส.ค. 69",
+        machine:"เครื่อง 03",
+        time:"30 นาที",
+        status:"สำเร็จ"
+    },
+
+    {
+        date:"24 ส.ค. 69",
+        machine:"เครื่อง 02",
+        time:"28 นาที",
+        status:"สำเร็จ"
+    },
+
+    {
+        date:"23 ส.ค. 69",
+        machine:"เครื่อง 01",
+        time:"31 นาที",
+        status:"สำเร็จ"
+    },
+
+    {
+        date:"21 ส.ค. 69",
+        machine:"เครื่อง 03",
+        time:"30 นาที",
+        status:"Error"
+    }
+
+];
+
+
+let machines =
+    JSON.parse(JSON.stringify(defaultMachines));
+
+let notifications =
+    JSON.parse(JSON.stringify(defaultNotifications));
+
+let history =
+    JSON.parse(JSON.stringify(defaultHistory));
+
+let myQueue = [];
+
+let notificationsEnabled = true;
+
+let laundryRemoveMinutes = 10;
+
+let toastTimer;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function machineName(id){
+
+    return "เครื่อง " +
+        String(id).padStart(2,"0");
+
+}
+
+
+function statusText(status){
+
+    if(status === "available")
+        return "ว่าง";
+
+    if(status === "washing")
+        return "กำลังซัก";
+
+    if(status === "done")
+        return "ซักเสร็จ รอเจ้าของ";
+
+    if(status === "error")
+        return "Error";
+
+    if(status === "broken")
+        return "เสีย";
+
+    return "-";
+
+}
+
+
+function formatTime(seconds){
+
+    if(seconds <= 0)
+        return "00:00";
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const secs =
+        seconds % 60;
+
+    return String(minutes).padStart(2,"0")
+        + ":" +
+        String(secs).padStart(2,"0");
+
+}
+
+
+/* =========================================================
+   RENDER MACHINES
+========================================================= */
+
+function renderMachines(){
+
+    const grid =
+        document.getElementById("machineGrid");
+
+    grid.innerHTML = "";
+
+    machines.forEach(machine => {
+
+        let extra = "";
+
+        if(machine.status === "washing"){
+
+            extra = `
+                <div class="machine-time">
+                    ⏱ ${formatTime(machine.seconds)}
+                </div>
+            `;
+
+        }
+
+        if(machine.status === "error"){
+
+            extra = `
+                <div class="machine-time">
+                    ⚠ ตรวจพบข้อผิดพลาด
+                </div>
+            `;
+
+        }
+
+        if(machine.status === "done"){
+
+            extra = `
+                <div class="machine-time">
+                    กรุณานำผ้าออกภายใน ${laundryRemoveMinutes} นาที
+                </div>
+            `;
+
+        }
+
+        if(machine.status === "available"){
+
+            extra = `
+                <div class="machine-time">
+                    พร้อมใช้งาน
+                </div>
+            `;
+
+        }
+
+
+        grid.innerHTML += `
+
+            <div
+                class="machine ${machine.status}"
+                onclick="openMachine(${machine.id})"
+            >
+
+                <div class="machine-top">
+
+                    <div class="machine-number">
+                        ${String(machine.id).padStart(2,"0")}
+                    </div>
+
+                    <div class="status-dot"></div>
+
+                </div>
+
+                <div class="machine-icon">
+                    🧺
+                </div>
+
+                <div class="machine-status">
+                    ${statusText(machine.status)}
+                </div>
+
+                ${extra}
+
+            </div>
+
+        `;
+
+    });
+
+    updateSummary();
+    updateSystemStatus();
+
+}
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+function updateSummary(){
+
+    document.getElementById("availableCount")
+        .innerText =
+        machines.filter(
+            m => m.status === "available"
+        ).length;
+
+
+    document.getElementById("washingCount")
+        .innerText =
+        machines.filter(
+            m => m.status === "washing"
+        ).length;
+
+
+    document.getElementById("doneCount")
+        .innerText =
+        machines.filter(
+            m => m.status === "done"
+        ).length;
+
+
+    document.getElementById("errorCount")
+        .innerText =
+        machines.filter(
+            m => m.status === "error"
+        ).length;
+
+}
+
+
+/* =========================================================
+   SYSTEM STATUS
+========================================================= */
+
+function updateSystemStatus(){
+
+    const error =
+        machines.some(
+            m => m.status === "error"
+        );
+
+    const title =
+        document.getElementById(
+            "systemStatusTitle"
+        );
+
+    const check =
+        document.getElementById(
+            "systemCheck"
+        );
+
+    if(error){
+
+        title.innerText =
+            "พบเครื่องขัดข้อง";
+
+        check.innerText = "⚠";
+
+    }else{
+
+        title.innerText =
+            "ระบบทำงานปกติ";
+
+        check.innerText = "✓";
+
+    }
+
+}
+
+
+/* =========================================================
+   OPEN MACHINE
+========================================================= */
+
+function openMachine(id){
+
+    const machine =
+        machines.find(
+            m => m.id === id
+        );
+
+    if(!machine)
+        return;
+
+
+    document.getElementById("modalTitle")
+        .innerText =
+        machineName(id);
+
+
+    document.getElementById("modalStatus")
+        .innerText =
+        statusText(machine.status);
+
+
+    let info = "";
+
+
+    if(machine.status === "available"){
+
+        info =
+            "เครื่องพร้อมใช้งาน";
+
+    }
+
+
+    if(machine.status === "washing"){
+
+        info =
+            "เหลือเวลา " +
+            formatTime(machine.seconds);
+
+    }
+
+
+    if(machine.status === "done"){
+
+        info =
+            "ซักเสร็จแล้ว กรุณานำผ้าออก";
+
+    }
+
+
+    if(machine.status === "error"){
+
+        info =
+            "เครื่องหยุดทำงานผิดปกติ";
+
+    }
+
+
+    if(machine.status === "broken"){
+
+        info =
+            "เครื่องเสีย ไม่สามารถใช้งานได้";
+
+    }
+
+
+    document.getElementById("modalInfo")
+        .innerText = info;
+
+
+    let buttons = "";
+
+
+    if(machine.status === "available"){
+
+        buttons += `
+
+            <button
+                class="btn btn-primary full"
+                onclick="startWash(${id})"
+            >
+                ▶ เริ่มซัก 30 นาที
+            </button>
+
+        `;
+
+    }
+
+
+    if(machine.status === "washing"){
+
+        buttons += `
+
+            <button
+                class="btn btn-light full"
+                onclick="reserveMachine(${id})"
+            >
+                📅 จองคิวเครื่องนี้
+            </button>
+
+            <button
+                class="btn btn-danger full"
+                onclick="simulateError(${id})"
+            >
+                ⚠ จำลองเครื่อง Error
+            </button>
+
+            <button
+                class="btn btn-warning full"
+                onclick="finishWashDemo(${id})"
+            >
+                ⏩ จำลองซักเสร็จทันที
+            </button>
+
+        `;
+
+    }
+
+
+    if(machine.status === "done"){
+
+        buttons += `
+
+            <button
+                class="btn btn-success full"
+                onclick="removeLaundry(${id})"
+            >
+                ✓ นำผ้าออกแล้ว
+            </button>
+
+        `;
+
+    }
+
+
+    if(machine.status === "error"){
+
+        buttons += `
+
+            <button
+                class="btn btn-success full"
+                onclick="repairMachine(${id})"
+            >
+                🔧 จำลองแก้ไขเครื่อง
+            </button>
+
+        `;
+
+    }
+
+
+    document.getElementById("modalActions")
+        .innerHTML = buttons;
+
+
+    document.getElementById("machineModal")
+        .classList.add("show");
+
+}
+
+
+/* =========================================================
+   CLOSE MACHINE
+========================================================= */
+
+function closeModal(){
+
+    document
+        .getElementById("machineModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   START WASH
+========================================================= */
+
+function startWash(id){
+
+    const machine =
+        machines.find(
+            m => m.id === id
+        );
+
+    if(!machine)
+        return;
+
+
+    machine.status = "washing";
+
+    machine.seconds = 30 * 60;
+
+
+    history.unshift({
+
+        date:new Date().toLocaleDateString(
+            "th-TH",
+            {
+                day:"numeric",
+                month:"short",
+                year:"numeric"
+            }
+        ),
+
+        machine:machineName(id),
+
+        time:"30 นาที",
+
+        status:"กำลังซัก"
+
+    });
+
+
+    closeModal();
+
+
+    addNotification(
+        "เริ่มซัก " + machineName(id),
+        "ระบบกำลังติดตามสถานะแบบ Real-time",
+        "normal"
+    );
+
+
+    showToast(
+        "เริ่มซักเรียบร้อย",
+        machineName(id) +
+        " กำลังซัก 30 นาที"
+    );
+
+
+    renderMachines();
+    renderHistory();
+
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function simulateError(id){
+
+    const machine =
+        machines.find(
+            m => m.id === id
+        );
+
+    if(!machine)
+        return;
+
+
+    machine.status = "error";
+    machine.seconds = 0;
+
+
+    closeModal();
+
+
+    addNotification(
+        machineName(id) +
+        " หยุดทำงาน",
+
+        "พบข้อผิดพลาด กรุณาตรวจสอบเครื่อง",
+
+        "error"
+    );
+
+
+    history.unshift({
+
+        date:new Date().toLocaleDateString(
+            "th-TH",
+            {
+                day:"numeric",
+                month:"short",
+                year:"numeric"
+            }
+        ),
+
+        machine:machineName(id),
+
+        time:"หยุดก่อนครบกำหนด",
+
+        status:"Error"
+
+    });
+
+
+    showToast(
+        "⚠ เครื่อง Error",
+        "ระบบตรวจพบข้อผิดพลาดและแจ้งเตือนแล้ว"
+    );
+
+
+    renderMachines();
+    renderHistory();
+
+}
+
+
+/* =========================================================
+   REPAIR
+========================================================= */
+
+function repairMachine(id){
+
+    const machine =
+        machines.find(
+            m => m.id === id
+        );
+
+    if(!machine)
+        return;
+
+
+    machine.status = "available";
+    machine.seconds = 0;
+
+
+    closeModal();
+
+
+    addNotification(
+        machineName(id) +
+        " กลับมาใช้งานได้",
+
+        "เครื่องพร้อมให้ผู้ใช้ใช้งาน",
+
+        "normal"
+    );
+
+
+    showToast(
+        "แก้ไขเรียบร้อย",
+        machineName(id) +
+        " พร้อมใช้งานแล้ว"
+    );
+
+
+    renderMachines();
+
+}
+
+
+/* =========================================================
+   REMOVE LAUNDRY
+========================================================= */
+
+function removeLaundry(id){
+
+    const machine =
+        machines.find(
+            m => m.id === id
+        );
+
+    if(!machine)
+        return;
+
+
+    machine.status = "available";
+    machine.seconds = 0;
+
+
+    closeModal();
+
+
+    addNotification(
+        "นำผ้าออกแล้ว",
+
+        machineName(id) +
+        " พร้อมให้ผู้ใช้คนถัดไป",
+
+        "normal"
+    );
+
+
+    showToast(
+        "เครื่องพร้อมใช้งาน",
+        machineName(id) +
+        " กลับมาเป็นเครื่องว่าง"
+    );
+
+
+    renderMachines();
+
+}
+
+
+/* =========================================================
+   FINISH DEMO
+========================================================= */
+
+function finishWashDemo(id){
+
+    const machine =
+        machines.find(
+            m => m.id === id
+        );
+
+    if(!machine)
+        return;
+
+
+    machine.seconds = 0;
+    machine.status = "done";
+
+
+    closeModal();
+
+
+    addNotification(
+        machineName(id) +
+        " ซักเสร็จแล้ว",
+
+        "กรุณานำผ้าออกภายใน " +
+        laundryRemoveMinutes +
+        " นาที",
+
+        "normal"
+    );
+
+
+    showToast(
+        "✓ ซักเสร็จแล้ว",
+        machineName(id) +
+        " กรุณานำผ้าออก"
+    );
+
+
+    renderMachines();
+
+}
+
+
+/* =========================================================
+   RESERVE
+========================================================= */
+
+function reserveMachine(id){
+
+    if(myQueue.includes(id)){
+
+        showToast(
+            "มีคิวอยู่แล้ว",
+            "คุณจองเครื่องนี้ไว้แล้ว"
+        );
+
+        closeModal();
+
+        return;
+
+    }
+
+
+    myQueue.push(id);
+
+
+    closeModal();
+
+
+    addNotification(
+        "จองคิวสำเร็จ",
+
+        machineName(id) +
+        " อยู่ในคิวของคุณ",
+
+        "normal"
+    );
+
+
+    showToast(
+        "📅 จองคิวสำเร็จ",
+        "ดูคิวได้ที่เมนู คิวของฉัน"
+    );
+
+
+    renderQueue();
+
+}
+
+
+/* =========================================================
+   QUEUE
+========================================================= */
+
+function renderQueue(){
+
+    const list =
+        document.getElementById(
+            "queueList"
+        );
+
+
+    if(myQueue.length === 0){
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📅
+                </div>
+
+                <h3>
+                    ยังไม่มีคิวของคุณ
+                </h3>
+
+                <p>
+                    เลือกเครื่องที่กำลังซัก
+                    เพื่อจองคิว
+                </p>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="showPage('home')"
+                    style="margin-top:15px"
+                >
+                    ไปหน้าหลัก
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML = "";
+
+
+    myQueue.forEach(
+        (id,index)=>{
+
+            const machine =
+                machines.find(
+                    m => m.id === id
+                );
+
+
+            let estimated = 30;
+
+
+            if(machine &&
+               machine.status === "washing"){
+
+                estimated =
+                    Math.ceil(
+                        machine.seconds / 60
+                    );
+
+            }
+
+
+            list.innerHTML += `
+
+                <div class="queue-card">
+
+                    <div class="queue-number">
+                        ${index+1}
+                    </div>
+
+                    <div class="queue-info">
+
+                        <strong>
+                            ${machineName(id)}
+                        </strong>
+
+                        <span>
+                            คิวที่ ${index+1}
+                            • ประมาณ ${estimated} นาที
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="cancel"
+                        onclick="cancelQueue(${id})"
+                    >
+                        ✕
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CANCEL QUEUE
+========================================================= */
+
+function cancelQueue(id){
+
+    myQueue =
+        myQueue.filter(
+            machineId => machineId !== id
+        );
+
+
+    renderQueue();
+
+
+    showToast(
+        "ยกเลิกคิวแล้ว",
+        "ระบบนำคิวออกเรียบร้อย"
+    );
+
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+function addNotification(
+    title,
+    message,
+    type
+){
+
+    notifications.unshift({
+
+        title:title,
+
+        message:message,
+
+        type:type,
+
+        time:new Date().toLocaleTimeString(
+            "th-TH",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        ) + " น.",
+
+        read:false
+
+    });
+
+
+    renderNotifications();
+
+}
+
+
+function renderNotifications(){
+
+    const list =
+        document.getElementById(
+            "notificationList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    if(notifications.length === 0){
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🔔
+                </div>
+
+                <h3>
+                    ไม่มีการแจ้งเตือน
+                </h3>
+
+                <p>
+                    ขณะนี้ไม่มีเหตุการณ์ใหม่
+                </p>
+
+            </div>
+
+        `;
+
+        updateNotificationDot();
+
+        return;
+
+    }
+
+
+    notifications.forEach(n=>{
+
+        const isError =
+            n.type === "error";
+
+
+        list.innerHTML += `
+
+            <div
+                class="notification-card
+                ${isError ? "error-notice":""}"
+                style="${n.read ? "opacity:.65":""}"
+            >
+
+                <div class="notice-icon">
+
+                    ${isError ? "⚠" : "🔔"}
+
+                </div>
+
+                <div class="notice-content">
+
+                    <strong>
+                        ${n.title}
+                    </strong>
+
+                    <p>
+                        ${n.message}
+                    </p>
+
+                    <div class="notice-time">
+                        ${n.time}
+                        ${n.read ? " • อ่านแล้ว":""}
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    updateNotificationDot();
+
+}
+
+
+function markNotificationsRead(){
+
+    notifications.forEach(
+        n => n.read = true
+    );
+
+
+    renderNotifications();
+
+
+    showToast(
+        "อ่านแล้ว",
+        "ทำเครื่องหมายการแจ้งเตือนทั้งหมดแล้ว"
+    );
+
+}
+
+
+function updateNotificationDot(){
+
+    const unread =
+        notifications.some(
+            n => !n.read
+        );
+
+
+    document.getElementById(
+        "notificationDot"
+    ).style.display =
+        unread ? "block" : "none";
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function renderHistory(){
+
+    const list =
+        document.getElementById(
+            "historyList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    if(history.length === 0){
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ◷
+                </div>
+
+                <h3>
+                    ยังไม่มีประวัติ
+                </h3>
+
+                <p>
+                    เมื่อมีการใช้งานเครื่อง
+                    ประวัติจะแสดงที่นี่
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    history.forEach(h=>{
+
+        const error =
+            h.status === "Error";
+
+
+        list.innerHTML += `
+
+            <div class="history-card">
+
+                <div class="history-icon">
+                    🧺
+                </div>
+
+                <div class="history-info">
+
+                    <strong>
+                        ${h.machine}
+                    </strong>
+
+                    <p>
+                        ${h.date}
+                        •
+                        ${h.time}
+                    </p>
+
+                </div>
+
+                <div class="badge
+                    ${error
+                    ? "badge-error"
+                    : "badge-success"}">
+
+                    ${h.status}
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+function clearHistory(){
+
+    if(!confirm(
+        "ต้องการล้างประวัติ Demo ทั้งหมดหรือไม่?"
+    )){
+        return;
+    }
+
+
+    history = [];
+
+
+    renderHistory();
+
+
+    showToast(
+        "ล้างประวัติแล้ว",
+        "ประวัติการใช้งานถูกล้างเรียบร้อย"
+    );
+
+}
+
+
+/* =========================================================
+   PAGE NAVIGATION
+========================================================= */
+
+function showPage(
+    page,
+    button
+){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            p => p.classList.remove("active")
+        );
+
+
+    document
+        .getElementById(page)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(
+            btn => btn.classList.remove("active")
+        );
+
+
+    if(button){
+
+        button.classList.add("active");
+
+    }else{
+
+        const buttons =
+            document.querySelectorAll(
+                ".nav-btn"
+            );
+
+
+        if(page === "home")
+            buttons[0].classList.add("active");
+
+        if(page === "queue")
+            buttons[1].classList.add("active");
+
+        if(page === "notifications")
+            buttons[2].classList.add("active");
+
+        if(page === "history")
+            buttons[3].classList.add("active");
+
+        if(page === "profile")
+            buttons[4].classList.add("active");
+
+    }
+
+
+    if(page === "queue")
+        renderQueue();
+
+
+    if(page === "notifications")
+        renderNotifications();
+
+
+    if(page === "history")
+        renderHistory();
+
+}
+
+
+/* =========================================================
+   PROFILE SETTINGS
+========================================================= */
+
+function toggleNotifications(){
+
+    notificationsEnabled =
+        !notificationsEnabled;
+
+
+    const switchElement =
+        document.getElementById(
+            "notificationSwitch"
+        );
+
+
+    const text =
+        document.getElementById(
+            "notificationSetting"
+        );
+
+
+    if(notificationsEnabled){
+
+        switchElement.classList.add("on");
+
+        text.innerText =
+            "เปิดใช้งาน";
+
+        showToast(
+            "เปิดการแจ้งเตือน",
+            "ระบบจะแจ้งเตือนเหตุการณ์สำคัญ"
+        );
+
+    }else{
+
+        switchElement.classList.remove("on");
+
+        text.innerText =
+            "ปิดใช้งาน";
+
+        showToast(
+            "ปิดการแจ้งเตือน",
+            "ระบบจะไม่แสดงแจ้งเตือนใหม่"
+        );
+
+    }
+
+}
+
+
+function changeLaundryTime(){
+
+    const value =
+        prompt(
+            "กำหนดเวลานำผ้าออก (นาที)",
+            laundryRemoveMinutes
+        );
+
+
+    if(value === null)
+        return;
+
+
+    const number =
+        parseInt(value);
+
+
+    if(
+        isNaN(number) ||
+        number < 1 ||
+        number > 60
+    ){
+
+        showToast(
+            "ข้อมูลไม่ถูกต้อง",
+            "กรุณาระบุค่าระหว่าง 1-60 นาที"
+        );
+
+        return;
+
+    }
+
+
+    laundryRemoveMinutes =
+        number;
+
+
+    document.getElementById(
+        "laundryTimeText"
+    ).innerText =
+        number + " นาที";
+
+
+    renderMachines();
+
+
+    showToast(
+        "บันทึกการตั้งค่า",
+        "เวลานำผ้าถูกตั้งเป็น " +
+        number +
+        " นาที"
+    );
+
+}
+
+
+function showHelp(){
+
+    showGeneralModal(
+        "ช่วยเหลือ",
+        `
+        <b>วิธีใช้งานระบบ</b><br>
+        1. เลือกเครื่องที่ต้องการ<br>
+        2. ถ้าเครื่องว่าง ให้กด “เริ่มซัก”<br>
+        3. ถ้าเครื่องกำลังซัก ให้กด “จองคิว”<br>
+        4. เมื่อซักเสร็จ ระบบจะแจ้งเตือน<br>
+        5. หากเกิด Error ผู้ดูแลสามารถตรวจสอบและแก้ไขเครื่องได้
+        `
+    );
+
+}
+
+
+function showAbout(){
+
+    showGeneralModal(
+        "เกี่ยวกับระบบ",
+        `
+        <b>SMART LAUNDRY</b><br>
+        ระบบจัดการและเฝ้าระวังเครื่องซักผ้าส่วนกลาง<br><br>
+
+        Version: 1.0 Demo<br>
+        ระบบตัวอย่างสำหรับนำเสนอแนวคิด Smart Laundry<br><br>
+
+        ฟังก์ชันหลัก:<br>
+        • ตรวจสอบสถานะเครื่อง<br>
+        • เริ่มซักและนับเวลา<br>
+        • จองคิว<br>
+        • แจ้งเตือน Error<br>
+        • ประวัติการใช้งาน
+        `
+    );
+
+}
+
+
+/* =========================================================
+   GENERAL MODAL
+========================================================= */
+
+function showGeneralModal(
+    title,
+    content
+){
+
+    document.getElementById(
+        "generalTitle"
+    ).innerText = title;
+
+
+    document.getElementById(
+        "generalContent"
+    ).innerHTML = content;
+
+
+    document.getElementById(
+        "generalModal"
+    ).classList.add("show");
+
+}
+
+
+function closeGeneralModal(){
+
+    document.getElementById(
+        "generalModal"
+    ).classList.remove("show");
+
+}
+
+
+/* =========================================================
+   RESET DEMO
+========================================================= */
+
+function resetDemo(){
+
+    if(!confirm(
+        "ต้องการรีเซ็ตระบบ Demo กลับเป็นค่าเริ่มต้นหรือไม่?"
+    )){
+        return;
+    }
+
+
+    machines =
+        JSON.parse(
+            JSON.stringify(defaultMachines)
+        );
+
+
+    notifications =
+        JSON.parse(
+            JSON.stringify(defaultNotifications)
+        );
+
+
+    history =
+        JSON.parse(
+            JSON.stringify(defaultHistory)
+        );
+
+
+    myQueue = [];
+
+
+    notificationsEnabled = true;
+
+    laundryRemoveMinutes = 10;
+
+
+    document.getElementById(
+        "notificationSetting"
+    ).innerText = "เปิดใช้งาน";
+
+
+    document.getElementById(
+        "notificationSwitch"
+    ).classList.add("on");
+
+
+    document.getElementById(
+        "laundryTimeText"
+    ).innerText = "10 นาที";
+
+
+    renderMachines();
+
+    renderQueue();
+
+    renderNotifications();
+
+    renderHistory();
+
+
+    showToast(
+        "รีเซ็ตระบบแล้ว",
+        "ข้อมูล Demo กลับเป็นค่าเริ่มต้น"
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(
+    title,
+    message
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    document.getElementById(
+        "toastTitle"
+    ).innerText = title;
+
+
+    document.getElementById(
+        "toastMessage"
+    ).innerText = message;
+
+
+    toast.classList.add("show");
+
+
+    clearTimeout(toastTimer);
+
+
+    toastTimer =
+        setTimeout(
+            ()=>{
+                toast.classList.remove("show");
+            },
+            3500
+        );
+
+}
+
+
+/* =========================================================
+   REAL-TIME TIMER
+========================================================= */
+
+setInterval(()=>{
+
+    let changed = false;
+
+
+    machines.forEach(
+        machine => {
+
+            if(
+                machine.status === "washing" &&
+                machine.seconds > 0
+            ){
+
+                machine.seconds--;
+
+                changed = true;
+
+
+                if(machine.seconds === 0){
+
+                    machine.status = "done";
+
+
+                    addNotification(
+
+                        machineName(machine.id) +
+                        " ซักเสร็จแล้ว",
+
+                        "กรุณานำผ้าออกภายใน " +
+                        laundryRemoveMinutes +
+                        " นาที",
+
+                        "normal"
+
+                    );
+
+
+                    showToast(
+
+                        "✓ ซักเสร็จแล้ว",
+
+                        machineName(machine.id) +
+                        " กรุณานำผ้าออก"
+
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    if(changed){
+
+        renderMachines();
+
+        renderQueue();
+
+    }
+
+},1000);
+
+
+/* =========================================================
+   MODAL CLICK OUTSIDE
+========================================================= */
+
+document
+    .getElementById("machineModal")
+    .addEventListener(
+        "click",
+        function(e){
+
+            if(e.target === this){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("generalModal")
+    .addEventListener(
+        "click",
+        function(e){
+
+            if(e.target === this){
+
+                closeGeneralModal();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderMachines();
+
+renderQueue();
+
+renderNotifications();
+
+renderHistory();
+
+</script>
+
+</body>
+</html>
+```
