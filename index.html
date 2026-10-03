@@ -2381,7 +2381,7 @@ button:active{
 <div id="servicePaymentModal" class="modal">
   <div class="modal-box">
     <div class="modal-head">
-      <h2>💳 ยอดรวมคำสั่งซื้อ</h2>
+      <h2>💳 ชำระเงินก่อนใช้งาน</h2>
       <button class="close" onclick="closeServicePayment()">✕</button>
     </div>
     <div class="panel" style="margin:0 0 12px;padding:14px">
@@ -3841,8 +3841,10 @@ function openMachine(id){
   if(!isAdmin()){
 
     if(machine.status==="available"){
+      const price=servicePrice(machine.type);
+      const actionText=machine.type==="washer" ? "เริ่มซัก" : "เริ่มอบ";
       actions.innerHTML=`
-        <button class="btn primary" onclick="startMachine(${id});closeModal()">▶ เริ่มใช้งาน</button>
+        <button class="btn primary" onclick="startMachine(${id});closeModal()">💳 ชำระ ฿${price.toLocaleString("th-TH")} → ${actionText}</button>
         <button class="btn light" onclick="closeModal();openQueue()">📅 จองคิว</button>
       `;
     }else if(machine.status==="done"){
