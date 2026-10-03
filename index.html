@@ -74,6 +74,8 @@ button:active{
   max-width:1500px;
   margin:auto;
   min-height:100vh;
+  padding-left:100px;
+  box-sizing:border-box;
 }
 
 /* LOGIN */
@@ -270,11 +272,19 @@ button:active{
 }
 
 .page{
-  display:none;
+  display:none !important;
 }
 
 .page.active{
-  display:block;
+  display:block !important;
+}
+
+/* แยกแต่ละหน้าออกจากกันอย่างเด็ดขาด: เปิดหน้าไหน แสดงเฉพาะหน้านั้น */
+.admin-only.page{
+  display:none !important;
+}
+.admin-only.page.active{
+  display:block !important;
 }
 
 /* HERO */
@@ -1043,15 +1053,21 @@ button:active{
 /* NAV */
 
 .nav{
-  position:sticky;
+  position:fixed;
+  left:0;
+  top:76px;
   bottom:0;
   z-index:90;
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  min-height:76px;
-  border-top:1px solid var(--line);
+  width:100px;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-height:0;
+  padding:10px 6px;
+  border-right:1px solid var(--line);
   background:rgba(255,255,255,.94);
   backdrop-filter:blur(20px);
+  box-sizing:border-box;
 }
 
 .dark .nav{
@@ -1064,6 +1080,9 @@ button:active{
   color:#94a3b8;
   font-size:10px;
   font-weight:600;
+  min-height:64px;
+  border-radius:14px;
+  padding:7px 3px;
 }
 
 .nav button span{
@@ -1076,6 +1095,24 @@ button:active{
   color:var(--primary);
   font-weight:800;
 }
+
+
+
+.role-nav{display:none;flex-direction:column;align-items:stretch;width:100%;}
+.role-nav.active-role{display:flex;}
+@media(max-width:700px){.role-nav.active-role{display:grid;grid-template-columns:repeat(8,minmax(86px,1fr));width:max-content;min-width:100%;}}
+
+/* ================= ROLE / ADMIN ================= */
+.role-chip{padding:8px 12px;border-radius:99px;font-size:10px;font-weight:800;color:var(--primary);background:#eff6ff;border:1px solid #bfdbfe}
+.role-chip.admin{color:#7c3aed;background:#f5f3ff;border-color:#ddd6fe}
+.admin-only{display:none}
+.admin-dashboard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:18px}
+.admin-card{padding:20px;border:1px solid var(--line);border-radius:20px;background:var(--card);box-shadow:var(--shadow)}
+.admin-card small{display:block;color:var(--muted);font-size:10px}
+.admin-card strong{display:block;margin-top:6px;font-size:27px}
+.admin-card p{margin-top:5px;color:var(--muted);font-size:10px}
+@media(max-width:900px){.admin-dashboard{grid-template-columns:repeat(2,1fr)}.workflow{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.app{padding-left:0}.nav{position:sticky;left:auto;top:auto;bottom:0;width:100%;overflow-x:auto;flex-direction:row;display:grid;grid-template-columns:repeat(8,minmax(86px,1fr));justify-content:start;padding:0;border-right:0;border-top:1px solid var(--line);min-height:76px}.nav button{min-width:86px;min-height:76px}.main{padding-bottom:25px}.admin-dashboard{grid-template-columns:1fr 1fr}}
 
 /* MODAL */
 
@@ -1278,6 +1315,8 @@ button:active{
   margin-bottom:8px;
 }
 
+.product-shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.laundry-shop-panel{margin-top:16px}.product-card{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.product-icon{width:44px;height:44px;border-radius:13px;background:#eff6ff;display:grid;place-items:center;font-size:22px}.product-card p{margin:3px 0 0;color:var(--muted);font-size:10px}.product-price{font-size:17px;color:var(--primary)}.product-buy-row{grid-column:1/-1;display:flex;gap:8px}.product-buy-row .select{flex:1}.product-buy-row .btn{width:auto;min-width:90px;margin:0}@media(max-width:700px){.product-shop-grid{grid-template-columns:1fr}.product-card{grid-template-columns:auto 1fr auto}}
+
 /* RESPONSIVE */
 
 @media(max-width:1200px){
@@ -1382,7 +1421,108 @@ button:active{
     grid-template-columns:1fr;
   }
 }
+
+
+/* ================= CHAT ================= */
+.chat-layout{display:grid;grid-template-columns:280px 1fr;gap:16px;min-height:520px}.chat-users,.chat-panel{border:1px solid var(--line);background:var(--card);border-radius:20px;overflow:hidden}.chat-users-head,.chat-head{padding:15px 17px;border-bottom:1px solid var(--line);font-weight:800}.chat-user{display:flex;align-items:center;gap:10px;width:100%;padding:13px 15px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text);text-align:left}.chat-user:hover,.chat-user.active{background:#eff6ff}.dark .chat-user:hover,.dark .chat-user.active{background:#172554}.chat-avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#eef2ff;font-weight:800}.chat-user small{display:block;color:var(--muted);margin-top:2px;font-size:9px}.chat-body{height:390px;overflow:auto;padding:18px;background:linear-gradient(180deg,rgba(248,250,252,.7),transparent)}.dark .chat-body{background:rgba(15,23,42,.3)}.chat-msg{max-width:78%;margin:8px 0;padding:10px 12px;border-radius:15px;font-size:11px;line-height:1.65}.chat-msg.mine{margin-left:auto;background:var(--primary);color:#fff;border-bottom-right-radius:5px}.chat-msg.theirs{margin-right:auto;background:#f1f5f9;color:var(--text);border-bottom-left-radius:5px}.dark .chat-msg.theirs{background:#1e293b}.chat-time{display:block;font-size:8px;opacity:.7;margin-top:3px}.chat-compose{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}.chat-compose textarea{flex:1;min-height:46px;max-height:100px;resize:vertical;border:1px solid var(--line);border-radius:13px;padding:10px;background:var(--card);color:var(--text);font-family:inherit}.chat-compose .btn{width:auto;min-width:90px;margin:0}.chat-empty{height:100%;display:grid;place-items:center;color:var(--muted);font-size:12px;text-align:center;padding:30px}
+
+/* ================= MOBILE OPTIMIZATION ONLY ================= */
+@media(max-width:700px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  body{font-size:14px}
+  .header{height:62px;padding:0 12px;position:sticky;top:0;z-index:120}
+  .brand{min-width:0;gap:8px}
+  .brand strong{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .main{padding:12px 12px 92px;max-width:100%;overflow:hidden}
+  .page{max-width:100%;overflow:hidden}
+  .section-head{gap:10px;align-items:flex-start;flex-wrap:wrap}
+  .section-head h3{font-size:18px;line-height:1.35}
+  .section-head p{font-size:10px;line-height:1.6}
+  .hero{min-height:360px;padding:20px;border-radius:22px}
+  .hero h2{font-size:28px;line-height:1.2}
+  .hero p{font-size:12px;line-height:1.7}
+  .hero-actions{left:20px;right:20px;bottom:20px;gap:8px}
+  .hero-btn,.btn{min-height:44px;font-size:12px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .stat,.admin-card,.analytics,.summary-card,.panel,.machine-card,.product-card{min-width:0}
+  .stat{padding:13px;border-radius:16px}
+  .stat strong{font-size:20px}
+  .machine-grid{grid-template-columns:1fr;gap:12px}
+  .machine-card{padding:15px;border-radius:18px}
+  .smart,.two{grid-template-columns:1fr;gap:12px}
+  .analytics-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .admin-dashboard{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .admin-card{padding:14px;border-radius:16px}
+  .admin-card strong{font-size:21px;word-break:break-word}
+  .admin-card p{font-size:9px;line-height:1.5}
+  .form-grid,.info-grid{grid-template-columns:1fr;gap:10px}
+  input,select,textarea{max-width:100%;box-sizing:border-box;font-size:16px}
+  .table-wrap,.table-responsive{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:620px}
+  .modal{padding:10px;align-items:flex-end}
+  .modal-box{width:100%;max-height:88vh;padding:18px;border-radius:22px 22px 0 0}
+  .modal-head h2{font-size:17px}
+  .chat-layout{grid-template-columns:1fr;min-height:0}
+  .chat-users{max-height:180px;overflow:auto}
+  .chat-body{height:46vh;min-height:280px;max-height:430px}
+  .chat-msg{max-width:88%}
+  .chat-compose{position:sticky;bottom:0;background:var(--card)}
+  .nav{position:fixed;left:0;right:0;bottom:0;width:100%;height:70px;min-height:70px;z-index:200;display:grid;grid-template-columns:repeat(8,minmax(72px,1fr));overflow-x:auto;overflow-y:hidden;background:var(--card);box-shadow:0 -4px 18px rgba(15,23,42,.08);padding:0}
+  .nav button{min-width:72px;min-height:70px;height:70px;padding:6px 3px;font-size:8px;white-space:nowrap}
+  .nav button span{font-size:18px;line-height:1}
+}
+@media(max-width:420px){
+  .main{padding-left:9px;padding-right:9px}
+  .stats,.admin-dashboard,.analytics-grid{grid-template-columns:1fr 1fr}
+  .admin-card strong{font-size:18px}
+  .hero h2{font-size:25px}
+  .section-head h3{font-size:16px}
+  .nav{grid-template-columns:repeat(8,minmax(68px,1fr))}
+  .nav button{min-width:68px}
+}
+
+/* MOBILE UI POLISH — visual/layout only; no data or business logic changes */
+@media(max-width:700px){
+  .header{box-shadow:0 1px 10px rgba(15,23,42,.06)}
+  .main{padding-top:10px}
+  .section-head{margin-bottom:12px}
+  .section-head>div{min-width:0;flex:1}
+  .section-head .btn{width:auto;max-width:100%}
+  .hero{margin-bottom:12px;box-shadow:0 6px 20px rgba(15,23,42,.06)}
+  .stats{margin-bottom:12px}
+  .stat,.admin-card,.analytics,.summary-card{overflow:hidden}
+  .stat small,.admin-card small,.analytics small,.summary-card small{font-size:10px}
+  .stat strong,.admin-card strong,.analytics strong,.summary-card strong{display:block;line-height:1.2}
+  .machine-card{overflow:hidden}
+  .machine-card .btn{width:100%;margin-top:8px}
+  .panel{padding:14px}
+  .panel .section-head{padding:0}
+  .product-card{padding:12px}
+  .product-buy-row{flex-wrap:wrap}
+  .product-buy-row .select{min-width:0}
+  .product-buy-row .btn{flex:0 0 auto}
+  .btn{white-space:normal;line-height:1.3}
+  .search{width:100%;min-height:44px}
+  .form-grid>.field{min-width:0}
+  .modal-box{max-width:100%;overflow:auto}
+  .chat-users{border-radius:16px}
+  .chat-panel{border-radius:16px}
+  .nav{scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+}
+@media(max-width:380px){
+  .main{padding-left:8px;padding-right:8px}
+  .hero{padding:17px;min-height:340px}
+  .hero h2{font-size:23px}
+  .stats,.admin-dashboard,.analytics-grid{gap:7px}
+  .stat,.admin-card,.analytics,.summary-card{padding:11px}
+  .stat strong{font-size:18px}
+  .admin-card strong{font-size:17px}
+  .nav button{font-size:7px}
+}
+
 </style>
+<meta name="app-version" content="real-app-v1">
 </head>
 
 <body>
@@ -1390,45 +1530,25 @@ button:active{
 <!-- LOGIN -->
 
 <div class="auth-overlay" id="authOverlay">
-
-  <div class="login-card">
-
+  <form class="login-card" id="loginForm" autocomplete="off">
     <div class="login-logo">◉</div>
-
     <h1>SMART LAUNDRY X</h1>
-
-    <p>
-      Intelligent Laundry Management System
-    </p>
-
-    <input
-      id="loginUsername"
-      type="text"
-      placeholder="ชื่อผู้ใช้"
-    >
-
-    <input
-      id="loginPassword"
-      type="password"
-      placeholder="รหัสผ่าน"
-    >
-
-    <button
-      class="btn primary"
-      onclick="login()"
-    >
-      เข้าสู่ระบบ
-    </button>
-
+    <p>Intelligent Laundry Management System</p>
+    <input id="loginUsername" type="text" placeholder="ชื่อผู้ใช้" autocomplete="username" required>
+    <input id="loginPassword" type="password" placeholder="รหัสผ่าน" autocomplete="current-password" required>
+    <button type="submit" class="btn primary" id="loginButton">เข้าสู่ระบบ</button>
     <div class="login-demo">
-      <b>User</b> : user / user123<br>
-      <b>Admin</b> : admin / admin123
+      <b>บัญชีทดลอง</b><br>
+      User: <b>user</b> / <b>user123</b><br>
+      Admin: <b>admin</b> / <b>admin123</b>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        <button type="button" class="btn light" onclick="quickLogin('user','user123')">เข้าเป็น User</button>
+        <button type="button" class="btn light" onclick="quickLogin('admin','admin123')">เข้าเป็น Admin</button>
+      </div>
     </div>
-
-  </div>
-
+    <div id="loginError" style="display:none;margin-top:12px;padding:10px;border-radius:10px;background:#fef2f2;color:#b91c1c;font-size:13px"></div>
+  </form>
 </div>
-
 <div class="app">
 
 <header class="header">
@@ -1449,6 +1569,10 @@ button:active{
     <div class="live">
       <span class="live-dot"></span>
       LIVE SYSTEM
+    </div>
+
+    <div class="role-chip" id="headerRoleChip">
+      USER
     </div>
 
     <button
@@ -1702,6 +1826,37 @@ button:active{
 
 </div>
 
+<div class="service-fee-strip" id="serviceFeeStrip">
+  <div class="service-fee-card">
+    <span>🫧 ค่าบริการซัก</span>
+    <strong id="washerPriceDisplay">฿40</strong>
+  </div>
+  <div class="service-fee-card">
+    <span>♨ ค่าบริการอบ</span>
+    <strong id="dryerPriceDisplay">฿30</strong>
+  </div>
+</div>
+
+<div class="panel laundry-shop-panel">
+  <div class="section-head" style="margin-top:0">
+    <div><h3>🛒 ซื้อผลิตภัณฑ์ซักผ้า</h3><p>ผู้ใช้ซื้อได้ทันที ส่วนราคาแก้ไขได้เฉพาะ Admin</p></div>
+  </div>
+  <div class="product-shop-grid">
+    <div class="product-card">
+      <div class="product-icon">🧺</div>
+      <div class="grow"><strong>ผงซักฟอก</strong><p>สำหรับใช้ซักผ้า</p></div>
+      <strong class="product-price" id="detergentPriceDisplay">฿15</strong>
+      <div class="product-buy-row"><select id="detergentQty" class="select"><option value="1">1 ชิ้น</option><option value="2">2 ชิ้น</option><option value="3">3 ชิ้น</option><option value="4">4 ชิ้น</option><option value="5">5 ชิ้น</option></select><button class="btn primary" onclick="buyProduct('detergent')">ซื้อ</button></div>
+    </div>
+    <div class="product-card">
+      <div class="product-icon">🫧</div>
+      <div class="grow"><strong>น้ำยาปรับผ้านุ่ม</strong><p>สำหรับปรับผ้านุ่มและกลิ่นหอม</p></div>
+      <strong class="product-price" id="softenerPriceDisplay">฿15</strong>
+      <div class="product-buy-row"><select id="softenerQty" class="select"><option value="1">1 ชิ้น</option><option value="2">2 ชิ้น</option><option value="3">3 ชิ้น</option><option value="4">4 ชิ้น</option><option value="5">5 ชิ้น</option></select><button class="btn primary" onclick="buyProduct('softener')">ซื้อ</button></div>
+    </div>
+  </div>
+</div>
+
 <div
   id="machineGrid"
   class="machine-grid"
@@ -1721,8 +1876,8 @@ button:active{
 <div class="section-head">
 
   <div>
-    <h3>📅 คิวการใช้งาน</h3>
-    <p>ระบบคำนวณลำดับและเวลารอโดยอัตโนมัติ</p>
+    <h3>📅 คิวของฉัน</h3>
+    <p>ดูและควบคุมเฉพาะคิวของคุณ</p>
   </div>
 
   <button
@@ -1787,7 +1942,14 @@ button:active{
     class="btn light"
     onclick="exportData()"
   >
-    ⇩ Export
+    ⇩ ส่งออกรายงาน JSON
+  </button>
+
+  <button
+    class="btn success"
+    onclick="exportCSV()"
+  >
+    ⇩ ส่งออกรายงาน CSV
   </button>
 
 </div>
@@ -1843,6 +2005,21 @@ button:active{
 
 </div>
 
+<div class="summary-grid">
+  <div class="summary-card">
+    <small>ออเดอร์ที่กำลังดำเนินการ</small>
+    <strong id="activeOrderCount">0</strong>
+  </div>
+  <div class="summary-card">
+    <small>คิวที่รอดำเนินการ</small>
+    <strong id="waitingQueueCount">0</strong>
+  </div>
+  <div class="summary-card">
+    <small>เครื่องที่ต้องติดตาม</small>
+    <strong id="attentionMachineCount">0</strong>
+  </div>
+</div>
+
 <div class="two" style="margin-top:17px">
 
   <div class="panel">
@@ -1885,7 +2062,7 @@ button:active{
 
   <div class="panel">
 
-    <b>🧠 Smart Insight</b>
+    <b>🧠 ข้อมูลอัจฉริยะ</b>
 
     <div style="
       margin-top:14px;
@@ -1923,7 +2100,7 @@ button:active{
       </strong>
 
       <p style="margin-top:8px">
-        ⚡ System Health
+        ⚡ สุขภาพระบบ
       </p>
 
       <strong
@@ -1941,6 +2118,136 @@ button:active{
 
 </section>
 
+
+<!-- ADMIN DASHBOARD -->
+<section id="adminDashboard" class="page admin-only">
+  <div class="section-head">
+    <div><h3>📊 แดชบอร์ด</h3><p>แดชบอร์ดการทำงานและรายได้ของระบบสำหรับผู้ดูแล</p></div>
+  </div>
+
+  <div class="admin-dashboard">
+    <div class="admin-card"><small>ออเดอร์ทั้งหมด</small><strong id="adminOrderCount">0</strong><p>คิว + งานที่กำลังดำเนินการ</p></div>
+    <div class="admin-card"><small>ยอดรวมรายได้</small><strong id="adminRevenue">฿0</strong><p>รวมค่าซัก/อบและยอดขายผลิตภัณฑ์</p></div>
+    <div class="admin-card"><small>ยอดซัก/อบ</small><strong id="adminCollectedRevenue">฿0</strong><p>รายได้จากบริการซักและอบ</p></div>
+    <div class="admin-card"><small>ยอดขายผลิตภัณฑ์</small><strong id="adminProductRevenue">฿0</strong><p>ผงซักฟอกและน้ำยาปรับผ้านุ่ม</p></div>
+    <div class="admin-card"><small>ต้องติดตาม</small><strong id="adminAttention">0</strong><p>เครื่องขัดข้อง/ค้างรับ/ปรับปรุง</p></div>
+    <div class="admin-card"><small>ข้อความยังไม่อ่าน</small><strong id="adminUnread">0</strong><p>ข้อความจากผู้ใช้งานถึง Admin</p></div>
+  </div>
+
+  <div class="two" style="margin-top:17px">
+    <div class="panel"><div class="section-head" style="margin-top:0"><div><h3>📦 รายการล่าสุด</h3><p>ธุรกรรมล่าสุดของระบบ</p></div></div><div id="adminRecentOrders"></div></div>
+    <div class="panel"><div class="section-head" style="margin-top:0"><div><h3>⚠️ เครื่องที่ต้องติดตาม</h3><p>สถานะผิดปกติจากข้อมูลปัจจุบัน</p></div></div><div id="adminAttentionList"></div></div>
+  </div>
+</section>
+
+<!-- ADMIN MANAGEMENT -->
+<section id="adminManagement" class="page admin-only">
+  <div class="section-head">
+    <div><h3>⚙ จัดการระบบ</h3><p>ส่วนจัดการเครื่องและค่าบริการ แยกออกจากหน้า ภาพรวม</p></div>
+  </div>
+
+  <div class="panel">
+    <div class="section-head" style="margin-top:0">
+      <div><h3>🛠 จัดการเครื่อง</h3><p>เพิ่ม แก้ไข หรือลบข้อมูลเครื่อง เฉพาะผู้ดูแลระบบ</p></div>
+      <button class="btn warning" onclick="openDataManager()">⚙ จัดการข้อมูลเครื่อง</button>
+    </div>
+    <div class="empty">การจัดการเครื่องจะเปิดในหน้าต่างเฉพาะของ Admin</div>
+  </div>
+
+  <div class="panel admin-price-panel">
+    <div class="section-head" style="margin-top:0">
+      <div><h3>💰 ค่าบริการ</h3><p>ผู้ใช้ดูราคาได้อย่างเดียว ส่วนการแก้ไขราคาเป็นสิทธิ์ของ Admin เท่านั้น</p></div>
+    </div>
+    <div class="service-fee-strip">
+      <div class="service-fee-card admin-price-editor">
+        <div><span>🫧 ค่าซักผ้า</span><strong id="adminWasherPriceDisplay">฿40</strong></div>
+        <div class="admin-price-input"><input id="adminWasherPriceInput" type="number" min="0" step="1" class="search" aria-label="ค่าซักผ้า"><button class="btn primary" onclick="saveAdminServicePrices()">บันทึก</button></div>
+      </div>
+      <div class="service-fee-card admin-price-editor">
+        <div><span>♨ ค่าบริการอบผ้า</span><strong id="adminDryerPriceDisplay">฿30</strong></div>
+        <div class="admin-price-input"><input id="adminDryerPriceInput" type="number" min="0" step="1" class="search" aria-label="ค่าบริการอบผ้า"><button class="btn primary" onclick="saveAdminServicePrices()">บันทึก</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel admin-price-panel">
+    <div class="section-head" style="margin-top:0">
+      <div><h3>🛒 ราคาผลิตภัณฑ์</h3><p>ผู้ใช้ซื้อได้ แต่มีเฉพาะ Admin เท่านั้นที่แก้ไขราคาได้</p></div>
+    </div>
+    <div class="service-fee-strip">
+      <div class="service-fee-card admin-price-editor">
+        <div><span>🧺 ผงซักฟอก</span><strong id="adminDetergentPriceDisplay">฿15</strong></div>
+        <div class="admin-price-input"><input id="adminDetergentPriceInput" type="number" min="0" step="1" class="search" aria-label="ราคาผงซักฟอก"><button class="btn primary" onclick="saveAdminProductPrices()">บันทึก</button></div>
+      </div>
+      <div class="service-fee-card admin-price-editor">
+        <div><span>🫧 น้ำยาปรับผ้านุ่ม</span><strong id="adminSoftenerPriceDisplay">฿15</strong></div>
+        <div class="admin-price-input"><input id="adminSoftenerPriceInput" type="number" min="0" step="1" class="search" aria-label="ราคาน้ำยาปรับผ้านุ่ม"><button class="btn primary" onclick="saveAdminProductPrices()">บันทึก</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN QUEUE -->
+<section id="adminQueue" class="page admin-only">
+  <div class="section-head">
+    <div><h3>📅 คิวของระบบ</h3><p>คิวทั้งหมดของผู้ใช้งานสำหรับผู้ดูแลระบบ</p></div>
+  </div>
+  <div class="panel"><div id="adminQueueList"></div></div>
+</section>
+
+<!-- ADMIN ANALYTICS -->
+<section id="adminAnalytics" class="page admin-only">
+  <div class="section-head">
+    <div><h3>📈 รายงานของระบบ</h3><p>สรุปการใช้งานและรายได้สำหรับผู้ดูแลระบบ</p></div>
+  </div>
+  <div class="analytics-grid">
+    <div class="analytics"><small>รอบทั้งหมด</small><strong id="adminTotalCycles">0</strong></div>
+    <div class="analytics"><small>รอบซัก</small><strong id="adminWasherCycles">0</strong></div>
+    <div class="analytics"><small>รอบอบ</small><strong id="adminDryerCycles">0</strong></div>
+    <div class="analytics"><small>รอบสำเร็จ</small><strong id="adminSuccessCycles">0</strong></div>
+    <div class="analytics"><small>รายได้ทั้งหมด</small><strong id="adminReportRevenue">฿0</strong></div>
+    <div class="analytics"><small>ยอดขายผลิตภัณฑ์</small><strong id="adminReportProductRevenue">฿0</strong></div>
+  </div>
+  <div class="summary-grid" style="margin-top:17px">
+    <div class="summary-card"><small>ออเดอร์กำลังดำเนินการ</small><strong id="adminActiveOrders">0</strong></div>
+    <div class="summary-card"><small>คิวรอดำเนินการ</small><strong id="adminWaitingOrders">0</strong></div>
+    <div class="summary-card"><small>เครื่องต้องติดตาม</small><strong id="adminAttentionMachines">0</strong></div>
+  </div>
+</section>
+
+<!-- ADMIN CHAT -->
+<section id="adminChat" class="page admin-only">
+  <div class="section-head"><div><h3>💬 ติดต่อผู้ใช้</h3><p id="adminChatSubtitle">เลือกผู้ใช้งานเพื่ออ่านและตอบข้อความ</p></div></div>
+  <div class="chat-layout">
+    <div class="chat-users" id="adminChatUsersPanel"><div class="chat-users-head">ผู้ใช้งาน</div><div id="adminChatUsers"></div></div>
+    <div class="chat-panel"><div class="chat-head" id="adminChatHead">เลือกผู้ใช้</div><div class="chat-body" id="adminChatMessages"></div><div class="chat-compose"><textarea id="adminChatInput" placeholder="พิมพ์ข้อความตอบกลับ..." maxlength="500"></textarea><button class="btn primary" onclick="sendChatMessage()">ส่งข้อความ</button></div></div>
+  </div>
+</section>
+
+<!-- ADMIN PROFILE -->
+<section id="adminProfile" class="page admin-only">
+  <div class="section-head"><div><h3>👤 โปรไฟล์ผู้ดูแล</h3><p>ข้อมูลบัญชีของผู้ดูแลระบบเท่านั้น</p></div></div>
+  <div class="panel profile">
+    <div class="avatar">🛡️</div>
+    <div>
+      <h2 id="adminProfileName">ผู้ดูแลระบบ</h2>
+      <p id="adminProfileUsername" style="margin:4px 0 12px;color:var(--muted);font-size:11px">@admin</p>
+      <p style="margin:0 0 12px;font-size:12px">สิทธิ์: ผู้ดูแลระบบ</p>
+      <button class="btn light" onclick="logout()">🚪 ออกจากระบบ</button>
+    </div>
+  </div>
+</section>
+
+<!-- CHAT -->
+<section id="chat" class="page">
+  <div class="section-head"><div><h3>💬 ติดต่อแอดมิน</h3><p id="chatSubtitle">ส่งข้อความสอบถามปัญหาเครื่อง การจองคิว หรือการใช้งาน</p></div></div>
+  <div class="chat-layout">
+    <div class="chat-users" id="chatUsersPanel"><div class="chat-users-head">การสนทนา</div><div id="chatUsers"></div></div>
+    <div class="chat-panel"><div class="chat-head" id="chatHead">แชตกับ Admin</div><div class="chat-body" id="chatMessages"></div><div class="chat-compose"><textarea id="chatInput" placeholder="พิมพ์ข้อความ..." maxlength="500"></textarea><button class="btn primary" onclick="sendChatMessage()">ส่งข้อความ</button></div></div>
+  </div>
+
+</section>
+
 <!-- PROFILE -->
 
 <section
@@ -1952,7 +2259,7 @@ button:active{
 
   <div>
     <h3>👤 โปรไฟล์</h3>
-    <p>บัญชีและการตั้งค่าระบบ</p>
+    <p>ข้อมูลบัญชีผู้ใช้งานเท่านั้น</p>
   </div>
 
 </div>
@@ -1977,7 +2284,7 @@ button:active{
         font-size:11px;
       "
     >
-      Resident / Student
+      ผู้ใช้งานทั่วไป
     </p>
 
     <button
@@ -1991,95 +2298,37 @@ button:active{
 
 </div>
 
-<div
-  class="panel"
-  style="margin-top:15px"
->
-
-  <b>⚙ การตั้งค่า</b>
-
-  <div style="
-    margin-top:15px;
-    padding:14px 0;
-    border-bottom:1px solid var(--line);
-    font-size:12px;
-  ">
-
-    เวลานำผ้าออกหลังซัก/อบเสร็จ
-
-    <strong
-      id="removeTime"
-      style="float:right"
-    >
-      10 นาที
-    </strong>
-
-  </div>
-
-  <button
-    class="btn light"
-    style="margin-top:12px"
-    onclick="openSetting()"
-  >
-    ⚙ เปลี่ยนการตั้งค่า
-  </button>
-
-</div>
-
 </section>
 
 </main>
 
+
+
 <!-- NAV -->
 
-<nav class="nav">
+<nav class="nav" id="mainNav">
+  <div id="userNav" class="role-nav">
+    <button class="active" onclick="showPage('home',this)"><span>⌂</span>หน้าหลัก</button>
+    <button onclick="showPage('queue',this)"><span>📅</span>คิว</button>
+    <button onclick="showPage('notifications',this)"><span>🔔</span>แจ้งเตือน</button>
+    <button onclick="showPage('history',this)"><span>◷</span>ประวัติ</button>
+    <button onclick="showPage('analytics',this)"><span>📈</span>รายงาน</button>
+    <button onclick="showPage('chat',this)"><span>💬</span>ติดต่อแอดมิน</button>
+    <button onclick="showPage('profile',this)"><span>👤</span>โปรไฟล์</button>
+  </div>
 
-<button
-  class="active"
-  onclick="showPage('home',this)"
->
-  <span>⌂</span>
-  หน้าหลัก
-</button>
-
-<button
-  onclick="showPage('queue',this)"
->
-  <span>📅</span>
-  คิว
-</button>
-
-<button
-  onclick="showPage('notifications',this)"
->
-  <span>🔔</span>
-  แจ้งเตือน
-</button>
-
-<button
-  onclick="showPage('history',this)"
->
-  <span>◷</span>
-  ประวัติ
-</button>
-
-<button
-  onclick="showPage('analytics',this)"
->
-  <span>📊</span>
-  วิเคราะห์
-</button>
-
-<button
-  onclick="showPage('profile',this)"
->
-  <span>👤</span>
-  โปรไฟล์
-</button>
-
+  <div id="adminNav" class="role-nav">
+    <button id="adminDashboardNav" class="active" onclick="showPage('adminDashboard',this)"><span>📊</span>แดชบอร์ด</button>
+    <button onclick="showPage('adminManagement',this)"><span>⚙</span>จัดการระบบ</button>
+    <button onclick="showPage('adminQueue',this)"><span>📅</span>คิว</button>
+    <button onclick="showPage('adminAnalytics',this)"><span>📈</span>รายงาน</button>
+    <button onclick="showPage('adminChat',this)"><span>💬</span>ติดต่อผู้ใช้</button>
+    <button onclick="showPage('adminProfile',this)"><span>👤</span>โปรไฟล์</button>
+  </div>
 </nav>
 
 </div>
+
 
 <!-- MACHINE MODAL -->
 
@@ -2126,6 +2375,37 @@ button:active{
 
 </div>
 
+</div>
+
+<!-- ORDER PAYMENT MODAL -->
+<div id="servicePaymentModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>💳 ยอดรวมคำสั่งซื้อ</h2>
+      <button class="close" onclick="closeServicePayment()">✕</button>
+    </div>
+    <div class="panel" style="margin:0 0 12px;padding:14px">
+      <p style="margin:0 0 6px">ยอดที่ผู้ใช้ต้องโอน</p>
+      <strong id="servicePaymentAmount" style="font-size:30px;color:var(--primary)">฿0</strong>
+      <p id="servicePaymentOrderDetail" style="font-size:11px;color:var(--muted);margin:7px 0 0">รายการสั่งซื้อ</p>
+    </div>
+    <div style="padding:14px;border:1px solid #bfdbfe;border-radius:16px;background:#eff6ff;margin-bottom:12px">
+      <strong>🏦 วิธีชำระ: โอนเงิน</strong>
+      <div style="font-size:12px;line-height:1.8;margin-top:7px">
+        ธนาคาร: <b>ธนาคารตัวอย่าง</b><br>
+        ชื่อบัญชี: <b>Smart Laundry</b><br>
+        เลขบัญชี: <b>000-0-00000-0</b>
+      </div>
+      <p style="font-size:10px;color:var(--muted);margin:7px 0 0">ข้อมูลบัญชีด้านบนเป็นบัญชีตัวอย่างสำหรับทดสอบฟังก์ชัน ไม่ใช่บัญชีสำหรับโอนเงินจริง</p>
+    </div>
+    <label style="display:block;margin-bottom:7px;font-size:11px;font-weight:700">เลขอ้างอิงการโอน (ถ้ามี)</label>
+    <input id="servicePaymentRef" class="search" style="width:100%;min-width:0" placeholder="เช่น 202610031234" />
+    <p id="servicePaymentHint" style="font-size:12px;color:var(--muted);margin:10px 0 0">โอนตามยอดรวม แล้วกดยืนยันว่าโอนแล้ว ระบบนี้เป็นการจำลองการชำระเงินและไม่ตรวจธนาคารจริง</p>
+    <div style="display:flex;gap:8px;margin-top:15px">
+      <button class="btn light" style="flex:1" onclick="closeServicePayment()">ยกเลิก</button>
+      <button class="btn primary" style="flex:1" onclick="confirmServicePayment()">ยืนยันว่าโอนแล้ว</button>
+    </div>
+  </div>
 </div>
 
 <!-- QUEUE MODAL -->
@@ -2196,16 +2476,23 @@ button:active{
   style="width:100%"
 ></select>
 
+<div class="info" style="margin-top:12px">
+  <small><b>ค่าบริการ:</b> <strong id="queuePriceDisplay">฿40</strong></small>
+  <small style="display:block;margin-top:5px">ราคานี้กำหนดโดย Admin ผู้ใช้งานไม่สามารถแก้ไขราคาได้</small>
+</div>
+
 <div
   class="info"
   style="margin-top:12px"
 >
-
-<small>
-  ระบบจะคำนวณ ETA จากเวลาที่เครื่องกำลังทำงาน
-  และลำดับคิวปัจจุบัน
-</small>
-
+  <small>
+    <b>ขั้นตอนธุรกรรม:</b>
+    สร้างออเดอร์ → รอคิว → ซัก/อบ → เสร็จ → รับผ้า → ปิดงาน
+  </small>
+  <small style="margin-top:6px">
+    ระบบจะคำนวณ ETA จากเวลาที่เครื่องกำลังทำงาน
+    และลำดับคิวปัจจุบัน
+  </small>
 </div>
 
 <button
@@ -2423,7 +2710,7 @@ button:active{
 
     <div class="form-field">
 
-      <label>Machine Health (%)</label>
+      <label>สุขภาพเครื่อง (%)</label>
 
       <input
         id="crudHealth"
@@ -2524,7 +2811,7 @@ const users = [
 /* ================= STORAGE ================= */
 
 const STORAGE_KEY =
-  "smart_laundry_x_pro_v5";
+  "smart_laundry_x_pro_v7_system_chat";
 
 /* ================= DEFAULT MACHINES ================= */
 
@@ -2539,7 +2826,9 @@ const defaultMachines = [
     health:96,
     cycles:42,
     lastError:0,
-    doneAt:null
+    doneAt:null,
+    orderId:null,
+    customer:null
   },
 
   {
@@ -2551,7 +2840,9 @@ const defaultMachines = [
     health:91,
     cycles:37,
     lastError:0,
-    doneAt:null
+    doneAt:null,
+    orderId:null,
+    customer:null
   },
 
   {
@@ -2563,7 +2854,9 @@ const defaultMachines = [
     health:87,
     cycles:29,
     lastError:0,
-    doneAt:null
+    doneAt:null,
+    orderId:null,
+    customer:null
   },
 
   {
@@ -2575,7 +2868,9 @@ const defaultMachines = [
     health:62,
     cycles:51,
     lastError:0,
-    doneAt:null
+    doneAt:null,
+    orderId:null,
+    customer:null
   },
 
   {
@@ -2587,7 +2882,9 @@ const defaultMachines = [
     health:94,
     cycles:31,
     lastError:0,
-    doneAt:null
+    doneAt:null,
+    orderId:null,
+    customer:null
   },
 
   {
@@ -2599,7 +2896,9 @@ const defaultMachines = [
     health:88,
     cycles:45,
     lastError:0,
-    doneAt:null
+    doneAt:null,
+    orderId:null,
+    customer:null
   },
 
   {
@@ -2634,11 +2933,17 @@ let machines = [];
 let queue = [];
 let notifications = [];
 let history = [];
+let chatMessages = [];
+let chatTargetUser = null;
 
 let currentUser = null;
 let darkMode = false;
 let removeMinutes = 10;
 let totalCycles = 0;
+let serviceRates = { washer:40, dryer:30 };
+let productRates = { detergent:15, softener:15 };
+let productSales = [];
+let pendingServicePayment = null;
 let typeFilter = "all";
 let editingMachineId = null;
 let removeMachineId = null;
@@ -2657,24 +2962,35 @@ function loadData(){
     if(saved){
 
       machines =
-        saved.machines ||
-        structuredClone(defaultMachines);
+        Array.isArray(saved.machines)
+          ? saved.machines
+          : structuredClone(defaultMachines);
 
       queue =
-        saved.queue ||
-        [];
+        Array.isArray(saved.queue)
+          ? saved.queue
+          : [];
 
       notifications =
-        saved.notifications ||
-        [];
+        Array.isArray(saved.notifications)
+          ? saved.notifications
+          : [];
 
       history =
-        saved.history ||
-        [];
+        Array.isArray(saved.history)
+          ? saved.history
+          : [];
+
+      chatMessages =
+        Array.isArray(saved.chatMessages)
+          ? saved.chatMessages
+          : [];
 
       currentUser =
-        saved.currentUser ||
-        null;
+        saved.currentUser &&
+        typeof saved.currentUser === "object"
+          ? saved.currentUser
+          : null;
 
       darkMode =
         saved.darkMode ||
@@ -2690,6 +3006,17 @@ function loadData(){
           (sum,m)=>sum+m.cycles,
           0
         );
+
+      serviceRates = {
+        washer: Number(saved.serviceRates?.washer ?? 40),
+        dryer: Number(saved.serviceRates?.dryer ?? 30)
+      };
+
+      productRates = {
+        detergent: Number(saved.productRates?.detergent ?? 15),
+        softener: Number(saved.productRates?.softener ?? 15)
+      };
+      productSales = Array.isArray(saved.productSales) ? saved.productSales : [];
 
     }else{
 
@@ -2708,8 +3035,24 @@ function loadData(){
 
     machines =
       structuredClone(defaultMachines);
+    serviceRates = { washer:40, dryer:30 };
+    productRates = { detergent:15, softener:15 };
+    productSales = [];
 
   }
+
+  machines.forEach(m=>{
+    if(!("orderId" in m)) m.orderId=null;
+    if(!("customer" in m)) m.customer=null;
+  });
+
+  queue.forEach(q=>{
+    if(!q.orderId) q.orderId=makeOrderId();
+    if(!q.customer) q.customer=currentUser?.name || "ผู้ใช้งานทั่วไป";
+    // ออเดอร์เก่าจากเวอร์ชันก่อนหน้าไม่มีสถานะชำระเงิน ให้ถือว่าชำระแล้วเพื่อไม่ให้คิวเดิมค้าง
+    if(!q.paymentStatus) q.paymentStatus = q.status === "pending_payment" ? "pending" : "paid";
+    if(q.paymentStatus === "paid" && !q.paymentMethodName) q.paymentMethodName="เงินสด";
+  });
 
   document.body.classList.toggle(
     "dark",
@@ -2731,10 +3074,14 @@ function saveData(){
       queue,
       notifications,
       history,
+      chatMessages,
       currentUser,
       darkMode,
       removeMinutes,
-      totalCycles
+      totalCycles,
+      serviceRates,
+      productRates,
+      productSales
 
     })
   );
@@ -2743,85 +3090,51 @@ function saveData(){
 
 /* ================= LOGIN ================= */
 
-function login(){
-
-  const username =
-    document
-      .getElementById("loginUsername")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("loginPassword")
-      .value;
-
-  const user =
-    users.find(
-      u =>
-        u.username===username &&
-        u.password===password
-    );
-
-  if(!user){
-
-    toast(
-      "เข้าสู่ระบบไม่สำเร็จ",
-      "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
-    );
-
-    return;
-  }
-
-  currentUser = {
-    username:user.username,
-    name:user.name,
-    role:user.role
-  };
-
-  document
-    .getElementById("authOverlay")
-    .classList.add("hidden");
-
-  saveData();
-
-  renderAll();
-
-  toast(
-    "เข้าสู่ระบบสำเร็จ",
-    "ยินดีต้อนรับ "+user.name
-  );
-
-  if(user.role==="admin"){
-
-    addNotification(
-      "เข้าสู่ระบบ Admin",
-      "ผู้ดูแลระบบเข้าสู่ระบบสำเร็จ",
-      "normal"
-    );
-
-  }
-
+function showLoginError(message){
+  const box=document.getElementById("loginError");
+  if(box){box.textContent=message;box.style.display="block";}
 }
-
+function clearLoginError(){
+  const box=document.getElementById("loginError");
+  if(box){box.textContent="";box.style.display="none";}
+}
+function performLogin(username,password){
+  try{
+    username=String(username||"").trim().toLowerCase();
+    password=String(password||"");
+    clearLoginError();
+    if(!username||!password){showLoginError("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน");return false;}
+    const user=users.find(u=>String(u.username).trim().toLowerCase()===username && String(u.password)===password);
+    if(!user){showLoginError("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");return false;}
+    currentUser={username:user.username,name:user.name,role:user.role};
+    const overlay=document.getElementById("authOverlay");
+    if(overlay) overlay.classList.add("hidden");
+    try{saveData();}catch(e){}
+    try{renderAll();}catch(e){console.error(e);}
+    try{
+      if(user.role==="admin") showPage("adminDashboard",document.getElementById("adminDashboardNav"));
+      else showPage("home",document.querySelector('#mainNav button[onclick*="showPage(\'home\'"]'));
+    }catch(e){}
+    try{toast("เข้าสู่ระบบสำเร็จ","ยินดีต้อนรับ "+user.name+" ("+(user.role==="admin"?"Admin":"User")+")");}catch(e){}
+    return true;
+  }catch(error){console.error("LOGIN ERROR",error);showLoginError("ระบบเข้าสู่ระบบเกิดข้อผิดพลาด กรุณาลองใหม่");return false;}
+}
+function login(){
+  const u=document.getElementById("loginUsername"),p=document.getElementById("loginPassword");
+  if(!u||!p){alert("ไม่พบช่องเข้าสู่ระบบ กรุณารีเฟรชหน้าเว็บ");return false;}
+  return performLogin(u.value,p.value);
+}
+function quickLogin(username,password){
+  const u=document.getElementById("loginUsername"),p=document.getElementById("loginPassword");
+  if(u)u.value=username;if(p)p.value=password;performLogin(username,password);
+}
+const loginForm=document.getElementById("loginForm");
+if(loginForm) loginForm.addEventListener("submit",function(e){e.preventDefault();login();});
 function logout(){
-
-  currentUser = null;
-
-  saveData();
-
-  document
-    .getElementById("authOverlay")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("loginUsername")
-    .value="";
-
-  document
-    .getElementById("loginPassword")
-    .value="";
-
+  currentUser=null;try{saveData();}catch(e){}
+  const overlay=document.getElementById("authOverlay");if(overlay)overlay.classList.remove("hidden");
+  const u=document.getElementById("loginUsername"),p=document.getElementById("loginPassword");
+  if(u)u.value="";if(p)p.value="";clearLoginError();
 }
 
 /* ================= ROLE ================= */
@@ -2852,55 +3165,133 @@ function requireAdmin(){
 
 function renderUser(){
 
-  document
-    .getElementById("userName")
-    .textContent =
-      currentUser?.name ||
-      "ผู้ใช้งานทั่วไป";
+  const admin=isAdmin();
 
-  document
-    .getElementById("userRole")
-    .textContent =
-      isAdmin()
-      ? "Administrator"
-      : "Resident / Student";
+  document.getElementById("userName").textContent=currentUser?.name || "ผู้ใช้งานทั่วไป";
+  document.getElementById("userRole").textContent=admin ? "ผู้ดูแลระบบ" : "ผู้ใช้งานทั่วไป / ผู้ใช้งาน";
 
-  document
-    .getElementById("adminDataBtn")
-    .style.display =
-      isAdmin()
-      ? "inline-block"
-      : "none";
+  const dataBtn=document.getElementById("adminDataBtn");
+  if(dataBtn) dataBtn.style.display="none";
 
+  const userNav=document.getElementById("userNav");
+  const adminNav=document.getElementById("adminNav");
+  if(userNav) userNav.classList.toggle("active-role",!admin);
+  if(adminNav) adminNav.classList.toggle("active-role",admin);
+
+  // ไม่กำหนด display แบบ inline เพราะจะทำให้ทุกหน้า Admin เปิดพร้อมกัน
+  // ให้ .page/.active เป็นตัวควบคุมการแสดงผลเพียงหน้าเดียว
+  document.querySelectorAll(".admin-only").forEach(el=>{ el.style.display=""; });
+
+  const roleChip=document.getElementById("headerRoleChip");
+  if(roleChip){ roleChip.textContent=admin ? "ADMIN" : "USER"; roleChip.classList.toggle("admin",admin); }
+
+  const adminProfileName=document.getElementById("adminProfileName");
+  const adminProfileUsername=document.getElementById("adminProfileUsername");
+  if(adminProfileName) adminProfileName.textContent=currentUser?.name || "ผู้ดูแลระบบ";
+  if(adminProfileUsername) adminProfileUsername.textContent="@"+(currentUser?.username || "admin");
+
+  renderAdminDashboard();
+  renderAdminQueue();
+  renderAdminAnalytics();
+  renderAdminChat();
 }
 
 /* ================= PAGE ================= */
 
 function showPage(id,button){
 
-  document
-    .querySelectorAll(".page")
-    .forEach(
-      page =>
-        page.classList.remove("active")
-    );
+  const adminPages=["adminDashboard","adminManagement","adminQueue","adminAnalytics","adminChat","adminProfile"];
+  if(adminPages.includes(id) && !isAdmin()){
+    toast("ไม่มีสิทธิ์","หน้านี้สำหรับ Admin เท่านั้น");
+    return;
+  }
+  if(!adminPages.includes(id) && isAdmin() && ["home","queue","notifications","history","analytics","chat","profile"].includes(id)){
+    toast("แยกหน้าตามสิทธิ์","กรุณาใช้เมนูของผู้ดูแลระบบ");
+    return;
+  }
 
-  const target =
-    document.getElementById(id);
+  document.querySelectorAll(".page").forEach(page=>page.classList.remove("active"));
+  const target=document.getElementById(id);
+  if(target) target.classList.add("active");
 
-  if(target)
-    target.classList.add("active");
-
-  document
-    .querySelectorAll(".nav button")
-    .forEach(
-      btn =>
-        btn.classList.remove("active")
-    );
-
-  if(button)
-    button.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(btn=>btn.classList.remove("active"));
+  if(button) button.classList.add("active");
 }
+
+/* ================= ADMIN DASHBOARD ================= */
+function renderAdminDashboard(){
+  if(!isAdmin()) return;
+  const activeOrders=queue.length + machines.filter(m=>m.status==="washing"||m.status==="drying"||m.status==="done"||m.status==="overdue").length;
+  const attention=machines.filter(m=>["error","maintenance","overdue"].includes(m.status));
+  const unread=chatMessages.filter(m=>m.receiverUsername==="admin" && !m.read).length;
+  // เงินที่ได้รับแล้ว = ค่าซัก/อบที่ชำระแล้วทั้งหมด + ยอดขายผลิตภัณฑ์ที่ชำระแล้ว
+  // เพราะระบบให้ผู้ใช้โอนเงินก่อนใช้งานเครื่อง/รับสินค้า จึงต้องนับรายการที่ paid ทั้งหมดเป็นรายได้ที่ได้รับแล้ว
+  const paidServiceHistory=history.filter(h=>h.paymentStatus!=="pending").reduce((sum,h)=>sum+Number(h.price||0),0);
+  const paidActiveService=queue.filter(q=>q.paymentStatus==="paid" && ["waiting","ready","running"].includes(q.status)).reduce((sum,q)=>sum+Number(q.price||0),0);
+  const productRevenue=productSales.filter(sale=>sale.paymentStatus!=="pending").reduce((sum,sale)=>sum+Number(sale.total||0),0);
+  const serviceRevenue=paidServiceHistory+paidActiveService;
+  const totalRevenue=serviceRevenue+productRevenue;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set("adminOrderCount",activeOrders);
+  set("adminRevenue","฿"+totalRevenue.toLocaleString("th-TH"));
+  set("adminCollectedRevenue","฿"+serviceRevenue.toLocaleString("th-TH"));
+  set("adminProductRevenue","฿"+productRevenue.toLocaleString("th-TH"));
+  set("adminAttention",attention.length);
+  set("adminUnread",unread);
+  const recent=document.getElementById("adminRecentOrders");
+  if(recent){
+    const rows=[...queue].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,6);
+    recent.innerHTML=rows.length?rows.map(q=>`<div class="row"><div class="circle">${escapeHtml(q.orderId||"ORD")}</div><div class="grow"><strong>${escapeHtml(q.customer||q.user||"ผู้ใช้งาน")}</strong><p>${escapeHtml(machineName(q.machineId))} • ${escapeHtml(queueStatusText(q.status))}</p></div><span class="status">${escapeHtml(queueStatusText(q.status))}</span></div>`).join(""):`<div class="empty">ยังไม่มีออเดอร์ในคิว</div>`;
+  }
+  const list=document.getElementById("adminAttentionList");
+  if(list){
+    list.innerHTML=attention.length?attention.map(m=>`<div class="row"><div class="circle">${m.id}</div><div class="grow"><strong>${escapeHtml(machineName(m.id))}</strong><p>${escapeHtml(statusText(m.status))} • สุขภาพ ${m.health}%</p></div><button class="btn light" onclick="openMachine(${m.id})">ดู</button></div>`).join(""):`<div class="empty">ไม่มีเครื่องที่ต้องติดตาม</div>`;
+  }
+  renderAdminServicePrices();
+  renderAdminProductPrices();
+}
+
+
+/* ================= ADMIN SEPARATE PAGES ================= */
+function renderAdminQueue(){
+  if(!isAdmin()) return;
+  const list=document.getElementById("adminQueueList");
+  if(!list) return;
+  if(!queue.length){ list.innerHTML=`<div class="empty"><div class="empty-icon">📅</div>ยังไม่มีคิวการใช้งาน</div>`; return; }
+  list.innerHTML=queue.map((q,index)=>{
+    const m=machines.find(x=>x.id===q.machineId);
+    return `<div class="row"><div class="circle">${index+1}</div><div class="grow"><strong>${escapeHtml(machineName(q.machineId))}</strong><div class="order-id">${escapeHtml(q.orderId||("ORD-"+q.id))}</div><p>${escapeHtml(q.customer||q.user||"ผู้ใช้งาน")} • ${escapeHtml(typeText(q.type))} • ${escapeHtml(queueStatusText(q.status))} • ฿${Number(q.price||0).toLocaleString("th-TH")}</p></div><span class="status">${escapeHtml(queueStatusText(q.status))}</span>${m?`<button class="btn light" onclick="openMachine(${m.id})">ดู</button>`:""}</div>`;
+  }).join("");
+}
+
+function renderAdminAnalytics(){
+  if(!isAdmin()) return;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  const washer=machines.filter(m=>m.type==="washer").reduce((a,m)=>a+m.cycles,0);
+  const dryer=machines.filter(m=>m.type==="dryer").reduce((a,m)=>a+m.cycles,0);
+  const success=history.filter(h=>h.status==="เสร็จสิ้น").length;
+  const revenue=history.filter(h=>h.paymentStatus!=="pending").reduce((a,h)=>a+Number(h.price||0),0)+queue.filter(q=>q.paymentStatus==="paid" && ["waiting","ready","running"].includes(q.status)).reduce((a,q)=>a+Number(q.price||0),0)+productSales.filter(sale=>sale.paymentStatus!=="pending").reduce((a,sale)=>a+Number(sale.total||0),0);
+  set("adminTotalCycles",washer+dryer); set("adminWasherCycles",washer); set("adminDryerCycles",dryer); set("adminSuccessCycles",success); set("adminReportRevenue","฿"+revenue.toLocaleString("th-TH"));
+  set("adminReportProductRevenue","฿"+productSales.reduce((a,sale)=>a+Number(sale.total||0),0).toLocaleString("th-TH"));
+  set("adminActiveOrders",machines.filter(m=>["washing","drying"].includes(m.status)).length);
+  set("adminWaitingOrders",queue.filter(q=>q.status==="waiting").length);
+  set("adminAttentionMachines",machines.filter(m=>["error","maintenance","overdue"].includes(m.status)).length);
+}
+
+function renderAdminChat(){
+  if(!isAdmin()) return;
+  const usersBox=document.getElementById("adminChatUsers"); const body=document.getElementById("adminChatMessages"); const head=document.getElementById("adminChatHead");
+  if(!usersBox||!body||!head) return;
+  const names=chatUsers();
+  if(!chatTargetUser || !names.includes(chatTargetUser)) chatTargetUser=names[0]||null;
+  usersBox.innerHTML=names.length?names.map(name=>{const unread=chatMessages.filter(m=>m.receiverUsername==="admin"&&m.senderUsername===name&&!m.read).length; const safe=String(name).replace(/'/g,"\\'"); return `<button class="chat-user ${chatTargetUser===name?"active":""}" onclick="selectChatUser('${safe}')"><span class="chat-avatar">👤</span><span><b>${escapeHtml(userDisplay(name))}</b><small>@${escapeHtml(name)}${unread?" • "+unread+" ใหม่":""}</small></span></button>`;}).join(""):`<div class="chat-empty">ยังไม่มีข้อความจากผู้ใช้</div>`;
+  head.textContent=chatTargetUser?"ตอบกลับ: "+userDisplay(chatTargetUser):"เลือกผู้ใช้เพื่อเริ่มตอบกลับ";
+  const msgs=chatMessages.filter(m=>chatTargetUser&&((m.senderUsername===chatTargetUser&&m.receiverUsername==="admin")||(m.senderUsername==="admin"&&m.receiverUsername===chatTargetUser)));
+  msgs.forEach(m=>{if(m.receiverUsername==="admin"&&m.senderUsername===chatTargetUser)m.read=true;});
+  body.innerHTML=msgs.length?msgs.map(m=>`<div class="chat-msg ${m.senderUsername==="admin"?"mine":"theirs"}">${escapeHtml(m.text)}<span class="chat-time">${escapeHtml(m.senderName||m.senderUsername)} • ${formatDateTime(m.time)}</span></div>`).join(""):`<div class="chat-empty">เลือกผู้ใช้งานเพื่อดูข้อความ</div>`;
+  body.scrollTop=body.scrollHeight;
+}
+
 
 /* ================= MACHINE HELPERS ================= */
 
@@ -3128,9 +3519,12 @@ function renderMachineCard(machine){
         </div>
       </div>
 
-      <span class="status">
-        ${statusText(machine.status)}
-      </span>
+      <div style="display:flex;align-items:center;gap:6px">
+        ${machine.orderId ? `<span class="order-id">${machine.orderId}</span>` : ""}
+        <span class="status">
+          ${statusText(machine.status)}
+        </span>
+      </div>
 
     </div>
 
@@ -3425,6 +3819,16 @@ function openMachine(id){
           <b>${progressOf(machine)}%</b>
         </div>
 
+        <div class="info">
+          <small>Order ID</small>
+          <b>${machine.orderId || "-"}</b>
+        </div>
+
+        <div class="info">
+          <small>ผู้ใช้บริการ</small>
+          <b>${machine.customer || "-"}</b>
+        </div>
+
       </div>
 
     `;
@@ -3434,7 +3838,22 @@ function openMachine(id){
       "modalActions"
     );
 
-  if(machine.status==="available"){
+  if(!isAdmin()){
+
+    if(machine.status==="available"){
+      actions.innerHTML=`
+        <button class="btn primary" onclick="startMachine(${id});closeModal()">▶ เริ่มใช้งาน</button>
+        <button class="btn light" onclick="closeModal();openQueue()">📅 จองคิว</button>
+      `;
+    }else if(machine.status==="done"){
+      actions.innerHTML=`<button class="btn warning" onclick="closeModal();openRemoveModal(${id})">🧺 รับผ้า / ปิดงาน</button>`;
+    }else if(machine.status==="overdue"){
+      actions.innerHTML=`<button class="btn danger" onclick="closeModal();openRemoveModal(${id})">🔓 ปลดล็อก / รับผ้า</button>`;
+    }else{
+      actions.innerHTML=`<button class="btn light" onclick="closeModal()">ปิด</button>`;
+    }
+
+  }else if(machine.status==="available"){
 
     actions.innerHTML=`
       <button
@@ -3511,69 +3930,97 @@ function closeModal(){
 /* ================= START MACHINE ================= */
 
 function startMachine(id){
+  if(!currentUser){ toast("กรุณาเข้าสู่ระบบ","ต้องเข้าสู่ระบบก่อนใช้งานเครื่อง"); return; }
 
-  const machine =
-    machines.find(
-      m=>m.id===id
-    );
-
-  if(!machine)
-    return;
-
+  const machine=machines.find(m=>m.id===id);
+  if(!machine) return;
   if(machine.status!=="available"){
-
-    toast(
-      "ไม่สามารถเริ่มงาน",
-      "เครื่องนี้ยังไม่พร้อมใช้งาน"
-    );
-
+    toast("ไม่สามารถเริ่มงาน","เครื่องนี้ยังไม่พร้อมใช้งาน");
     return;
   }
 
-  machine.status =
-    machine.type==="washer"
-      ? "washing"
-      : "drying";
+  openServicePayment({
+    kind:"direct",
+    machineId:id,
+    type:machine.type,
+    price:servicePrice(machine.type)
+  });
+}
 
-  machine.duration =
-    machine.type==="washer"
-      ? 30*60
-      : 25*60;
+function openServicePayment(data){
+  if(!currentUser || isAdmin()){
+    toast("ไม่สามารถชำระได้","ฟังก์ชันนี้สำหรับผู้ใช้งานเท่านั้น");
+    return;
+  }
+  pendingServicePayment=data;
+  const amount=document.getElementById("servicePaymentAmount");
+  const detail=document.getElementById("servicePaymentOrderDetail");
+  const ref=document.getElementById("servicePaymentRef");
+  const hint=document.getElementById("servicePaymentHint");
+  if(amount) amount.textContent="฿"+Number(data.price||0).toLocaleString("th-TH");
+  if(detail){
+    const label=data.kind==="product" ? data.productName+" × "+data.quantity : data.kind==="queue" ? typeText(data.type)+" • จองคิว" : typeText(data.type)+" • "+machineName(data.machineId);
+    detail.textContent=label+" • ยอดรวม ฿"+Number(data.price||0).toLocaleString("th-TH");
+  }
+  if(ref) ref.value="";
+  if(hint) hint.textContent="โอนตามยอดรวม แล้วกดยืนยันว่าโอนแล้ว ระบบนี้เป็นการจำลองการชำระเงินและไม่ตรวจธนาคารจริง";
+  const modal=document.getElementById("servicePaymentModal");
+  if(modal) modal.classList.add("show");
+}
 
-  machine.seconds =
-    machine.duration;
+function closeServicePayment(){
+  const modal=document.getElementById("servicePaymentModal");
+  if(modal) modal.classList.remove("show");
+  pendingServicePayment=null;
+}
 
+function confirmServicePayment(){
+  if(!pendingServicePayment || !currentUser) return;
+  const data=pendingServicePayment;
+  const ref=(document.getElementById("servicePaymentRef")?.value || "").trim();
+  const method="transfer";
+  const methodName="โอนเงิน";
+
+  if(data.kind==="direct") startMachineAfterPayment(data.machineId, Number(data.price||0), method, methodName, ref);
+  else if(data.kind==="queue") payQueueAfterPayment(data.queueId, method, methodName, ref);
+  else if(data.kind==="product") completeProductPurchaseAfterPayment(data, method, methodName, ref);
+
+  const modal=document.getElementById("servicePaymentModal");
+  if(modal) modal.classList.remove("show");
+  pendingServicePayment=null;
+}
+
+function startMachineAfterPayment(id, paidPrice, paymentMethod, paymentMethodName, paymentRef){
+  const machine=machines.find(m=>m.id===id);
+  if(!machine || machine.status!=="available") { toast("เริ่มงานไม่ได้","เครื่องไม่พร้อมใช้งานแล้ว"); return; }
+
+  machine.status=machine.type==="washer" ? "washing" : "drying";
+  machine.duration=machine.type==="washer" ? 30*60 : 25*60;
+  machine.seconds=machine.duration;
   machine.cycles++;
-
   totalCycles++;
 
-  addNotification(
-    "รับงานสำเร็จ",
-    machineName(id)+
-    " เริ่ม"+(
-      machine.type==="washer"
-      ? "ซัก"
-      : "อบ"
-    )+
-    "แล้ว",
-    "normal"
-  );
+  const order={id:Date.now(),orderId:makeOrderId(),machineId:id,type:machine.type,user:currentUser.username,customer:currentUser.name,price:Number(paidPrice||servicePrice(machine.type)),createdAt:Date.now(),status:"running",paymentStatus:"paid",paymentMethod:paymentMethod,paymentMethodName:paymentMethodName,paymentRef:paymentRef||""};
+  queue.push(order);
+  machine.orderId=order.orderId;
+  machine.customer=currentUser.name;
+  machine.username=currentUser.username;
+  machine.price=order.price;
+  machine.paymentStatus="paid";
+  machine.paymentMethod=paymentMethod;
+  machine.paymentMethodName=paymentMethodName;
 
+  addNotification("ชำระเงินสำเร็จ",`ชำระค่าบริการ ${machineName(id)} ฿${order.price.toLocaleString("th-TH")} ด้วย${paymentMethodName}`,"normal");
   saveData();
-
   renderAll();
-
-  toast(
-    "รับงานสำเร็จ",
-    machineName(id)+
-    " เริ่มทำงานแล้ว"
-  );
-
+  toast("เริ่มใช้งานสำเร็จ",machineName(id)+" เริ่มทำงานแล้ว");
 }
 
 /* ================= REMOVE / CLOSE JOB ================= */
 
 function openRemoveModal(id){
+
+  if(!currentUser){ toast("กรุณาเข้าสู่ระบบ","ต้องเข้าสู่ระบบก่อนรับผ้า/ปิดงาน"); return; }
 
   removeMachineId=id;
 
@@ -3599,6 +4046,8 @@ function closeRemoveModal(){
 
 function confirmRemove(){
 
+  if(!currentUser) return;
+
   if(!document.getElementById("removeConfirm").checked){
 
     toast(
@@ -3617,31 +4066,45 @@ function confirmRemove(){
   if(!machine)
     return;
 
+  // เก็บข้อมูลออเดอร์เดิมไว้ก่อนคืนเครื่องเป็นสถานะว่าง
+  const completedOrderId=machine.orderId || "";
+  const completedUser=machine.username || currentUser.username || "";
+  const completedPrice=Number(machine.price || 0);
+
+  const existingHistory=history.find(h=>h.orderId && h.orderId===completedOrderId);
+  if(existingHistory){
+    existingHistory.status="เสร็จสิ้น";
+    existingHistory.price=completedPrice || Number(existingHistory.price||0);
+    existingHistory.paymentStatus=machine.paymentStatus||existingHistory.paymentStatus||"paid";
+    existingHistory.paymentMethod=machine.paymentMethod||existingHistory.paymentMethod||"cash";
+    existingHistory.paymentMethodName=machine.paymentMethodName||existingHistory.paymentMethodName||"เงินสด";
+  }else{
+    history.unshift({
+      machine:machineName(machine.id),
+      type:machine.type==="washer"?"ซัก":"อบ",
+      date:new Date().toLocaleDateString("th-TH"),
+      time:machine.type==="washer"?"30 นาที":"25 นาที",
+      status:"เสร็จสิ้น",
+      orderId:completedOrderId,
+      user:completedUser,
+      price:completedPrice,
+      paymentStatus:machine.paymentStatus||"paid",
+      paymentMethod:machine.paymentMethod||"cash",
+      paymentMethodName:machine.paymentMethodName||"เงินสด"
+    });
+  }
+
   machine.status="available";
   machine.seconds=0;
   machine.doneAt=null;
   machine.overdueNotified=false;
-
-  history.unshift({
-
-    machine:machineName(machine.id),
-
-    type:
-      machine.type==="washer"
-      ? "ซัก"
-      : "อบ",
-
-    date:new Date()
-      .toLocaleDateString("th-TH"),
-
-    time:
-      machine.type==="washer"
-      ? "30 นาที"
-      : "25 นาที",
-
-    status:"เสร็จสิ้น"
-
-  });
+  machine.orderId=null;
+  machine.customer=null;
+  machine.username=null;
+  machine.price=0;
+  machine.paymentStatus=null;
+  machine.paymentMethod=null;
+  machine.paymentMethodName=null;
 
   history =
     history.slice(0,50);
@@ -3665,6 +4128,22 @@ function confirmRemove(){
     " พร้อมใช้งานอีกครั้ง"
   );
 
+}
+
+function notifyAdminIssue(id){
+  const machine=machines.find(m=>m.id===id);
+  if(!machine) return;
+
+  addNotification(
+    "แจ้งปัญหาเครื่อง",
+    machineName(id)+" ถูกแจ้งให้ Admin ตรวจสอบแล้ว",
+    "error"
+  );
+
+  toast(
+    "ส่งแจ้งเตือนแล้ว",
+    machineName(id)+" ถูกส่งให้ Admin ตรวจสอบ"
+  );
 }
 
 /* ================= ERROR / REPAIR ================= */
@@ -3704,8 +4183,12 @@ function simulateError(id){
 
 function repairMachine(id){
 
-  if(!requireAdmin())
+  if(!requireAdmin()) return;
+
+  if(!currentUser){
+    toast("ต้องเข้าสู่ระบบ","กรุณาเข้าสู่ระบบก่อน");
     return;
+  }
 
   const machine =
     machines.find(
@@ -3744,6 +4227,166 @@ function repairMachine(id){
 
 }
 
+
+/* ================= ORDER / AUTO CALCULATION ================= */
+function makeOrderId(){
+  const d=new Date();
+  const stamp =
+    String(d.getFullYear()).slice(-2)+
+    String(d.getMonth()+1).padStart(2,"0")+
+    String(d.getDate()).padStart(2,"0");
+  const seq=String(
+    Math.floor(Math.random()*9000)+1000
+  );
+  return "ORD-"+stamp+"-"+seq;
+}
+
+function formatETA(seconds){
+  seconds=Math.max(0,Math.round(seconds||0));
+  if(seconds<60) return "เริ่มได้ทันที";
+  const min=Math.ceil(seconds/60);
+  if(min<60) return min+" นาที";
+  const h=Math.floor(min/60);
+  const m=min%60;
+  return h+" ชม. "+m+" นาที";
+}
+
+function calculateQueueETA(item){
+  if(!item) return 0;
+  const machine=machines.find(m=>m.id===item.machineId);
+  if(!machine) return 0;
+
+  let eta=0;
+
+  if(machine.status==="washing" || machine.status==="drying"){
+    eta+=Math.max(0,machine.seconds||0);
+  }
+
+  const waitingBefore=queue.filter(q=>
+    q.machineId===item.machineId &&
+    q.status==="waiting" &&
+    q.createdAt<=item.createdAt
+  );
+
+  eta += waitingBefore.filter(q=>q.id!==item.id).reduce((sum,q)=>{
+    return sum + (q.type==="washer" ? 30*60 : 25*60);
+  },0);
+
+  return eta;
+}
+
+function transactionFlowText(status){
+  const map={
+    waiting:"สร้างออเดอร์ / รอคิว",
+    ready:"พร้อมเริ่มงาน",
+    running:"กำลังซัก/อบ",
+    completed:"เสร็จแล้ว / รอรับผ้า"
+  };
+  return map[status]||status;
+}
+
+function servicePrice(type){
+  const value=Number(serviceRates?.[type]);
+  return Number.isFinite(value) && value>=0 ? value : 0;
+}
+
+function productPrice(type){
+  const value=Number(productRates?.[type]);
+  return Number.isFinite(value) && value>=0 ? value : 0;
+}
+
+function renderAdminProductPrices(){
+  if(!isAdmin()) return;
+  const dp=productPrice("detergent"), sp=productPrice("softener");
+  const dDisplay=document.getElementById("adminDetergentPriceDisplay");
+  const sDisplay=document.getElementById("adminSoftenerPriceDisplay");
+  const dInput=document.getElementById("adminDetergentPriceInput");
+  const sInput=document.getElementById("adminSoftenerPriceInput");
+  if(dDisplay) dDisplay.textContent="฿"+dp.toLocaleString("th-TH");
+  if(sDisplay) sDisplay.textContent="฿"+sp.toLocaleString("th-TH");
+  if(dInput && document.activeElement!==dInput) dInput.value=dp;
+  if(sInput && document.activeElement!==sInput) sInput.value=sp;
+}
+
+function saveAdminProductPrices(){
+  if(!requireAdmin()) return;
+  const detergent=Number(document.getElementById("adminDetergentPriceInput")?.value);
+  const softener=Number(document.getElementById("adminSoftenerPriceInput")?.value);
+  if(!Number.isFinite(detergent)||detergent<0||!Number.isFinite(softener)||softener<0){
+    toast("ข้อมูลราคาไม่ถูกต้อง","กรุณาระบุราคาเป็น 0 บาทขึ้นไป");
+    return;
+  }
+  productRates.detergent=Math.round(detergent);
+  productRates.softener=Math.round(softener);
+  saveData();
+  renderServicePrices();
+  renderAdminProductPrices();
+  toast("บันทึกราคาผลิตภัณฑ์แล้ว","ผู้ใช้งานจะเห็นราคาใหม่ทันที");
+}
+
+function buyProduct(type){
+  if(!currentUser || isAdmin()){
+    toast("ไม่สามารถซื้อได้","ฟังก์ชันซื้อผลิตภัณฑ์สำหรับผู้ใช้งานเท่านั้น");
+    return;
+  }
+  const qtyId=type==="detergent"?"detergentQty":"softenerQty";
+  const qty=Math.max(1,Math.min(5,Number(document.getElementById(qtyId)?.value||1)));
+  const names={detergent:"ผงซักฟอก",softener:"น้ำยาปรับผ้านุ่ม"};
+  const unitPrice=productPrice(type);
+  openServicePayment({kind:"product",product:type,productName:names[type],quantity:qty,price:unitPrice*qty});
+}
+
+function completeProductPurchaseAfterPayment(data, method, methodName, paymentRef){
+  const sale={id:Date.now(),product:data.product,productName:data.productName,quantity:Number(data.quantity||1),unitPrice:productPrice(data.product),total:Number(data.price||0),user:currentUser.username,customer:currentUser.name,createdAt:Date.now(),paymentStatus:"paid",paymentMethod:method,paymentMethodName:methodName,paymentRef:paymentRef||""};
+  productSales.unshift(sale);
+  productSales=productSales.slice(0,100);
+  addNotification("ชำระเงินสำเร็จ",`${data.productName} ${data.quantity} ชิ้น • ฿${sale.total.toLocaleString("th-TH")} • โอนเงิน` ,"normal");
+  saveData();
+  renderAll();
+  toast("สั่งซื้อสำเร็จ",`${data.productName} ${data.quantity} ชิ้น รวม ฿${sale.total.toLocaleString("th-TH")}`);
+}
+
+function renderServicePrices(){
+  const washer=document.getElementById("washerPriceDisplay");
+  const dryer=document.getElementById("dryerPriceDisplay");
+  const detergent=document.getElementById("detergentPriceDisplay");
+  const softener=document.getElementById("softenerPriceDisplay");
+  if(washer) washer.textContent="฿"+servicePrice("washer").toLocaleString("th-TH");
+  if(dryer) dryer.textContent="฿"+servicePrice("dryer").toLocaleString("th-TH");
+  if(detergent) detergent.textContent="฿"+productPrice("detergent").toLocaleString("th-TH");
+  if(softener) softener.textContent="฿"+productPrice("softener").toLocaleString("th-TH");
+}
+
+function renderAdminServicePrices(){
+  if(!isAdmin()) return;
+  const wp=servicePrice("washer"), dp=servicePrice("dryer");
+  const washerDisplay=document.getElementById("adminWasherPriceDisplay");
+  const dryerDisplay=document.getElementById("adminDryerPriceDisplay");
+  const washerInput=document.getElementById("adminWasherPriceInput");
+  const dryerInput=document.getElementById("adminDryerPriceInput");
+  if(washerDisplay) washerDisplay.textContent="฿"+wp.toLocaleString("th-TH");
+  if(dryerDisplay) dryerDisplay.textContent="฿"+dp.toLocaleString("th-TH");
+  if(washerInput && document.activeElement!==washerInput) washerInput.value=wp;
+  if(dryerInput && document.activeElement!==dryerInput) dryerInput.value=dp;
+}
+
+function saveAdminServicePrices(){
+  if(!requireAdmin()) return;
+  const washer=Number(document.getElementById("adminWasherPriceInput")?.value);
+  const dryer=Number(document.getElementById("adminDryerPriceInput")?.value);
+  if(!Number.isFinite(washer)||washer<0||!Number.isFinite(dryer)||dryer<0){
+    toast("ข้อมูลราคาไม่ถูกต้อง","กรุณาระบุราคาเป็น 0 บาทขึ้นไป");
+    return;
+  }
+  serviceRates.washer=Math.round(washer);
+  serviceRates.dryer=Math.round(dryer);
+  saveData();
+  renderServicePrices();
+  renderAdminServicePrices();
+  renderMachines();
+  toast("บันทึกค่าบริการแล้ว","ผู้ใช้งานจะเห็นราคาใหม่ทันที");
+}
+
 /* ================= QUEUE ================= */
 
 function openQueue(){
@@ -3771,6 +4414,9 @@ function updateQueueMachines(){
       .getElementById("queueType")
       .value;
 
+  const priceDisplay=document.getElementById("queuePriceDisplay");
+  if(priceDisplay) priceDisplay.textContent="฿"+servicePrice(type).toLocaleString("th-TH");
+
   const select =
     document
       .getElementById("queueMachine");
@@ -3794,78 +4440,49 @@ function updateQueueMachines(){
 }
 
 function addQueue(){
+  if(!currentUser){ toast("กรุณาเข้าสู่ระบบ","ต้องเข้าสู่ระบบก่อนจองคิว"); return; }
+  const type=document.getElementById("queueType").value;
+  const machineId=Number(document.getElementById("queueMachine").value);
+  const machine=machines.find(m=>m.id===machineId);
+  if(!machine) return;
 
-  const type =
-    document
-      .getElementById("queueType")
-      .value;
-
-  const machineId =
-    Number(
-      document
-        .getElementById("queueMachine")
-        .value
-    );
-
-  const machine =
-    machines.find(
-      m=>m.id===machineId
-    );
-
-  if(!machine)
-    return;
-
-  const item = {
-
-    id:Date.now(),
-
-    machineId,
-
-    type,
-
-    user:
-      currentUser
-      ? currentUser.username
-      : "guest",
-
-    createdAt:Date.now(),
-
-    status:
-      machine.status==="available"
-      ? "ready"
-      : "waiting"
-
+  const item={
+    id:Date.now(), orderId:makeOrderId(), machineId, type,
+    user:currentUser.username, customer:currentUser.name,
+    price:servicePrice(type), createdAt:Date.now(),
+    status:"pending_payment", paymentStatus:"pending", paymentMethod:null, paymentMethodName:null
   };
 
   queue.push(item);
-
-  addNotification(
-    "สร้างออเดอร์สำเร็จ",
-    machineName(machineId)+
-    " ถูกเพิ่มเข้าสู่คิวแล้ว",
-    "normal"
-  );
-
   saveData();
-
   closeQueue();
-
   renderAll();
+  openServicePayment({kind:"queue",queueId:item.id,type,price:item.price});
+}
 
-  toast(
-    "สร้างออเดอร์สำเร็จ",
-    "ระบบเพิ่มคิวให้แล้ว"
-  );
+function payQueueAfterPayment(queueId, method, methodName, paymentRef){
+  const item=queue.find(q=>q.id===queueId);
+  if(!item) return;
+  item.paymentStatus="paid";
+  item.paymentMethod=method;
+  item.paymentMethodName=methodName;
+  item.paymentRef=paymentRef||"";
+  item.price=servicePrice(item.type);
 
-  if(machine.status==="available"){
+  const machine=machines.find(m=>m.id===item.machineId);
+  if(machine && machine.status==="available") item.status="ready";
+  else item.status="waiting";
 
-    startQueuedOrder(item);
-
-  }
-
+  addNotification("ชำระเงินสำเร็จ",`${typeText(item.type)} ฿${Number(item.price||0).toLocaleString("th-TH")} ด้วย${methodName}`,"normal");
+  saveData();
+  renderAll();
+  if(machine && machine.status==="available") startQueuedOrder(item);
+  toast("ชำระเงินสำเร็จ","ระบบรับคิวของคุณแล้ว");
 }
 
 function startQueuedOrder(item){
+
+  if(!item || item.paymentStatus!=="paid") return;
 
   const machine =
     machines.find(
@@ -3892,8 +4509,15 @@ function startQueuedOrder(item){
     machine.duration;
 
   machine.cycles++;
-
   totalCycles++;
+
+  machine.orderId=item.orderId || makeOrderId();
+  machine.customer=item.customer || currentUser?.name || "ผู้ใช้งานทั่วไป";
+  machine.username=item.user || currentUser?.username || "";
+  machine.price=Number(item.price||servicePrice(machine.type));
+  machine.paymentStatus=item.paymentStatus||"paid";
+  machine.paymentMethod=item.paymentMethod||"cash";
+  machine.paymentMethodName=item.paymentMethodName||"เงินสด";
 
   item.status="running";
 
@@ -3921,6 +4545,7 @@ function processQueue(){
       queue.find(
         q =>
           q.status==="waiting" &&
+          q.paymentStatus==="paid" &&
           q.machineId===machine.id
       );
 
@@ -3949,7 +4574,9 @@ function renderQueue(){
   if(!list)
     return;
 
-  if(!queue.length){
+  const visibleQueue=isAdmin()?queue:queue.filter(q=>q.user===currentUser?.username || q.customer===currentUser?.name);
+
+  if(!visibleQueue.length){
 
     list.innerHTML=`
       <div class="empty">
@@ -3962,7 +4589,7 @@ function renderQueue(){
   }
 
   list.innerHTML =
-    queue.map(
+    visibleQueue.map(
       (q,index)=>{
 
         const machine =
@@ -3983,11 +4610,12 @@ function renderQueue(){
               <strong>
                 ${machineName(q.machineId)}
               </strong>
+              <div class="order-id">${q.orderId||"ORD-"+q.id}</div>
 
               <p>
-                ${typeText(q.type)}
-                •
-                ${queueStatusText(q.status)}
+                ${q.customer||q.user||"ผู้ใช้งาน"} • ${typeText(q.type)}
+                • ${queueStatusText(q.status)}
+                • ฿${Number(q.price||0).toLocaleString("th-TH")}
               </p>
 
             </div>
@@ -3995,6 +4623,7 @@ function renderQueue(){
             <span class="status">
               ${queueStatusText(q.status)}
             </span>
+            ${!isAdmin() && q.status==="pending_payment" ? `<button class="btn primary" onclick="openServicePayment({kind:'queue',queueId:${q.id},type:'${q.type}',price:${Number(q.price||0)}})">ชำระ ฿${Number(q.price||0).toLocaleString("th-TH")}</button>` : ""}
 
           </div>
         `;
@@ -4008,6 +4637,7 @@ function queueStatusText(status){
 
   const map={
 
+    pending_payment:"รอชำระเงิน",
     waiting:"รอคิว",
     ready:"พร้อมเริ่ม",
     running:"กำลังดำเนินการ"
@@ -4195,167 +4825,62 @@ function renderHistory(){
   if(!list)
     return;
 
-  if(!history.length){
+  const user=currentUser?.username;
+  const userHistory=history.filter(h=>!h.user || h.user===user);
+  const userSales=productSales.filter(sale=>sale.user===user);
+  if(!userHistory.length && !userSales.length){
 
     list.innerHTML=`
       <div class="empty">
         <div class="empty-icon">◷</div>
-        ยังไม่มีประวัติการใช้งาน
+        ยังไม่มีประวัติการใช้งานหรือการซื้อ
       </div>
     `;
 
     return;
   }
 
-  list.innerHTML =
-    history.map(
-      h=>`
-
+  const machineRows=userHistory.map(h=>`
       <div class="row">
-
-        <div class="circle">
-          ${
-            h.type==="ซัก"
-            ? "W"
-            : "D"
-          }
-        </div>
-
+        <div class="circle">${h.type==="ซัก" ? "W" : "D"}</div>
         <div class="grow">
-
-          <strong>
-            ${h.machine}
-          </strong>
-
-          <p>
-            ${h.type}
-            •
-            ${h.status}
-            •
-            ${h.date}
-          </p>
-
+          <strong>${escapeHtml(h.machine||"เครื่อง")}</strong>
+          <p>${escapeHtml(h.type||"")} • ${escapeHtml(h.status||"")} • ${escapeHtml(h.date||"")} ${h.orderId ? "• "+escapeHtml(h.orderId) : ""}</p>
+          ${h.price!=null ? `<p>ยอดชำระ: ฿${Number(h.price||0).toLocaleString("th-TH")}</p>` : ""}
         </div>
-
-      </div>
-
-      `
-    ).join("");
+      </div>`).join("");
+  const productRows=userSales.map(sale=>`
+      <div class="row">
+        <div class="circle">🛒</div>
+        <div class="grow">
+          <strong>${escapeHtml(sale.productName||"ผลิตภัณฑ์")}</strong>
+          <p>ซื้อ ${Number(sale.quantity||0)} ชิ้น • ฿${Number(sale.total||0).toLocaleString("th-TH")} • ${formatDateTime(sale.createdAt)}</p>
+        </div>
+      </div>`).join("");
+  list.innerHTML=machineRows+productRows;
 
 }
 
 /* ================= ANALYTICS ================= */
 
 function renderAnalytics(){
-
-  const washerCycles =
-    machines
-      .filter(
-        m=>m.type==="washer"
-      )
-      .reduce(
-        (sum,m)=>sum+m.cycles,
-        0
-      );
-
-  const dryerCycles =
-    machines
-      .filter(
-        m=>m.type==="dryer"
-      )
-      .reduce(
-        (sum,m)=>sum+m.cycles,
-        0
-      );
-
-  const success =
-    history.filter(
-      h=>h.status==="เสร็จสิ้น"
-    ).length;
-
-  const total =
-    washerCycles+
-    dryerCycles;
-
-  const rate =
-    total
-    ? Math.round(
-        success/
-        Math.max(
-          success,
-          history.length
-        )*
-        100
-      )
-    : 0;
-
-  document
-    .getElementById("totalCycles")
-    .textContent =
-      total;
-
-  document
-    .getElementById("washerCycles")
-    .textContent =
-      washerCycles;
-
-  document
-    .getElementById("dryerCycles")
-    .textContent =
-      dryerCycles;
-
-  document
-    .getElementById("successCycles")
-    .textContent =
-      success;
-
-  document
-    .getElementById("successRate")
-    .textContent =
-      rate+"%";
-
-  const badWasher =
-    machines.find(
-      m=>
-        m.type==="washer" &&
-        (
-          m.status==="error" ||
-          m.health<70
-        )
-    );
-
-  const badDryer =
-    machines.find(
-      m=>
-        m.type==="dryer" &&
-        (
-          m.status==="error" ||
-          m.health<70
-        )
-    );
-
-  document
-    .getElementById("problemWasher")
-    .textContent =
-      badWasher
-      ? machineName(badWasher.id)
-      : "ไม่มี";
-
-  document
-    .getElementById("problemDryer")
-    .textContent =
-      badDryer
-      ? machineName(badDryer.id)
-      : "ไม่มี";
-
-  const health =
-    calculateSystemHealth();
-
-  document
-    .getElementById("insightHealth")
-    .textContent =
-      health+"%";
-
+  if(isAdmin()) return;
+  const user= currentUser?.username;
+  const userHistory=history.filter(h=>!h.user || h.user===user);
+  const userQueue=queue.filter(q=>q.user===user);
+  const washerCycles=userHistory.filter(h=>h.type==="ซัก").length;
+  const dryerCycles=userHistory.filter(h=>h.type==="อบ").length;
+  const success=userHistory.filter(h=>h.status==="เสร็จสิ้น").length;
+  const activeOrders=userQueue.filter(q=>q.status==="running").length;
+  const waitingOrders=userQueue.filter(q=>q.status==="waiting"||q.status==="ready").length;
+  const attentionMachines=userQueue.filter(q=>q.status==="running").filter(q=>{const m=machines.find(x=>x.id===q.machineId);return m&&["error","maintenance","overdue"].includes(m.status);}).length;
+  const total=washerCycles+dryerCycles;
+  const rate=total?Math.round(success/Math.max(total,1)*100):0;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set("totalCycles",total); set("washerCycles",washerCycles); set("dryerCycles",dryerCycles); set("successCycles",success); set("successRate",rate+"%");
+  set("activeOrderCount",activeOrders); set("waitingQueueCount",waitingOrders); set("attentionMachineCount",attentionMachines);
+  const pw=document.getElementById("problemWasher"); const pd=document.getElementById("problemDryer"); const ih=document.getElementById("insightHealth");
+  if(pw) pw.textContent="-"; if(pd) pd.textContent="-"; if(ih) ih.textContent=machines.length?Math.round(machines.reduce((a,m)=>a+m.health,0)/machines.length)+"%":"-";
 }
 
 /* ================= STATS ================= */
@@ -4982,70 +5507,133 @@ function renderDataManager(){
 
 }
 
+
+/* ================= CHAT / ADMIN REPLY ================= */
+function userDisplay(username){
+  const u=users.find(x=>x.username===username);
+  return u ? u.name : username;
+}
+function chatUsers(){
+  const set=new Set();
+  chatMessages.forEach(m=>{
+    if(m.senderRole==="user") set.add(m.senderUsername);
+    if(m.receiverRole==="user") set.add(m.receiverUsername);
+  });
+  if(isAdmin() && !set.size) set.add("user");
+  return [...set];
+}
+function selectChatUser(username){
+  if(!isAdmin()) return;
+  chatTargetUser=username;
+  renderAdminChat();
+}
+function sendChatMessage(){
+  if(!currentUser) return;
+  const input=document.getElementById(isAdmin()?"adminChatInput":"chatInput");
+  if(!input) return;
+  const text=input.value.trim();
+  if(!text){toast("ยังไม่มีข้อความ","กรุณาพิมพ์ข้อความก่อนส่ง");return;}
+  let receiverUsername="admin", receiverRole="admin";
+  if(isAdmin()){
+    if(!chatTargetUser){toast("ยังไม่ได้เลือกผู้ใช้","เลือกการสนทนาทางซ้ายก่อนตอบกลับ");return;}
+    receiverUsername=chatTargetUser;
+    receiverRole="user";
+  }
+  chatMessages.push({
+    id:Date.now()+Math.random(),
+    senderUsername:currentUser.username,
+    senderName:currentUser.name,
+    senderRole:currentUser.role,
+    receiverUsername,
+    receiverRole,
+    text,
+    time:Date.now(),
+    read:false
+  });
+  chatMessages=chatMessages.slice(-300);
+  input.value="";
+  addNotification(
+    isAdmin()?"ตอบกลับผู้ใช้":"ข้อความถึง Admin",
+    isAdmin()?"ส่งข้อความตอบกลับ "+userDisplay(receiverUsername):"ส่งข้อความถึง Admin แล้ว",
+    "normal"
+  );
+  saveData();
+  renderChat();
+  renderAdminChat();
+  toast("ส่งข้อความแล้ว",isAdmin()?"ผู้ใช้จะเห็นข้อความตอบกลับ":"ข้อความถูกส่งให้ Admin แล้ว");
+}
+function renderChat(){
+  if(isAdmin()) return;
+  const usersBox=document.getElementById("chatUsers");
+  const body=document.getElementById("chatMessages");
+  const head=document.getElementById("chatHead");
+  const sub=document.getElementById("chatSubtitle");
+  if(!usersBox || !body || !head) return;
+  if(isAdmin()){
+    const names=chatUsers();
+    if(!chatTargetUser || !names.includes(chatTargetUser)) chatTargetUser=names[0]||null;
+    usersBox.innerHTML=names.length ? names.map(name=>{
+      const unread=chatMessages.filter(m=>m.receiverUsername==="admin"&&m.senderUsername===name&&!m.read).length;
+      const safe=String(name).replace(/'/g,"\'");
+      return `<button class="chat-user ${chatTargetUser===name?"active":""}" onclick="selectChatUser('${safe}')"><span class="chat-avatar">👤</span><span><b>${escapeHtml(userDisplay(name))}</b><small>@${escapeHtml(name)}${unread?" • "+unread+" ใหม่":""}</small></span></button>`;
+    }).join("") : `<div class="chat-empty">ยังไม่มีข้อความจากผู้ใช้</div>`;
+    head.textContent=chatTargetUser ? "ตอบกลับ: "+userDisplay(chatTargetUser) : "เลือกผู้ใช้เพื่อเริ่มตอบกลับ";
+    sub.textContent="Admin สามารถเลือกผู้ใช้และตอบกลับข้อความได้";
+  }else{
+    usersBox.innerHTML=`<div class="chat-user active"><span class="chat-avatar">🛠</span><span><b>Admin</b><small>ผู้ดูแลระบบ</small></span></div>`;
+    head.textContent="แชตกับ Admin";
+    sub.textContent="สอบถามปัญหาเครื่อง การจองคิว หรือการใช้งาน";
+  }
+  const target=isAdmin()?chatTargetUser:currentUser.username;
+  const msgs=chatMessages.filter(m=>{
+    if(isAdmin()) return target && ((m.senderUsername===target&&m.receiverUsername==="admin")||(m.senderUsername==="admin"&&m.receiverUsername===target));
+    return (m.senderUsername===currentUser.username&&m.receiverUsername==="admin")||(m.senderUsername==="admin"&&m.receiverUsername===currentUser.username);
+  });
+  msgs.forEach(m=>{
+    if((isAdmin()&&m.receiverUsername==="admin"&&m.senderUsername===target)||(!isAdmin()&&m.receiverUsername===currentUser.username&&m.senderUsername==="admin")) m.read=true;
+  });
+  if(msgs.length) saveData();
+  body.innerHTML=msgs.length ? msgs.map(m=>`<div class="chat-msg ${m.senderUsername===currentUser.username?"mine":"theirs"}">${escapeHtml(m.text)}<span class="chat-time">${escapeHtml(m.senderName||m.senderUsername)} • ${formatDateTime(m.time)}</span></div>`).join("") : `<div class="chat-empty"><div><div style="font-size:30px">💬</div><div>${isAdmin()?"ยังไม่มีข้อความในบทสนทนานี้":"เริ่มส่งข้อความหา Admin ได้เลย"}</div></div></div>`;
+  body.scrollTop=body.scrollHeight;
+}
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
+}
+
 /* ================= SETTINGS ================= */
 
 function openSetting(){
 
-  document
-    .getElementById("removeInput")
-    .value =
-      removeMinutes;
-
-  document
-    .getElementById("settingModal")
-    .classList.add("show");
+  const input=document.getElementById("removeInput");
+  if(input) input.value=removeMinutes;
+  const modal=document.getElementById("settingModal");
+  if(modal) modal.classList.add("show");
 
 }
 
 function closeSetting(){
 
-  document
-    .getElementById("settingModal")
-    .classList.remove("show");
+  const modal=document.getElementById("settingModal");
+  if(modal) modal.classList.remove("show");
 
 }
 
 function saveSetting(){
 
-  const value =
-    Number(
-      document
-        .getElementById("removeInput")
-        .value
-    );
+  const value=Number(document.getElementById("removeInput")?.value);
 
-  if(
-    !Number.isInteger(value) ||
-    value<1 ||
-    value>60
-  ){
-
-    toast(
-      "ข้อมูลไม่ถูกต้อง",
-      "กรุณาระบุ 1–60 นาที"
-    );
-
+  if(!Number.isInteger(value) || value<1 || value>60){
+    toast("ข้อมูลไม่ถูกต้อง","กรุณาระบุ 1–60 นาที");
     return;
   }
 
   removeMinutes=value;
-
-  document
-    .getElementById("removeTime")
-    .textContent =
-      value+" นาที";
-
+  const removeTime=document.getElementById("removeTime");
+  if(removeTime) removeTime.textContent=value+" นาที";
   saveData();
-
   closeSetting();
-
   renderMachines();
-
-  toast(
-    "บันทึกการตั้งค่า",
-    "ตั้งเวลา "+value+" นาที"
-  );
-
+  toast("บันทึกการตั้งค่า","ตั้งเวลา "+value+" นาที");
 }
 
 /* ================= DARK MODE ================= */
@@ -5121,10 +5709,42 @@ function exportData(){
   URL.revokeObjectURL(url);
 
   toast(
-    "Export สำเร็จ",
+    "ส่งออกรายงาน สำเร็จ",
     "ส่งออกข้อมูลระบบแล้ว"
   );
 
+}
+
+function exportCSV(){
+  const rows=[
+    ["Order ID","Customer","Machine","Type","Date","Time","Status"]
+  ];
+
+  history.forEach(h=>{
+    rows.push([
+      h.orderId||"",
+      h.customer||"",
+      h.machine||"",
+      h.type||"",
+      h.date||"",
+      h.time||"",
+      h.status||""
+    ]);
+  });
+
+  const csv=rows.map(row=>
+    row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")
+  ).join("\n");
+
+  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="smart-laundry-history.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+
+  toast("ส่งออกรายงาน CSV สำเร็จ","ส่งออกประวัติการใช้งานแล้ว");
 }
 
 /* ================= DATE ================= */
@@ -5303,7 +5923,13 @@ setInterval(()=>{
               ? "30 นาที"
               : "25 นาที",
 
-            status:"รอรับผ้า"
+            status:"รอรับผ้า",
+            orderId:machine.orderId || "",
+            user:machine.username || "",
+            price:Number(machine.price||0),
+            paymentStatus:machine.paymentStatus||"paid",
+            paymentMethod:machine.paymentMethod||"cash",
+            paymentMethodName:machine.paymentMethodName||"เงินสด"
 
           });
 
@@ -5431,6 +6057,7 @@ window.addEventListener(
     const modalIds=[
       "machineModal",
       "queueModal",
+      "servicePaymentModal",
       "removeModal",
       "settingModal",
       "dataManagerModal"
@@ -5456,6 +6083,18 @@ window.addEventListener(
   }
 );
 
+
+/* ================= CHAT UX ================= */
+const chatInputEl=document.getElementById("chatInput");
+if(chatInputEl){
+  chatInputEl.addEventListener("keydown",function(e){
+    if(e.key==="Enter" && !e.shiftKey){
+      e.preventDefault();
+      sendChatMessage();
+    }
+  });
+}
+
 /* ================= RENDER ALL ================= */
 
 function renderAll(){
@@ -5467,38 +6106,43 @@ function renderAll(){
   }
 
   renderUser();
-
-  document
-    .getElementById("removeTime")
-    .textContent =
-      removeMinutes+
-      " นาที";
-
+  renderServicePrices();
   renderMachines();
-
-  renderQueue();
-
-  renderNotifications();
-
-  renderHistory();
-
-  renderAnalytics();
-
   updateStats();
+
+  if(isAdmin()){
+    renderAdminDashboard();
+    renderAdminQueue();
+    renderAdminAnalytics();
+    renderAdminChat();
+    renderAdminServicePrices();
+    renderAdminProductPrices();
+  }else{
+    renderQueue();
+    renderNotifications();
+    renderChat();
+    renderHistory();
+    renderAnalytics();
+  }
 
 }
 
 /* ================= START ================= */
 
-if(currentUser){
+if(
+  currentUser &&
+  (currentUser.role === "user" || currentUser.role === "admin")
+){
 
   document
-    .getElementById(
-      "authOverlay"
-    )
+    .getElementById("authOverlay")
     .classList.add("hidden");
 
 }else{
+
+  currentUser = null;
+
+  try{ saveData(); }catch(error){}
 
   document
     .getElementById(
@@ -5508,9 +6152,17 @@ if(currentUser){
 
 }
 
+if(currentUser && !users.some(u=>u.username===currentUser.username && u.role===currentUser.role)){currentUser=null;try{saveData();}catch(e){}}
+
+if(currentUser){document.getElementById("authOverlay")?.classList.add("hidden");}else{document.getElementById("authOverlay")?.classList.remove("hidden");}
+
 requestNotification();
 
 renderAll();
+if(currentUser){
+  if(isAdmin()) showPage("adminDashboard",document.getElementById("adminDashboardNav"));
+  else showPage("home",document.querySelector('#mainNav button[onclick*="showPage(\'home\'"]'));
+}
 
 </script>
 
